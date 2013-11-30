@@ -1,0 +1,153 @@
+<object>
+
+	<vertex t="front">
+		<position x="0.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+	<vertex t="front">
+		<position x="1.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+	<vertex t="front">
+		<position x="1.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+	<vertex t="front">
+		<position x="1.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+	<vertex t="front">
+		<position x="0.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+	<vertex t="front">
+		<position x="0.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.8" g="0.52" b="0.24" a="1.0"></color>
+	</vertex>
+
+	<vertex t="right">
+		<position x="1.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+	<vertex t="right">
+		<position x="1.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+	<vertex t="right">
+		<position x="1.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+	<vertex t="right">
+		<position x="1.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+	<vertex t="right">
+		<position x="1.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+	<vertex t="right">
+		<position x="1.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.66" g="0.43" b="0.21" a="1.0"></color>
+	</vertex>
+
+	<vertex t="top">
+		<position x="1.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+	<vertex t="top">
+		<position x="0.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+	<vertex t="top">
+		<position x="0.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+	<vertex t="top">
+		<position x="0.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+	<vertex t="top">
+		<position x="1.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+	<vertex t="top">
+		<position x="1.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.73" g="0.48" b="0.23" a="1.0"></color>
+	</vertex>
+
+	<vertex t="back">
+		<position x="0.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+	<vertex t="back">
+		<position x="1.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+	<vertex t="back">
+		<position x="1.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+	<vertex t="back">
+		<position x="1.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+	<vertex t="back">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+	<vertex t="back">
+		<position x="0.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.47" g="0.30" b="0.14" a="1.0"></color>
+	</vertex>
+
+	<vertex t="left">
+		<position x="0.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+	<vertex t="left">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+	<vertex t="left">
+		<position x="0.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+	<vertex t="left">
+		<position x="0.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+	<vertex t="left">
+		<position x="0.0" y="1.0" z="1.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+	<vertex t="left">
+		<position x="0.0" y="1.0" z="0.0" w="1.0"></position>
+		<color r="0.53" g="0.35" b="0.16" a="1.0"></color>
+	</vertex>
+
+	<vertex t="bottom">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+	<vertex t="bottom">
+		<position x="1.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+	<vertex t="bottom">
+		<position x="1.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+	<vertex t="bottom">
+		<position x="1.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+	<vertex t="bottom">
+		<position x="0.0" y="0.0" z="1.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+	<vertex t="bottom">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.59" g="0.39" b="0.19" a="1.0"></color>
+	</vertex>
+
+</object>
