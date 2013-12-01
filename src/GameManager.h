@@ -7,8 +7,6 @@ class GameManager {
 
 	private:
 		typedef std::map<const std::string, Entity *>::iterator entityIterator;
-
-		entityIterator piece;
 		std::map<const std::string, Entity *> _entities;
 		GameManager();
 
@@ -19,6 +17,8 @@ class GameManager {
 		Entity * getEntityById(std::string id);
 		void destroyBufferObjects();
 		void draw();
+		int keyToInt(std::string key);
+		std::string intToKey(int key);
 		void update();
-		void movePiece();
+		void movePiece(std::string key);
 };

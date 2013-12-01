@@ -84,8 +84,6 @@ void GameManager::init(){
 	quadradoAmarelo->setPos1(0.25,-0.25,0.0,0.0);
 	quadradoAmarelo->setPos2(0.75,0.1,0.75,90.0);
 	add(quadradoAmarelo);
-
-	piece = _entities.begin();
 }
 
 
@@ -93,14 +91,27 @@ void GameManager::init(){
 
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
-	int j = 1;
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-		//'i' needed to be integer
-		glStencilFunc(GL_ALWAYS, j , -1);
+		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
 		i->second->draw();
-		j++;
 	}
 	glUseProgram(0);
+}
+
+
+
+
+int GameManager::keyToInt(std::string key){
+	 return std::distance(_entities.begin(), _entities.find(key))+1;
+}
+
+
+
+
+std::string GameManager::intToKey(int key){
+	entityIterator i = _entities.begin();
+	for(int j = 0; j < key-1; i++, j++);
+	return i->first;
 }
 
 
@@ -115,20 +126,8 @@ void GameManager::update(){
 
 
 
-void GameManager::movePiece(){
-	if(piece == _entities.end())
-		piece = _entities.begin();
-
-	if(piece->first.compare("tabuleiro") == 0){
-		piece++;
-		if(piece == _entities.end())
-			piece = _entities.begin();
-	}
-
-	if(piece->first.compare("tabuleiro") != 0){
-		((TangramPieces*)piece->second)->swapPos();
-		piece++;
-	}
+void GameManager::movePiece(std::string key){
+	((TangramPieces*)_entities.find(key)->second)->swapPos();
 }
 
 
