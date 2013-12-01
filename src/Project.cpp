@@ -37,7 +37,8 @@ void cleanup()
 void display()
 {
 	++FrameCount;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClearStencil(0);
 	GameManager::getInstance()->update();
 	Camera::getInstance()->put(((float)WinX)/((float)WinY));
 	drawScene();
@@ -100,6 +101,12 @@ void setupCallbacks()
 void setupOpenGL() {
 	std::cerr << "CONTEXT: OpenGL v" << glGetString(GL_VERSION) << std::endl;
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	
+	/* Stencil Buffer Initialization */
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	/* */
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
@@ -124,7 +131,7 @@ void setupGLUT(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	
-	glutInitContextVersion(3, 3);
+	glutInitContextVersion(3, 2);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 

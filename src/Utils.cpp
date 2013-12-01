@@ -56,7 +56,28 @@ namespace Utils {
 
 
 
-	char * readFile(char * file) {
+	GLchar* readFile(char* path){
+		std::string line, result;
+		std::ifstream myfile(path);
+		char* buffer;
+		int size;
+
+		if (myfile.is_open()) {
+			while (getline(myfile, line)) {
+				result += line + "\n";
+			}
+			myfile.close();
+		}
+		size = result.size();
+		buffer = new char[size];
+		memcpy(buffer, result.c_str(), size);
+		buffer[size-1] = '\0';
+	
+		return buffer;
+	}
+
+
+	/*char * readFile(char * file) {
 		char * ret;
 		std::string line, text;
 		std::ifstream in(file);
@@ -69,10 +90,10 @@ namespace Utils {
 		else
 			checkOpenGLError("ERROR: Unable to open shader file" + *file);
 		ret = new char[text.length()+1];
-		ret[text.size()]=0;
+		ret[text.size()] = 0;
 		text.copy(ret, text.length());
 		return ret;
-	}
+	}*/
 
 
 

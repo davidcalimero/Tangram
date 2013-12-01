@@ -1,3 +1,6 @@
+#include "GameManager.h"
+#include "Camera.h"
+
 #pragma once
 
 class Input {
@@ -5,6 +8,7 @@ class Input {
 	private:
 		int _lastMousePositionX;
 		int _lastMousePositionY;
+		GLuint stencilValue;
 		Input();
 
 	public:
