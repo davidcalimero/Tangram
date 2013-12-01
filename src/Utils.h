@@ -1,8 +1,17 @@
 #pragma once
 
+#include "GL/glew.h"
+#include "GL/freeglut.h"
+
+#include "ProgramShader.h"
+
 #include <string>
+#include <fstream>
+#include <iostream>
 #include <iomanip>
-#include "Entity.h"
+#include <map>
+#include <list>
+#include <rapidxml.hpp>
 
 #define VERTICES 0
 #define COLORS 1
@@ -14,17 +23,17 @@
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
+typedef struct {
+	GLfloat XYZW[4];
+	GLfloat RGBA[4];
+} Vertex;
+
 namespace Utils {
 	
 	bool isOpenGLError();
-
-	void checkOpenGLError(std::string error);
-	
+	void checkOpenGLError(std::string error);	
 	char * readFile(char * file);
-
 	GLubyte * index(int vertices);
-
 	Vertex * xmlParser(char * file, int *nVertices);
 
-	void changeColor(float *r, float *g, float *b, float change);
 }

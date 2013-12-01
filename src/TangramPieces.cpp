@@ -1,14 +1,10 @@
 #include "TangramPieces.h"
-#include <iostream>
 
 #define SWAP(T, a, b) {T temp = a; a=b; b=temp;}
 
 
 
-
 TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile){}
-
-
 
 
 void TangramPieces::setPos1(float px, float py, float pz, float rz){
@@ -22,8 +18,6 @@ void TangramPieces::setPos1(float px, float py, float pz, float rz){
 }
 
 
-
-
 void TangramPieces::setPos2(float px, float py, float pz, float rz){
 	_px2 = px;
 	_py2 = py;
@@ -33,16 +27,12 @@ void TangramPieces::setPos2(float px, float py, float pz, float rz){
 }
 
 
-
-
 void TangramPieces::swapPos(){
 	SWAP(float,_px1,_px2);
 	SWAP(float,_py1,_py2);
 	SWAP(float,_pz1,_pz2);
 	SWAP(glm::quat,_r1,_r2);
 }
-
-
 
 
 void TangramPieces::update(){

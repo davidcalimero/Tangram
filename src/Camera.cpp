@@ -1,14 +1,9 @@
 #include "Camera.h"
-#include <iostream>
-#include <gtc/matrix_transform.hpp>
-
 
 
 
 Camera::Camera(){
 	_type = 1;
-	//_angleX = 0;
-	//_angleZ = 45;
 	_q = glm::rotate(glm::quat(),45, glm::vec3(0,0,1));
 	glGenBuffers(1, &_vboUBId);
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
@@ -17,20 +12,17 @@ Camera::Camera(){
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+
 Camera::~Camera(){
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glDeleteBuffers(1, &_vboUBId);
 }
 
 
-
-
 Camera * Camera::getInstance(){
 	static Camera instance;
 	return &instance;
 }
-
-
 
 
 void Camera::put(float racio){
@@ -52,13 +44,9 @@ void Camera::put(float racio){
 }
 
 
-
-
 void Camera::rotate(float angleX, float angleZ){
 	_q = glm::rotate(glm::quat(),angleX, glm::vec3(1,0,0)) * glm::rotate(glm::quat(),angleZ, glm::vec3(0,0,1)) * _q;
 }
-
-
 
 
 void Camera::change(){

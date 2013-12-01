@@ -1,8 +1,10 @@
+#pragma once
+
 #include "GameManager.h"
 #include "Camera.h"
 #include <iostream>
 
-#pragma once
+
 
 class Input {
 

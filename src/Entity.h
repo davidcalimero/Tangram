@@ -3,14 +3,17 @@
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 
+#include "Utils.h"
+#include "ProgramShader.h"
+
+#include <gtc/matrix_transform.hpp>
+#include <gtx/transform2.hpp>
 #include <gtc/quaternion.hpp>
 #include <glm.hpp>
 #include <string>
+#include <iostream>
 
-typedef struct {
-	GLfloat XYZW[4];
-	GLfloat RGBA[4];
-} Vertex;
+
 
 class Entity {
 

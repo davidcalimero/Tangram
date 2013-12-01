@@ -1,23 +1,14 @@
-#include "GL/glew.h"
-#include "GL/freeglut.h"
 #include "ProgramShader.h"
-#include "Utils.h"
-#include <iostream>
-
 
 
 
 ProgramShader::ProgramShader(){}
 
 
-
-
 ProgramShader * ProgramShader::getInstance(){
 	static ProgramShader instance;
 	return &instance;
 }
-
-
 
 
 int ProgramShader::compileShader(char * shaderFile, int shaderType){
@@ -27,8 +18,6 @@ int ProgramShader::compileShader(char * shaderFile, int shaderType){
 	glCompileShader(shaderId);
 	return shaderId;
 }
-
-
 
 
 void ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
@@ -49,8 +38,6 @@ void ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 }
 
 
-
-
 void ProgramShader::destroyShaderProgram()
 {
 	glUseProgram(0);
@@ -64,13 +51,9 @@ void ProgramShader::destroyShaderProgram()
 }
 
 
-
-
 const GLuint ProgramShader::getProgramId() const{
 	return _programId;
 }
-
-
 
 
 const GLuint ProgramShader::getVertexShaderId() const{
@@ -78,13 +61,9 @@ const GLuint ProgramShader::getVertexShaderId() const{
 }
 
 
-
-
 const GLuint ProgramShader::getFragmentShaderId() const{
 		return _fragmentShaderId;
 }
-
-
 
 
 const GLint ProgramShader::getUniformModelMatrixId() const{

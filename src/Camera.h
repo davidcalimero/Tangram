@@ -2,7 +2,12 @@
 
 #include "GL/glew.h"
 #include "GL/freeglut.h"
+
+#include <iostream>
+#include <gtc/matrix_transform.hpp>
 #include <gtc/quaternion.hpp>
+
+
 
 class Camera {
 

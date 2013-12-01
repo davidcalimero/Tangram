@@ -1,16 +1,6 @@
-#include <string>
-#include <fstream>
-#include <iostream>
-
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-
 #include "Utils.h"
-#include "ProgramShader.h"
 
-#include <rapidxml.hpp>
-#include <map>
-#include <list>
+
 
 namespace Utils {
 
@@ -26,9 +16,7 @@ namespace Utils {
 		}
 		return isError;
 	}
-
-
-
+	
 
 	void checkOpenGLError(std::string error) {
 		int maxLength;
@@ -53,9 +41,7 @@ namespace Utils {
 		}
 	}
 
-
-
-
+	
 	GLchar* readFile(char* path){
 		std::string line, result;
 		std::ifstream myfile(path);
@@ -76,28 +62,7 @@ namespace Utils {
 		return buffer;
 	}
 
-
-	/*char * readFile(char * file) {
-		char * ret;
-		std::string line, text;
-		std::ifstream in(file);
-		if(in.is_open()){
-			while(getline(in,line)){
-				text += line + "\n";
-			}
-			in.close();
-		}
-		else
-			checkOpenGLError("ERROR: Unable to open shader file" + *file);
-		ret = new char[text.length()+1];
-		ret[text.size()] = 0;
-		text.copy(ret, text.length());
-		return ret;
-	}*/
-
-
-
-
+	
 	GLubyte * Utils::index(int vertices){
 		GLubyte * indices = new GLubyte [vertices];
 		for(int i = 0; i < vertices; i++){
@@ -105,9 +70,7 @@ namespace Utils {
 		}
 		return indices;
 	}
-	
-	
-	
+		
 	
 	Vertex * Utils::xmlParser(char * file, int *nVertices){
 		int i = 0, v = 0;
@@ -141,16 +104,5 @@ namespace Utils {
 
 		return vertices;
 	}
-
-
-
-
-	void Utils::changeColor(float *r, float *g, float *b, float change) {
-
-	  float p = sqrt( (*r)*(*r)*PR + (*g)*(*g)*PG + (*b)*(*b)*PB );
-
-	  *r = MIN(MAX(p + ((*r)-p)*change + ((change-1)*BR), 0), 1);
-	  *g = MIN(MAX(p + ((*g)-p)*change + ((change-1)*BR), 0), 1);
-	  *b = MIN(MAX(p + ((*b)-p)*change + ((change-1)*BR), 0), 1);
-	}
+	
 }

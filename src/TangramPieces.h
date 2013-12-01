@@ -1,7 +1,11 @@
 #pragma once
 
 #include "Entity.h"
+
+#include <iostream>
 #include <gtc/quaternion.hpp>
+
+
 
 class TangramPieces : public Entity {
 
@@ -13,12 +17,8 @@ class TangramPieces : public Entity {
 
 	public:
 		TangramPieces(std::string id, char * vertexFile);
-
 		void setPos1(float px, float py, float pz, float rz);
-
 		void setPos2(float px, float py, float pz, float rz);
-
 		void swapPos();
-
 		void update();
 };

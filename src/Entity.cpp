@@ -1,14 +1,6 @@
-#include "Utils.h"
-#include "ProgramShader.h"
 #include "Entity.h"
-#include <iostream>
-
-#include <gtc/matrix_transform.hpp>
-#include <gtx/transform2.hpp>
 
 
-void color(Vertex * _vertices){
-}
 
 Entity::Entity(std::string id, char * vertexFile){
 	_id = id;
@@ -39,16 +31,12 @@ Entity::Entity(std::string id, char * vertexFile){
 }
 
 
-
-
 void Entity::draw(){
 	glBindVertexArray(_vaoId);
 	glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, &(glm::translate(glm::mat4(1.f), glm::vec3(_px,_py,_pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
 	glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
 }
-
-
 
 
 Entity::~Entity(){
@@ -65,20 +53,14 @@ Entity::~Entity(){
 }
 
 
-
-
 std::string Entity::getId(){
 	return _id;
 }
 
 
-
-
 void Entity::rotate(float x, float y, float z, float angle){
 	_q = glm::rotate(glm::quat(), angle, glm::vec3(x,y,z)) * _q;
 }
-
-
 
 
 void Entity::translate(float x, float y, float z){
@@ -88,13 +70,9 @@ void Entity::translate(float x, float y, float z){
 }
 
 
-
-
 void Entity::scale(float x, float y, float z){
 	_matrix = glm::scale(glm::mat4(1.0f),glm::vec3(x,y,z))*_matrix;
 }
-
-
 
 
 void Entity::shear(float x, float y){
@@ -106,15 +84,12 @@ void Entity::shear(float x, float y){
 }
 
 
-
 void Entity::lerp(float x, float y, float z, float k){
 	float xf = ((_px - (_px * k)) + (x * k)) - _px;
 	float yf = ((_py - (_py * k)) + (y * k)) - _py;
 	float zf = ((_pz - (_pz * k)) + (z * k)) - _pz;
 	translate(xf,yf,zf);
 }
-
-
 
 
 void Entity::slerp(glm::quat q, float k){

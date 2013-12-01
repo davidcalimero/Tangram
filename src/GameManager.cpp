@@ -1,15 +1,8 @@
 #include "GameManager.h"
-#include "Utils.h"
-#include "ProgramShader.h"
-#include <iostream>
-#include "TangramPieces.h"
-
 
 
 
 GameManager::GameManager(){}
-
-
 
 
 GameManager * GameManager::getInstance(){
@@ -18,20 +11,14 @@ GameManager * GameManager::getInstance(){
 }
 
 
-
-
 void GameManager::add(Entity * entity){
 	_entities.insert(std::make_pair(entity->getId(), entity));
 }
 
 
-
-
 Entity * GameManager::getEntityById(std::string id){
 	return _entities.find(id)->second;
 }
-
-
 
 
 void GameManager::init(){
@@ -87,8 +74,6 @@ void GameManager::init(){
 }
 
 
-
-
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
@@ -99,13 +84,9 @@ void GameManager::draw(){
 }
 
 
-
-
 int GameManager::keyToInt(std::string key){
 	 return std::distance(_entities.begin(), _entities.find(key))+1;
 }
-
-
 
 
 std::string GameManager::intToKey(int key){
@@ -115,8 +96,6 @@ std::string GameManager::intToKey(int key){
 }
 
 
-
-
 void GameManager::update(){
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 		i->second->update();
@@ -124,13 +103,9 @@ void GameManager::update(){
 }
 
 
-
-
 void GameManager::movePiece(std::string key){
 	((TangramPieces*)_entities.find(key)->second)->swapPos();
 }
-
-
 
 
 void GameManager::destroyBufferObjects(){
