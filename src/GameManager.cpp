@@ -93,8 +93,12 @@ void GameManager::init(){
 
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
+	int j = 1;
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
+		//'i' needed to be integer
+		glStencilFunc(GL_ALWAYS, j , -1);
 		i->second->draw();
+		j++;
 	}
 	glUseProgram(0);
 }

@@ -1,6 +1,5 @@
 #include "Input.h"
-#include "GameManager.h"
-#include "Camera.h"
+
 
 
 
@@ -34,8 +33,21 @@ void Input::keyHandler(unsigned char key, int x, int y){
 
 void Input::mouse(int button, int state, int x, int y) 
 {
-	_lastMousePositionX = x;
-	_lastMousePositionY = y;
+	/* Need to check StencilBuffer */
+	
+	int window_height = glutGet(GLUT_WINDOW_HEIGHT);
+
+	glReadPixels(x, window_height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &stencilValue);
+	printf("Stencil Value: %u\n", stencilValue);
+	if(stencilValue == 0){	//BackGround
+		_lastMousePositionX = x;
+		_lastMousePositionY = y;
+	}
+			
+	//else Other Pieces - movê-las
+	/**/
+	
+	
 
 }
 
@@ -44,7 +56,9 @@ void Input::mouse(int button, int state, int x, int y)
 
 void Input::mouseMotion(int x, int y) 
 {
-	Camera::getInstance()->rotate((y - _lastMousePositionY), (x - _lastMousePositionX));
-	_lastMousePositionX = x;
-	_lastMousePositionY = y;
+	if(stencilValue == 0){
+		Camera::getInstance()->rotate((y - _lastMousePositionY), (x - _lastMousePositionX));
+		_lastMousePositionX = x;
+		_lastMousePositionY = y;
+	}
 }

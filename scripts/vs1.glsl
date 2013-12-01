@@ -1,4 +1,4 @@
-#version 330 core
+#version 150
 
 in vec4 in_Position;
 in vec4 in_Color;
