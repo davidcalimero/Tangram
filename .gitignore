@@ -215,3 +215,5 @@ pip-log.txt
 
 # Trash
 obj/
+.filters
+.vcxproj
