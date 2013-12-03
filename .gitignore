@@ -217,3 +217,7 @@ pip-log.txt
 obj/
 .filters
 .vcxproj
+
+scripts/
+.filters
+.vcxproj
