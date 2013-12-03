@@ -33,8 +33,40 @@ Entity::Entity(std::string id, char * vertexFile){
 
 void Entity::draw(){
 	glBindVertexArray(_vaoId);
-	glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, &(glm::translate(glm::mat4(1.f), glm::vec3(_px,_py,_pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
-	glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+
+	if(_id == "tabuleiro"){
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF);
+		glDepthMask(GL_FALSE);
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
+							&(glm::translate(glm::mat4(1.f), 
+							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
+		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+	}
+	
+	else {
+		//ORIGINAL PIECE
+		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
+							&(glm::translate(glm::mat4(1.f), 
+							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
+		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+
+		glStencilFunc(GL_EQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDepthMask(GL_TRUE);
+
+		//REFLECTED PIECE
+		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
+							&(glm::scale(glm::translate(glm::mat4(1.f), 
+							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix, 
+							  glm::vec3(1, 1, -1)))[0][0]);
+
+		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+	}
+
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
 }
 
