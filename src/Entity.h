@@ -25,6 +25,7 @@ class Entity {
 		Vertex * _vertices;
 		float _px, _py, _pz;
 		glm::quat _q;
+		glm::quat _qr;
 
 	protected:
 		std::string _id;

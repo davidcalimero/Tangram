@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "gtx/euler_angles.hpp"
 
 
 
@@ -42,12 +43,13 @@ void Entity::draw(){
 		glClear(GL_STENCIL_BUFFER_BIT);*/
 
 		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
-							&(glm::translate(glm::mat4(1.f), 
-							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
+						   &(glm::translate(glm::mat4(1.f), 
+							 glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
 		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
 	}
 	
 	else {
+
 		//ORIGINAL PIECE
 		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
 							&(glm::translate(glm::mat4(1.f), 
@@ -60,12 +62,15 @@ void Entity::draw(){
 		glStencilMask(0x00);
 		glDepthMask(GL_TRUE);*/
 
+		glDisable(GL_CULL_FACE);
 		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
-							&(glm::scale(glm::translate(glm::mat4(1.f), 
-							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix, 
-							  glm::vec3(1, 1, -1)))[0][0]);
+							&( glm::translate(glm::mat4(1.f), glm::vec3(_px, _py, -_pz))*
+							   glm::mat4_cast(_qr)*
+							   glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
+							   _matrix)[0][0]);
 
 		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+		glEnable(GL_CULL_FACE);
 	}
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
@@ -92,7 +97,15 @@ std::string Entity::getId(){
 
 
 void Entity::rotate(float x, float y, float z, float angle){
-	_q = glm::rotate(glm::quat(), angle, glm::vec3(x,y,z)) * _q;
+	float a = angle;
+
+	_q = glm::rotate(glm::quat(), angle, glm::vec3(x, y, z)) * _q;
+	
+	if(x || y)
+		a = -a;
+	std::cout << a << std::endl;
+	_qr = glm::rotate(glm::quat(), a, glm::vec3(x, y, z)) * _qr;
+
 }
 
 
@@ -126,5 +139,6 @@ void Entity::lerp(float x, float y, float z, float k){
 
 
 void Entity::slerp(glm::quat q, float k){
-	_q = glm::slerp(_q,q,k);
+	_q = glm::slerp(_q, q, k);
+	_qr = glm::slerp(glm::rotate(glm::quat(), -180, glm::vec3(1, 0, 0))*_q, q, k);
 }
