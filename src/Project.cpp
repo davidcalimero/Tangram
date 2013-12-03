@@ -20,22 +20,19 @@ unsigned int FrameCount = 0;
 
 /////////////////////////////////////////////////////////////////////// SCENE
 
-void drawScene()
-{
+void drawScene() {
 	GameManager::getInstance()->draw();
 }
 
 /////////////////////////////////////////////////////////////////////// CALLBACKS
 
-void cleanup()
-{
+void cleanup() {
 	ProgramShader::getInstance()->destroyShaderProgram();
 	GameManager::getInstance()->destroyBufferObjects();
 	Camera::getInstance()->~Camera();
 }
 
-void display()
-{
+void display() {
 	++FrameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClearStencil(0);
@@ -45,13 +42,11 @@ void display()
 	glutSwapBuffers();
 }
 
-void idle()
-{
+void idle() {
 	glutPostRedisplay();
 }
 
-void reshape(int w, int h)
-{
+void reshape(int w, int h) {
 	WinX = w;
 	WinY = h;
 	glViewport(0, 0, WinX, WinY);
@@ -63,18 +58,15 @@ void keyboard(unsigned char key, int x, int y){
 	Input::getInstance()->keyHandler(key, x, y);
 }
 
-void mouse(int button, int state, int x, int y) 
-{
+void mouse(int button, int state, int x, int y)  {
 	Input::getInstance()->mouse(button, state, x, y);
 }
 
-void mouseMotion(int x, int y)
-{
+void mouseMotion(int x, int y) {
 	Input::getInstance()->mouseMotion(x, y);
 }
 
-void timer(int value)
-{
+void timer(int value) {
 	std::ostringstream oss;
 	oss << CAPTION << ": " << FrameCount << " FPS @ (" << WinX << "x" << WinY << ")";
 	std::string s = oss.str();
@@ -86,8 +78,7 @@ void timer(int value)
 
 /////////////////////////////////////////////////////////////////////// SETUP
 
-void setupCallbacks() 
-{
+void setupCallbacks()  {
 	glutCloseFunc(cleanup);
 	glutDisplayFunc(display);
 	glutIdleFunc(idle);
@@ -127,11 +118,10 @@ void setupGLEW() {
 	GLenum err_code = glGetError();
 }
 
-void setupGLUT(int argc, char* argv[])
-{
+void setupGLUT(int argc, char* argv[]) {
 	glutInit(&argc, argv);
 	
-	glutInitContextVersion(3, 2);
+	glutInitContextVersion(3, 1);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
@@ -146,8 +136,7 @@ void setupGLUT(int argc, char* argv[])
 	}
 }
 
-void init(int argc, char* argv[])
-{
+void init(int argc, char* argv[]) {
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
@@ -156,8 +145,7 @@ void init(int argc, char* argv[])
 	setupCallbacks();
 }
 
-int main(int argc, char* argv[])
-{	
+int main(int argc, char* argv[]) {	
 	init(argc, argv);
 	glutMainLoop();	
 	exit(EXIT_SUCCESS);
