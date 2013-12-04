@@ -1,12 +1,11 @@
 #include "Camera.h"
-#include <gtx/rotate_vector.hpp>
 
 
 
 Camera::Camera(){
 	_type = 1;
-
-	_eye = glm::vec3(0.0,-4.0,0.0);
+	_distance = 4;
+	_eye = glm::vec3(0.0,-1.0,0.0);
 	_center = glm::vec3(0.0,0.0,0.0);
 	_up = glm::vec3(0.0,0.0,1.0);
 	_q = glm::angleAxis(90.0f, glm::vec3(1,0,0));
@@ -33,13 +32,15 @@ Camera * Camera::getInstance(){
 
 void Camera::put(float racio){
 	glm::mat4 projection;
-	_view = glm::lookAt(_eye, _center, _up);
+	glm::vec3 eye = _eye;
+	eye.y *= _distance;
+	_view = glm::lookAt(eye, _center, _up);
 
 	if(_type){
 		if (racio > 1)
-			projection = glm::ortho(-1.5*racio, 1.5*racio, -1.5, 1.5, 1.0, 10.0);
+			projection = glm::ortho(-1.5*racio*_distance/4, 1.5*racio*_distance/4, -1.5*_distance/4, 1.5*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
 		else 
-			projection = glm::ortho(-1.5, 1.5, -1.5/racio, 1.5/racio, 1.0, 10.0);
+			projection = glm::ortho(-1.5*_distance/4, 1.5*_distance/4, -1.5/racio*_distance/4, 1.5/racio*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
 	}
 	else
 		projection = glm::perspective(38.0f, racio, 1.0f, 10.0f);
@@ -70,4 +71,9 @@ glm::vec3 Camera::getCameraAngles() {
 
 glm::mat4 Camera::getView(){
 	return _view;
+}
+
+
+void Camera::addToDistance(int amount){
+	_distance = std::max<int>(std::min<int>((_distance + amount), 8), 2);
 }

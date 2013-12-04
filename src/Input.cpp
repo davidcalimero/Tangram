@@ -63,3 +63,8 @@ void Input::mouseOver(int x, int y){
 	glReadPixels(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 	GameManager::getInstance()->selectPiece(GameManager::getInstance()->intToKey(_stencilValue));
 }
+
+
+void Input::mouseWheel(int wheel, int direction, int x, int y){
+	Camera::getInstance()->addToDistance(direction);
+}

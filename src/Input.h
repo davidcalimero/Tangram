@@ -21,4 +21,5 @@ class Input {
 		void mouse(int button, int state, int x, int y);
 		void mouseMotion(int x, int y);
 		void mouseOver(int x, int y);
+		void mouseWheel(int wheel, int direction, int x, int y);
 };

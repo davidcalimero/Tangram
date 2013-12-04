@@ -5,8 +5,10 @@
 
 #include <iostream>
 #include <gtc/matrix_transform.hpp>
+#include <gtx/rotate_vector.hpp>
 #include <gtc/quaternion.hpp>
 #include <glm.hpp>
+#include <algorithm>
 
 
 
@@ -21,6 +23,7 @@ class Camera {
 		bool _type;
 		Camera();
 		glm::mat4 _view;
+		int _distance;
 
 	public:
 		~Camera();
@@ -30,5 +33,6 @@ class Camera {
 		void change();
 		glm::vec3 getCameraAngles();
 		glm::mat4 getView();
+		void addToDistance(int amount);
 
 };

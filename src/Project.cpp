@@ -78,6 +78,11 @@ void mouseOver(int x, int y)
 	Input::getInstance()->mouseOver(x, y);
 }
 
+void mouseWheel(int wheel, int direction, int x, int y)
+{
+	Input::getInstance()->mouseWheel(wheel, -direction, x, y);
+}
+
 void timer(int value)
 {
 	std::ostringstream oss;
@@ -101,6 +106,7 @@ void setupCallbacks()
 	glutMouseFunc(mouse);
 	glutPassiveMotionFunc(mouseOver);
 	glutMotionFunc(mouseMotion);
+	glutMouseWheelFunc(mouseWheel);
 	glutTimerFunc(0,timer,0);
 }
 
