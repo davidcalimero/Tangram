@@ -120,7 +120,7 @@ void Entity::rotate(float x, float y, float z, float angle){
 void Entity::translate(float x, float y, float z){
 	_px += x;
 	_py += y;
-	_pz = /*MAX(*/_pz + z/*, 0)*/;
+	_pz += z;
 }
 
 

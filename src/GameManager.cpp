@@ -143,15 +143,6 @@ void GameManager::update(){
 
 
 void GameManager::updatePiece(std::string axis, std::string transformation, float x, float y) {
-	/*glm::vec3 u, v, s, tx, ty;
-	Camera::getInstance()->getCameraRef(s, v, u);
-	
-	tx = s * x;
-	ty = u * y;	
-
-	_entities.find(pieceId)->second->translate(x, 0, y);
-	//_entities.find(pieceId)->second->translate(tx.x, tx.y, tx.z);*/
-
 	if(transformation.compare("translation") == 0)
 		if(_selected != NULL)
 			if(_entities.find("eixoX")->first.compare(axis) == 0)
@@ -170,11 +161,6 @@ void GameManager::updatePiece(std::string axis, std::string transformation, floa
 			else if(_entities.find("eixoZ")->first.compare(axis) == 0)
 				_selected->rotate(0,0,1,(x+y)/2);
 }
-
-/*
-void GameManager::movePiece(std::string key){
-	((TangramPieces*)_entities.find(key)->second)->swapPos();
-}*/
 
 
 void GameManager::destroyBufferObjects(){
