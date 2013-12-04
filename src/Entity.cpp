@@ -143,9 +143,3 @@ void Entity::lerp(float x, float y, float z, float k){
 	float zf = ((_pz - (_pz * k)) + (z * k)) - _pz;
 	translate(xf,yf,zf);
 }
-
-
-void Entity::slerp(glm::quat q, float k){
-	_q = glm::slerp(_q, q, k);
-	_qr = glm::slerp(glm::rotate(glm::quat(), -180, glm::vec3(1, 0, 0))*_q, q, k);
-}

@@ -31,7 +31,6 @@ class GameManager {
 		int keyToInt(std::string key);
 		std::string intToKey(int key);
 		void update();
-		void updatePiece(std::string axis, std::string transformation, float x, float y);
+		void updatePiece(std::string piece, std::string transformation, float x, float y);
 		void selectPiece(std::string key);
-		void clearSelection();
 };

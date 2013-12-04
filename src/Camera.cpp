@@ -9,8 +9,8 @@ Camera::Camera(){
 	_eye = glm::vec3(0.0,-4.0,0.0);
 	_center = glm::vec3(0.0,0.0,0.0);
 	_up = glm::vec3(0.0,0.0,1.0);
-
 	_q = glm::angleAxis(90.0f, glm::vec3(1,0,0));
+	 
 	glGenBuffers(1, &_vboUBId);
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(float)*32, 0, GL_STREAM_DRAW);
@@ -33,7 +33,7 @@ Camera * Camera::getInstance(){
 
 void Camera::put(float racio){
 	glm::mat4 projection;
-	glm::mat4 view = glm::lookAt(_eye, _center, _up);
+	_view = glm::lookAt(_eye, _center, _up);
 
 	if(_type){
 		if (racio > 1)
@@ -44,8 +44,10 @@ void Camera::put(float racio){
 	else
 		projection = glm::perspective(38.0f, racio, 1.0f, 10.0f);
 
+	_view = _view*glm::mat4_cast(_q);
+
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float)*16, &(view*glm::mat4_cast(_q))[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float)*16, &_view[0][0]);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float)*16, sizeof(float)*16, &projection[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
@@ -53,13 +55,6 @@ void Camera::put(float racio){
 
 void Camera::rotate(int angleX, int angleZ){
 	_q = glm::angleAxis((float)angleX, glm::vec3(1,0,0)) * glm::angleAxis((float)angleZ, glm::vec3(0,0,1)) * _q;
-
-	glm::vec3 cenas =glm::eulerAngles(_q);
-	std::cout << "q: [ " << cenas.x << " " << cenas.y << " " << cenas.z << " ]" << std::endl;	
-
-	//std::cout << "eye: [ " << _eye.x << " " << _eye.y << " " << _eye.z << " ]" << std::endl;
-	//std::cout << "center: [ " << _center.x << " " << _center.y << " " << _center.z << " ]" << std::endl;
-	//std::cout << "up: [ " << _up.x << " " << _up.y << " " << _up.z << " ]" << std::endl;
 }
 
 
@@ -72,34 +67,7 @@ glm::vec3 Camera::getCameraAngles() {
 	return glm::vec3(angles.x, angles.y, angles.z);
 }
 
-/*
-void Camera::getCameraRef(glm::vec3 & s, glm::vec3 & v, glm::vec3 & u) {
-	glm::vec3 view, side;
-	view = _center - _eye;
-	v = glm::normalize(view);
-	side = glm::cross(v, _up);
-	s = glm::normalize(side);
-	u = glm::cross(s, v);
 
-	std::cout << "X: " << _angleX << " Z: " << _angleZ << std::endl;
-
-	//glm::vec3 yz = glm::rotate(u ,-(float)_angleX, glm::vec3(1, 0, 0));
-	//yz.y *= -1;
-
-	//glm::vec3 xy = glm::rotate(u, (float)_angleZ, glm::vec3(0, 0, 1));
-
-	u = _q*u;
-	u.y = -u.y;
-	u = glm::normalize(u);
-	s = glm::cross(u, glm::rotate(u ,90.0f, glm::vec3(1, 0, 0)));
-
-	//u = yz;
-	//u.z *= -1;
-
-	
-	//u = glm::normalize(u);
-	s = glm::normalize(s);
-
-	std::cout << "u [ " <<u.x << " " << u.y << " " << u.z << " ]" << std::endl;
-	std::cout << "s [ " << s.x << " " << s.y << " " << s.z << " ]" << std::endl;
-}*/
+glm::mat4 Camera::getView(){
+	return _view;
+}

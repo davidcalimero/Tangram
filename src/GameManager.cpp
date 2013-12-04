@@ -27,96 +27,52 @@ void GameManager::init(){
 
 	TangramPieces * tabuleiro = new TangramPieces("tabuleiro", "tabuleiro.xml");
 	tabuleiro->scale(1.8,1.8,0.1);
-	tabuleiro->setPos1(-0.9,-0.9,-0.1,0.0);
-	tabuleiro->setPos2(-0.9,-0.9,-0.1,0.0);
+	tabuleiro->setPos(-0.9,-0.9,-0.1,0.0);
 	add(tabuleiro);
 
 	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "trianguloVermelho.xml");
 	trianguloVermelho->scale(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.25);
-	trianguloVermelho->setPos1(0.0,0.0,0.0,45.0);
-	trianguloVermelho->setPos2(-0.25,0.15,1.25,-135.0);
+	trianguloVermelho->setPos(0.0,0.0,0.0,45.0);
 	add(trianguloVermelho);
 
 	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "trianguloRoxo.xml");
 	trianguloRoxo->scale(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.23);
-	trianguloRoxo->setPos1(0.0,0.0,0.0,135.0);
-	trianguloRoxo->setPos2(0.25,0.05,0.25,45.0);
+	trianguloRoxo->setPos(0.0,0.0,0.0,135.0);
 	add(trianguloRoxo);
 
 	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "trianguloAzul.xml");
 	trianguloAzul->scale(1.0/2.0,1.0/2.0,0.13);
-	trianguloAzul->setPos1(0.5,-0.5,0.0,90.0);
-	trianguloAzul->setPos2(-0.25,0.1,0.75,180.0);
+	trianguloAzul->setPos(0.5,-0.5,0.0,90.0);
 	add(trianguloAzul);
 
 	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "trianguloVerde.xml");
 	trianguloVerde->scale(sqrt(2.0)/4.0,sqrt(2.0)/4.0,0.21);
-	trianguloVerde->setPos1(-0.25,-0.25,0.0,-135.0);
-	trianguloVerde->setPos2(0.25,0.05,1.25,-135.0);
+	trianguloVerde->setPos(-0.25,-0.25,0.0,-135.0);
 	add(trianguloVerde);
 
 	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "trianguloRosa.xml");
 	trianguloRosa->scale(sqrt(2.0)/4.0,sqrt(2.0)/4.0,0.17);
-	trianguloRosa->setPos1(0.0,0.0,0.0,-45.0);
-	trianguloRosa->setPos2(0.0,0.05,0.5,135.0);
+	trianguloRosa->setPos(0.0,0.0,0.0,-45.0);
 	add(trianguloRosa);
 
 	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "quadradoLaranja.xml");
 	quadradoLaranja->scale(sqrt(2.0)/4.0,sqrt(2.0)/4.0,0.19);
-	quadradoLaranja->setPos1(0.0,0.0,0.0,-135.0);
-	quadradoLaranja->setPos2(0.0,-0.05,0.5,-135.0);
+	quadradoLaranja->setPos(0.0,0.0,0.0,-135.0);
 	add(quadradoLaranja);
 
 	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "quadradoAmarelo.xml");
 	quadradoAmarelo->scale(1.0/4.0,1.0/2.0,0.15);
 	quadradoAmarelo->shear(0.0,1.0);
-	quadradoAmarelo->setPos1(0.25,-0.25,0.0,0.0);
-	quadradoAmarelo->setPos2(0.75,0.1,0.75,90.0);
+	quadradoAmarelo->setPos(0.25,-0.25,0.0,0.0);
 	add(quadradoAmarelo);
-
-	Axis * eixoX = new Axis("eixoX", "eixoVermelho.xml");
-	eixoX->scale(1.0/10.0, 1.0/10.0, 1.0/10.0);
-	eixoX->setTranslateVector(glm::vec3(1.0,0.0,0.0));
-	add(eixoX);
-
-	Axis * eixoY = new Axis("eixoY", "eixoVerde.xml");
-	eixoY->scale(1.0/10.0, 1.0/10.0, 1.0/10.0);
-	eixoY->setTranslateVector(glm::vec3(0.0,1.0,0.0));
-	add(eixoY);
-
-	Axis * eixoZ = new Axis("eixoZ", "eixoAzul.xml");
-	eixoZ->scale(1.0/10.0, 1.0/10.0, 1.0/10.0);
-	eixoZ->setTranslateVector(glm::vec3(0.0,1.0,0.0));
-	add(eixoZ);
 }
 
 
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-		if(i->first.compare("eixoX") != 0 && i->first.compare("eixoY") != 0 && i->first.compare("eixoZ") != 0){
 			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
 			i->second->draw();
-		}
-	}
-
-	if(_selected != NULL){
-		glClear(GL_DEPTH_BUFFER_BIT);
-		Axis * x = (Axis*)_entities.find("eixoX")->second;
-		Axis * y = (Axis*)_entities.find("eixoY")->second;
-		Axis * z = (Axis*)_entities.find("eixoZ")->second;
-
-		x->setPosition(_selected->getPos().x, _selected->getPos().y, _selected->getPos().z);
-		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), _entities.find("eixoX"))+1 , -1);
-		x->draw();
-
-		y->setPosition(_selected->getPos().x, _selected->getPos().y, _selected->getPos().z);
-		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), _entities.find("eixoY"))+1 , -1);
-		y->draw();
-
-		z->setPosition(_selected->getPos().x, _selected->getPos().y, _selected->getPos().z);
-		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), _entities.find("eixoZ"))+1 , -1);
-		z->draw();			
 	}
 	glUseProgram(0);
 }
@@ -142,27 +98,33 @@ void GameManager::update(){
 }
 
 
-void GameManager::updatePiece(std::string axis, std::string transformation, float x, float y) {
-	glm::vec3 cameraAngles = Camera::getInstance()->getCameraAngles();
-	
-	if(transformation.compare("translation") == 0){
-		if(_selected != NULL)
-			if(_entities.find("eixoX")->first.compare(axis) == 0)
-				_selected->translate((x+y)/2,0,0);
-			else if(_entities.find("eixoY")->first.compare(axis) == 0)
-				_selected->translate(0,(x+y)/2,0);
-			else if(_entities.find("eixoZ")->first.compare(axis) == 0)
-				_selected->translate(0,0,(x+y)/2);
-	}
+void GameManager::updatePiece(std::string piece, std::string transformation, float x, float y) {
+	float speed = 2.0;
+	int window_height = glutGet(GLUT_WINDOW_HEIGHT);
+	int window_width = glutGet(GLUT_WINDOW_WIDTH);
+	float clipX = 1.0 / (window_width / speed);
+	float clipY = - 1.0 / (window_height / speed);
 
-	else if(transformation.compare("rotation") == 0){
-		if(_selected != NULL)
-			if(_entities.find("eixoX")->first.compare(axis) == 0)
-				_selected->rotate(1,0,0,(x+y)/2);
-			else if(_entities.find("eixoY")->first.compare(axis) == 0)
-				_selected->rotate(0,1,0,(x+y)/2);
-			else if(_entities.find("eixoZ")->first.compare(axis) == 0)
-				_selected->rotate(0,0,1,(x+y)/2);
+	if(_selected != NULL){
+		Entity *entity = GameManager::getInstance()->getEntityById(piece);
+		glm::mat4 view = Camera::getInstance()->getView();
+
+		if(transformation.compare("translation") == 0){
+				glm::mat4 t =  glm::inverse(view)* glm::translate(glm::vec3(x*clipX, y*clipY, 0)) * view;
+				entity->translate(t[3][0], t[3][1], t[3][2]);
+		}
+
+		else if(transformation.compare("rotation") == 0){
+				glm::mat4 tx =  glm::inverse(view)* glm::translate(glm::vec3(0, 1, 0)) * view;
+				glm::vec3 vx(tx[3][0],tx[3][1],tx[3][2]);
+				glm::normalize(vx);
+				entity->rotate(vx.x, vx.y, vx.z, x);
+
+				glm::mat4 ty =  glm::inverse(view)* glm::translate(glm::vec3(1, 0, 0)) * view;
+				glm::vec3 vy(ty[3][0],ty[3][1],ty[3][2]);
+				glm::normalize(vy);
+				entity->rotate(vy.x, vy.y, vy.z, y);
+		}
 	}
 }
 
@@ -175,10 +137,8 @@ void GameManager::destroyBufferObjects(){
 
 
 void GameManager::selectPiece(std::string key){
-	_selected =  _entities.find(key)->second;
-}
-
-
-void GameManager::clearSelection(){
-	_selected = NULL;
+	if(key.compare("tabuleiro") == 0 || key.compare("background") == 0)
+		_selected = NULL;
+	else
+		_selected =  _entities.find(key)->second;
 }

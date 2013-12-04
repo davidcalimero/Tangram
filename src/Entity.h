@@ -44,5 +44,4 @@ class Entity {
 		void scale(float x, float y, float z);
 		void shear(float x, float y);
 		void lerp(float x, float y, float z, float k);
-		void slerp(glm::quat q, float k);
 };
