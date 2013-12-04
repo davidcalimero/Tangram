@@ -1,0 +1,153 @@
+<object>
+	
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="3.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.5" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.5" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+	<vertex t="setaverde">
+		<position x="0.0" y="0.0" z="0.0" w="1.0"></position>
+		<color r="0.0" g="1.0" b="0.0" a="1.0"></color>
+	</vertex>
+
+</object>

@@ -11,6 +11,9 @@
 #include <iomanip>
 #include <map>
 #include <list>
+#include <vector>
+#include <glm.hpp>
+#include <sstream>
 #include <rapidxml.hpp>
 
 #define VERTICES 0
@@ -35,5 +38,5 @@ namespace Utils {
 	char * readFile(char * file);
 	GLubyte * index(int vertices);
 	Vertex * xmlParser(char * file, int *nVertices);
-
+	void loadObj(char* filename);
 }

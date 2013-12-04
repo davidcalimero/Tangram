@@ -12,6 +12,7 @@
 #include <glm.hpp>
 #include <string>
 #include <iostream>
+#include <cmath>
 
 
 
@@ -23,18 +24,20 @@ class Entity {
 		GLuint _vboId[2];
 		int _nVertices;
 		Vertex * _vertices;
-		float _px, _py, _pz;
 		glm::quat _q;
 		glm::quat _qr;
+		bool _reflection;
 
 	protected:
+		float _px, _py, _pz;
 		std::string _id;
-		Entity(std::string id, char * vertexFile);
+		Entity(std::string id, char * vertexFile, bool reflection);
 
 	public:
 		~Entity();
 		virtual void update() = 0;
 		void draw();
+		glm::vec3 getPos();
 		std::string getId();
 		void rotate(float x, float y, float z, float angle);
 		void translate(float x, float y, float z);

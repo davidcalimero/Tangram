@@ -4,7 +4,7 @@
 
 
 
-TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile){}
+TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile, true){}
 
 
 void TangramPieces::setPos1(float px, float py, float pz, float rz){
@@ -35,10 +35,10 @@ void TangramPieces::swapPos(){
 
 
 void TangramPieces::update(){
-	float k = 0.01;
+	//float k = 0.01;
 
 	//lerp rotate
-	slerp(_r1,k);
+	//slerp(_r1,k);
 	//lerp translete
-	lerp(_px1, _py1, _pz1, k);
+	//lerp(_px1, _py1, _pz1, k);
 }

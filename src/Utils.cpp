@@ -104,5 +104,66 @@ namespace Utils {
 
 		return vertices;
 	}
-	
+
+
+	void Utils::loadObj(char* filename) {
+/*		std::vector<glm::vec4> vertices;
+		//std::vector<glm::vec4> normals;
+		std::vector<glm::vec4> obj;
+		std::ifstream in(filename, std::ios::in);
+		if(!in){ 
+			std::cerr << "Cannot open " << filename << std::endl; 
+			exit(1); 
+		}
+ 
+		std::string line;
+		while (getline(in, line)) {
+			if (line.substr(0,2) == "v "){
+				std::istringstream s(line.substr(2));
+				glm::vec4 v; 
+				s >> v.x;
+				s >> v.y;
+				s >> v.z;
+				v.w = 1.0f;
+				vertices.push_back(v);
+				//std::cout << v.x << " " << v.y << " " << v.z << std::endl;
+			}
+/*			else if (line.substr(0,3) == "vt "){
+				std::istringstream s(line.substr(3));
+				glm::vec4 v; 
+				s >> v.x;
+				s >> v.y;
+				s >> v.z;
+				v.w = 1.0f;
+				vertices.push_back(v);
+			}
+			else if (line.substr(0,3) == "vn "){
+				std::istringstream s(line.substr(3));
+				glm::vec4 v; 
+				s >> v.x;
+				s >> v.y;
+				s >> v.z;
+				v.w = 1.0f;
+				normals.push_back(v);
+			}*/
+/*			else if (line.substr(0,2) == "f") {
+				std::istringstream s(line.substr(2));
+				std::string item, face;
+				int i = 0;
+				while(getline(s, face, ' ')){
+					std::istringstream s1(face.substr(0));
+					std::cout << face << std::endl;
+					while(getline(s1, item, '/')){
+						if(i == 0){
+							std::cout << item << std::endl;
+							obj.push_back(vertices.at(std::stoi(item) - 1));
+							std::cout << vertices.at(std::stoi(item) - 1).x << " " << vertices.at(std::stoi(item) - 1).y << " " << vertices.at(std::stoi(item) - 1).z << std::endl;
+						}
+						i++;
+						i = i % 3; 
+					}
+				}
+			}
+		}*/
+	}
 }

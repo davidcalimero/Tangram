@@ -13,10 +13,12 @@ class Input {
 		int _lastMousePositionY;
 		GLuint _stencilValue;
 		Input();
+		int _mouseButton;
 
 	public:
 		static Input * getInstance();
 		void keyHandler(unsigned char key, int x, int y);
 		void mouse(int button, int state, int x, int y);
 		void mouseMotion(int x, int y);
+		void mouseOver(int x, int y);
 };

@@ -3,10 +3,11 @@
 
 
 
-Entity::Entity(std::string id, char * vertexFile){
+Entity::Entity(std::string id, char * vertexFile, bool reflection){
 	_id = id;
 	_px = _py = _pz = 0.0;
 	_vertices = Utils::xmlParser(vertexFile, &_nVertices);
+	_reflection = reflection;
 
 	glGenVertexArrays(1, &_vaoId);
 	glBindVertexArray(_vaoId);
@@ -43,7 +44,7 @@ void Entity::draw(){
 		glClear(GL_STENCIL_BUFFER_BIT);*/
 
 		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
-						   &(glm::translate(glm::mat4(1.f), 
+						   &(glm::translate(glm::mat4(), 
 							 glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
 		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
 	}
@@ -52,28 +53,35 @@ void Entity::draw(){
 
 		//ORIGINAL PIECE
 		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
-							&(glm::translate(glm::mat4(1.f), 
+							&(glm::translate(glm::mat4(), 
 							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
 		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
 
+
 		//REFLECTED PIECE
+		if(_reflection){
+			/*glStencilFunc(GL_EQUAL, 1, 0xFF);
+			glStencilMask(0x00);
+			glDepthMask(GL_TRUE);*/
 
-		/*glStencilFunc(GL_EQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDepthMask(GL_TRUE);*/
+			glDisable(GL_CULL_FACE);
+			glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
+								&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
+								   glm::mat4_cast(_qr)*
+								   glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
+								   _matrix)[0][0]);
 
-		glDisable(GL_CULL_FACE);
-		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
-							&( glm::translate(glm::mat4(1.f), glm::vec3(_px, _py, -_pz))*
-							   glm::mat4_cast(_qr)*
-							   glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
-							   _matrix)[0][0]);
-
-		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-		glEnable(GL_CULL_FACE);
+			glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
+			glEnable(GL_CULL_FACE);
+		}
 	}
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
+}
+
+
+glm::vec3 Entity::getPos(){
+	return glm::vec3(_px, _py, _pz);
 }
 
 
@@ -103,7 +111,7 @@ void Entity::rotate(float x, float y, float z, float angle){
 	
 	if(x || y)
 		a = -a;
-	std::cout << a << std::endl;
+
 	_qr = glm::rotate(glm::quat(), a, glm::vec3(x, y, z)) * _qr;
 
 }
@@ -112,12 +120,12 @@ void Entity::rotate(float x, float y, float z, float angle){
 void Entity::translate(float x, float y, float z){
 	_px += x;
 	_py += y;
-	_pz += z;
+	_pz = /*MAX(*/_pz + z/*, 0)*/;
 }
 
 
 void Entity::scale(float x, float y, float z){
-	_matrix = glm::scale(glm::mat4(1.0f),glm::vec3(x,y,z))*_matrix;
+	_matrix = glm::scale(glm::mat4(),glm::vec3(x,y,z))*_matrix;
 }
 
 
