@@ -99,7 +99,7 @@ void GameManager::update(){
 
 
 void GameManager::updatePiece(std::string piece, std::string transformation, float x, float y) {
-	float speed = 2.0;
+	float speed = 3.25;
 	int window_height = glutGet(GLUT_WINDOW_HEIGHT);
 	int window_width = glutGet(GLUT_WINDOW_WIDTH);
 	float clipX = 1.0 / (window_width / speed);

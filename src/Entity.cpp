@@ -120,6 +120,9 @@ void Entity::translate(float x, float y, float z){
 	_px += x;
 	_py += y;
 	_pz += z;
+
+	if(_id.compare("tabuleiro") != 0 && _pz < 0)
+		_pz = 0;
 }
 
 
