@@ -143,6 +143,7 @@ void GameManager::update(){
 
 
 void GameManager::updatePiece(std::string axis, std::string transformation, float x, float y) {
+	glm::vec3 cameraAngles = Camera::getInstance()->getCameraAngles();
 	
 	if(transformation.compare("translation") == 0){
 		if(_selected != NULL)

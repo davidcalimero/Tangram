@@ -29,6 +29,7 @@ class Camera {
 		void put(float racio);
 		void rotate(int angleX, int angleZ);
 		void change();
+		glm::vec3 getCameraAngles();
 
 		//void getCameraRef(glm::vec3 & s, glm::vec3 & v, glm::vec3 & u);
 

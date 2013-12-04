@@ -11,7 +11,6 @@ Camera::Camera(){
 	_up = glm::vec3(0.0,0.0,1.0);
 
 	_q = glm::angleAxis(90.0f, glm::vec3(1,0,0));
-
 	glGenBuffers(1, &_vboUBId);
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(float)*32, 0, GL_STREAM_DRAW);
@@ -54,11 +53,23 @@ void Camera::put(float racio){
 
 void Camera::rotate(int angleX, int angleZ){
 	_q = glm::angleAxis((float)angleX, glm::vec3(1,0,0)) * glm::angleAxis((float)angleZ, glm::vec3(0,0,1)) * _q;
+
+	glm::vec3 cenas =glm::eulerAngles(_q);
+	std::cout << "q: [ " << cenas.x << " " << cenas.y << " " << cenas.z << " ]" << std::endl;	
+
+	//std::cout << "eye: [ " << _eye.x << " " << _eye.y << " " << _eye.z << " ]" << std::endl;
+	//std::cout << "center: [ " << _center.x << " " << _center.y << " " << _center.z << " ]" << std::endl;
+	//std::cout << "up: [ " << _up.x << " " << _up.y << " " << _up.z << " ]" << std::endl;
 }
 
 
 void Camera::change(){
 	_type = !_type;
+}
+
+glm::vec3 Camera::getCameraAngles() {
+	glm::vec3 angles = glm::eulerAngles(_q);
+	return glm::vec3(angles.x, angles.y, angles.z);
 }
 
 /*
