@@ -11,6 +11,7 @@ Camera::Camera(){
 	_up = glm::vec3(0.0,0.0,1.0);
 
 	_q = glm::angleAxis(90.0f, glm::vec3(1,0,0));
+
 	glGenBuffers(1, &_vboUBId);
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(float)*32, 0, GL_STREAM_DRAW);

@@ -143,7 +143,8 @@ void GameManager::update(){
 
 
 void GameManager::updatePiece(std::string axis, std::string transformation, float x, float y) {
-	if(transformation.compare("translation") == 0)
+	
+	if(transformation.compare("translation") == 0){
 		if(_selected != NULL)
 			if(_entities.find("eixoX")->first.compare(axis) == 0)
 				_selected->translate((x+y)/2,0,0);
@@ -151,8 +152,9 @@ void GameManager::updatePiece(std::string axis, std::string transformation, floa
 				_selected->translate(0,(x+y)/2,0);
 			else if(_entities.find("eixoZ")->first.compare(axis) == 0)
 				_selected->translate(0,0,(x+y)/2);
+	}
 
-	if(transformation.compare("rotation") == 0)
+	else if(transformation.compare("rotation") == 0){
 		if(_selected != NULL)
 			if(_entities.find("eixoX")->first.compare(axis) == 0)
 				_selected->rotate(1,0,0,(x+y)/2);
@@ -160,6 +162,7 @@ void GameManager::updatePiece(std::string axis, std::string transformation, floa
 				_selected->rotate(0,1,0,(x+y)/2);
 			else if(_entities.find("eixoZ")->first.compare(axis) == 0)
 				_selected->rotate(0,0,1,(x+y)/2);
+	}
 }
 
 

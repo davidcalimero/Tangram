@@ -113,7 +113,6 @@ void Entity::rotate(float x, float y, float z, float angle){
 		a = -a;
 
 	_qr = glm::rotate(glm::quat(), a, glm::vec3(x, y, z)) * _qr;
-
 }
 
 
