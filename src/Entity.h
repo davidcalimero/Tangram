@@ -25,8 +25,8 @@ class Entity {
 		int _nVertices;
 		Vertex * _vertices;
 		glm::quat _q;
-		glm::quat _qr;
 		bool _reflection;
+		float _height;
 
 	protected:
 		float _px, _py, _pz;

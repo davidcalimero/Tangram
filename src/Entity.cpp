@@ -5,7 +5,7 @@
 
 Entity::Entity(std::string id, char * vertexFile, bool reflection){
 	_id = id;
-	_px = _py = _pz = 0.0;
+	_height = _px = _py = _pz = 0.0;
 	_vertices = Utils::xmlParser(vertexFile, &_nVertices);
 	_reflection = reflection;
 
@@ -64,10 +64,15 @@ void Entity::draw(){
 			glStencilMask(0x00);
 			glDepthMask(GL_TRUE);*/
 
+			glm::vec3 angles = glm::eulerAngles(_q);
+			glm::quat rotation = glm::rotate(glm::quat(),-angles.x,glm::vec3(1,0,0));
+			rotation = glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) * rotation;
+			rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) * rotation;
+
 			glDisable(GL_CULL_FACE);
 			glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
 								&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
-								   glm::mat4_cast(_qr)*
+								   glm::mat4_cast(rotation)*
 								   glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
 								   _matrix)[0][0]);
 
@@ -105,14 +110,7 @@ std::string Entity::getId(){
 
 
 void Entity::rotate(float x, float y, float z, float angle){
-	float a = angle;
-
 	_q = glm::rotate(glm::quat(), angle, glm::vec3(x, y, z)) * _q;
-	
-	if(x || y)
-		a = -a;
-
-	_qr = glm::rotate(glm::quat(), a, glm::vec3(x, y, z)) * _qr;
 }
 
 
@@ -121,13 +119,14 @@ void Entity::translate(float x, float y, float z){
 	_py += y;
 	_pz += z;
 
-	if(_id.compare("tabuleiro") != 0 && _pz < 0)
-		_pz = 0;
+	if(_id.compare("tabuleiro") != 0 && _pz < _height/2)
+		_pz = _height/2;
 }
 
 
 void Entity::scale(float x, float y, float z){
 	_matrix = glm::scale(glm::mat4(),glm::vec3(x,y,z))*_matrix;
+	_height = z;
 }
 
 
