@@ -3,6 +3,8 @@
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 
+#include "Utils.h"
+
 #include <iostream>
 #include <gtc/matrix_transform.hpp>
 #include <gtx/rotate_vector.hpp>

@@ -19,12 +19,9 @@
 #define VERTICES 0
 #define COLORS 1
 
-#define PR 0.299
-#define PG 0.587
-#define PB 0.114
-#define BR 0.05
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
+#define SWAP(T, a, b) {T temp = a; a = b; b = temp;}
 
 typedef struct {
 	GLfloat XYZW[4];

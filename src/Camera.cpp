@@ -75,5 +75,5 @@ glm::mat4 Camera::getView(){
 
 
 void Camera::addToDistance(int amount){
-	_distance = std::max<int>(std::min<int>((_distance + amount), 8), 2);
+	_distance = MAX(MIN((_distance + amount), 8), 2);
 }

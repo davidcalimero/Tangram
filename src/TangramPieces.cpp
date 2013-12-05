@@ -1,7 +1,5 @@
 #include "TangramPieces.h"
 
-#define SWAP(T, a, b) {T temp = a; a = b; b = temp;}
-
 
 
 TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile, true){}
