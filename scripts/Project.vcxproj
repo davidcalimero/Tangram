@@ -41,8 +41,8 @@
     <IntDir>..\obj\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_debug</TargetName>
     <ExtensionsToDeleteOnClean>*.cdf;*.cache;*.obj;*.ilk;*.resources;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;*.tlog;*.manifest;*.res;*.pch;*.exp;*.idb;*.rep;*.xdc;*.pdb;*_manifest.rc;*.bsc;*.sbr;*.xml;*.metagen;*.bi;*.log</ExtensionsToDeleteOnClean>
-    <IncludePath>..\..\..\dependencies\glm;..\..\..\dependencies\freeglut\include;..\..\..\dependencies\rapidxml;..\..\..\dependencies\glew\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\..\dependencies\freeglut\lib;..\..\..\dependencies\glew\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\..\dependencies\soil\src;..\..\..\dependencies\glm;..\..\..\dependencies\freeglut\include;..\..\..\dependencies\rapidxml;..\..\..\dependencies\glew\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\dependencies\soil\lib;..\..\..\dependencies\freeglut\lib;..\..\..\dependencies\glew\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\..\bin\</OutDir>
@@ -58,7 +58,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libSOIL.a;glu32.lib;opengl32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
