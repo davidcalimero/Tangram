@@ -72,10 +72,12 @@ void GameManager::init(){
 
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
+
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
 			i->second->draw();
 	}
+
 	glUseProgram(0);
 }
 
@@ -132,9 +134,13 @@ void GameManager::updatePiece(std::string piece, std::string transformation, flo
 
 
 void GameManager::destroyBufferObjects(){
+	ProgramShader::getInstance()->destroyShaderProgram();
+
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 		i->second->~Entity();
 	}
+
+	Camera::getInstance()->~Camera();
 }
 
 

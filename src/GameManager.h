@@ -1,15 +1,11 @@
 #pragma once
 
-#include "Entity.h"
 #include "Camera.h"
 #include "Utils.h"
 #include "ProgramShader.h"
 #include "TangramPieces.h"
-#include "Axis.h"
 #include <iostream>
 #include <map>
-#include <cmath>
-#include <vector>
 
 
 

@@ -12,7 +12,6 @@
 #include <glm.hpp>
 #include <string>
 #include <iostream>
-#include <cmath>
 
 
 

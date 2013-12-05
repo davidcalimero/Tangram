@@ -1,15 +1,11 @@
-#include "ProgramShader.h"
+#include "GL/glew.h"
+#include "GL/freeglut.h"
+
 #include "GameManager.h"
 #include "Input.h"
 #include "Camera.h"
 
 #include <iostream>
-#include <sstream>
-#include <string>
-#include <cmath>
-
-#include "GL/glew.h"
-#include "GL/freeglut.h"
 
 #define CAPTION "Le Tangram 3D"
 
@@ -18,20 +14,11 @@ int WindowHandle = 0;
 unsigned int FrameCount = 0;
 
 
-/////////////////////////////////////////////////////////////////////// SCENE
-
-void drawScene()
-{
-	GameManager::getInstance()->draw();
-}
-
 /////////////////////////////////////////////////////////////////////// CALLBACKS
 
 void cleanup()
 {
-	ProgramShader::getInstance()->destroyShaderProgram();
 	GameManager::getInstance()->destroyBufferObjects();
-	Camera::getInstance()->~Camera();
 }
 
 void display()
@@ -39,9 +26,11 @@ void display()
 	++FrameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClearStencil(0);
+
 	GameManager::getInstance()->update();
 	Camera::getInstance()->put(((float)WinX)/((float)WinY));
-	drawScene();
+	GameManager::getInstance()->draw();
+
 	glutSwapBuffers();
 }
 
