@@ -48,8 +48,8 @@
     <OutDir>..\..\..\bin\</OutDir>
     <IntDir>..\obj\$(Configuration)\</IntDir>
     <ExtensionsToDeleteOnClean>*.cdf;*.cache;*.obj;*.ilk;*.resources;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;*.tlog;*.manifest;*.res;*.pch;*.exp;*.idb;*.rep;*.xdc;*.pdb;*_manifest.rc;*.bsc;*.sbr;*.xml;*.metagen;*.bi;*.log</ExtensionsToDeleteOnClean>
-    <IncludePath>..\..\..\dependencies\freeglut\include;..\..\..\dependencies\glew\include;..\..\..\dependencies\rapidxml;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\..\dependencies\freeglut\lib;..\..\..\dependencies\glew\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\..\dependencies\soil\src;..\..\..\dependencies\glm;..\..\..\dependencies\freeglut\include;..\..\..\dependencies\rapidxml;..\..\..\dependencies\glew\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\dependencies\soil\lib;..\..\..\dependencies\freeglut\lib;..\..\..\dependencies\glew\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
