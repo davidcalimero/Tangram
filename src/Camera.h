@@ -4,6 +4,7 @@
 #include "GL/freeglut.h"
 
 #include "Utils.h"
+#include "Input.h"
 
 #include <iostream>
 #include <gtc/matrix_transform.hpp>
@@ -31,10 +32,8 @@ class Camera {
 		~Camera();
 		static Camera * getInstance();
 		void put(float racio);
-		void rotate(int angleX, int angleZ);
-		void change();
+		void rotate(float angleX, float angleZ);
+		void update();
 		glm::vec3 getCameraAngles();
 		glm::mat4 getView();
-		void addToDistance(int amount);
-
 };

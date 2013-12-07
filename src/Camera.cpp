@@ -54,14 +54,10 @@ void Camera::put(float racio){
 }
 
 
-void Camera::rotate(int angleX, int angleZ){
-	_q = glm::angleAxis((float)angleX, glm::vec3(1,0,0)) * glm::angleAxis((float)angleZ, glm::vec3(0,0,1)) * _q;
+void Camera::rotate(float angleX, float angleZ){
+	_q = glm::angleAxis(angleX, glm::vec3(1,0,0)) * glm::angleAxis(angleZ, glm::vec3(0,0,1)) * _q;
 }
 
-
-void Camera::change(){
-	_type = !_type;
-}
 
 glm::vec3 Camera::getCameraAngles() {
 	glm::vec3 angles = glm::eulerAngles(_q);
@@ -74,6 +70,22 @@ glm::mat4 Camera::getView(){
 }
 
 
-void Camera::addToDistance(int amount){
-	_distance = MAX(MIN((_distance + amount), 8), 2);
+void Camera::update(){
+	if(Input::getInstance()->keyWasReleased('P'))
+		_type = !_type;
+	if(Input::getInstance()->keyWasPressed('W') || Input::getInstance()->specialWasPressed(GLUT_KEY_UP))
+		rotate(-0.05, 0);
+	if(Input::getInstance()->keyWasPressed('S') || Input::getInstance()->specialWasPressed(GLUT_KEY_DOWN))
+		rotate(0.05, 0);
+	if(Input::getInstance()->keyWasPressed('A') || Input::getInstance()->specialWasPressed(GLUT_KEY_LEFT))
+		rotate(0, -0.05);
+	if(Input::getInstance()->keyWasPressed('D') || Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
+		rotate(0, 0.05);
+
+	glm::vec2 mouse = Input::getInstance()->getMouseMotion();
+	if((Input::getInstance()->mouseOver().compare("background") == 0) || 
+		(Input::getInstance()->mouseOver().compare("tabuleiro") == 0))
+		rotate(mouse.y, mouse.x);
+
+	_distance = MAX(MIN((_distance + Input::getInstance()->getWheelDirection()), 8), 2);
 }

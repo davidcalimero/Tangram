@@ -35,49 +35,33 @@ Entity::Entity(std::string id, char * vertexFile, bool reflection){
 void Entity::draw(){
 	glBindVertexArray(_vaoId);
 
-	if(_id == "tabuleiro"){
-		/*glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glStencilMask(0xFF);
-		glDepthMask(GL_FALSE);
-		glClear(GL_STENCIL_BUFFER_BIT);*/
+	//ORIGINAL PIECE
+	glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
+						&(glm::translate(glm::mat4(), 
+							glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
+	glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
 
-		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
-						   &(glm::translate(glm::mat4(), 
-							 glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
+
+	//REFLECTED PIECE
+	if(_reflection){
+		/*glStencilFunc(GL_EQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDepthMask(GL_TRUE);*/
+
+		glm::vec3 angles = glm::eulerAngles(_q);
+		glm::quat rotation = glm::rotate(glm::quat(),-angles.x,glm::vec3(1,0,0));
+		rotation = glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) * rotation;
+		rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) * rotation;
+
+		glDisable(GL_CULL_FACE);
+		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
+							&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
+								glm::mat4_cast(rotation)*
+								glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
+								_matrix)[0][0]);
+
 		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-	}
-	
-	else {
-
-		//ORIGINAL PIECE
-		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
-							&(glm::translate(glm::mat4(), 
-							  glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
-		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-
-
-		//REFLECTED PIECE
-		if(_reflection){
-			/*glStencilFunc(GL_EQUAL, 1, 0xFF);
-			glStencilMask(0x00);
-			glDepthMask(GL_TRUE);*/
-
-			glm::vec3 angles = glm::eulerAngles(_q);
-			glm::quat rotation = glm::rotate(glm::quat(),-angles.x,glm::vec3(1,0,0));
-			rotation = glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) * rotation;
-			rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) * rotation;
-
-			glDisable(GL_CULL_FACE);
-			glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
-								&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
-								   glm::mat4_cast(rotation)*
-								   glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
-								   _matrix)[0][0]);
-
-			glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-			glEnable(GL_CULL_FACE);
-		}
+		glEnable(GL_CULL_FACE);
 	}
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");

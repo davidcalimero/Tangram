@@ -18,12 +18,12 @@
 class Entity {
 
 	private:
-		glm::mat4 _matrix;
 		GLuint _vaoId;
 		GLuint _vboId[2];
 		int _nVertices;
-		Vertex * _vertices;
 		glm::quat _q;
+		glm::mat4 _matrix;
+		Vertex * _vertices;
 		bool _reflection;
 		float _height;
 
@@ -35,7 +35,7 @@ class Entity {
 	public:
 		~Entity();
 		virtual void update() = 0;
-		void draw();
+		virtual void draw();
 		glm::vec3 getPos();
 		std::string getId();
 		void rotate(float x, float y, float z, float angle);

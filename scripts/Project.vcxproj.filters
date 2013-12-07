@@ -48,15 +48,6 @@
     <None Include="vs1.glsl">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="eixoAzul.xml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="eixoVerde.xml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="eixoVermelho.xml">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera.cpp">
@@ -83,7 +74,7 @@
     <ClCompile Include="..\src\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Axis.cpp">
+    <ClCompile Include="..\src\Tabuleiro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,7 +100,7 @@
     <ClInclude Include="..\src\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Axis.h">
+    <ClInclude Include="..\src\Tabuleiro.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

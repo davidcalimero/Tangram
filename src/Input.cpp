@@ -2,7 +2,28 @@
 
 
 
-Input::Input(){}
+Input::Input(){
+	int i;
+	_wheelDirection = 0;
+
+	_keyPressedStates = new bool[SIZE];
+	_keyReleasedStates = new bool[SIZE];
+	_specialPressedStates = new bool[SIZE];
+	_specialReleasedStates = new bool[SIZE];
+	_mousePressedStates = new bool[3];
+	_mouseReleasedStates = new bool[3];
+
+    for (i = 0; i < SIZE; i++) {
+        _keyPressedStates[i] = false;
+		_specialPressedStates[i] = false;
+		_keyReleasedStates[i] = false;
+		_specialReleasedStates[i] = false;
+		if(i < 3){
+			_mousePressedStates[i] = false;
+			_mouseReleasedStates[i] = false;
+		}
+    }
+}
 
 
 Input * Input::getInstance(){
@@ -11,60 +32,114 @@ Input * Input::getInstance(){
 }
 
 
-void Input::keyHandler(unsigned char key, int x, int y){
-	switch(key){
-		case 'P':
-			Camera::getInstance()->change();
-			break;
-		case 'W':
-			Camera::getInstance()->rotate(-1, 0);
-			break;
-		case 'S':
-			Camera::getInstance()->rotate(1, 0);
-			break;
-		case 'A':
-			Camera::getInstance()->rotate(0, -1);
-			break;
-		case 'D':
-			Camera::getInstance()->rotate(0, 1);
-			break;
+void Input::keyPressed(unsigned char key){
+	if (key > 96 && key < 123) key -= 32;
+	_keyPressedStates[key] = true;
+}
+
+
+void Input::keyUp(unsigned char key){
+	if (key > 96 && key < 123) key -= 32;
+	_keyPressedStates[key] = false;
+	_keyReleasedStates[key] = true;
+}
+
+
+void Input::specialPressed(int key){
+	_specialPressedStates[key] = true;
+}
+
+
+void Input::specialUp(int key){
+	_specialPressedStates[key] = false;
+	_specialReleasedStates[key] = true;
+}
+
+
+void Input::reset(){
+    for (int i = 0; i < SIZE; i++) {
+		_keyReleasedStates[i] = false;
+		_specialReleasedStates[i] = false;
+		if(i < 3) _mouseReleasedStates[i] = false;
+    }
+	_mouseMotion.x = 0;
+	_mouseMotion.y = 0;
+	_wheelDirection = 0;
+}
+
+
+bool Input::keyWasPressed(unsigned char key){
+	return _keyPressedStates[key];
+}
+
+
+bool Input::keyWasReleased(unsigned char key){
+	return _keyReleasedStates[key];
+}
+
+
+bool Input::specialWasPressed(int key){
+	return _specialPressedStates[key];
+}
+
+
+bool Input::specialWasReleased(int key){
+	return _specialReleasedStates[key];
+}
+
+
+bool Input::mouseWasPressed(int key){
+	return _mousePressedStates[key];
+}
+
+
+bool Input::mouseWasReleased(int key){
+	return _mouseReleasedStates[key];
+}
+
+
+void Input::mouse(int button, int state) {
+	if(state == GLUT_DOWN){
+		_mousePressedStates[button] = true;
+	}
+	else if(state == GLUT_UP){
+		_mouseReleasedStates[button] = true;
+		_mousePressedStates[button] = false;
 	}
 }
 
 
-void Input::mouse(int button, int state, int x, int y) {
-	_mouseButton = button;
+void Input::mouseClickMotion(int x, int y) {
+	_mouseMotion.x = x - _lastMousePositionX;
+	_mouseMotion.y = y - _lastMousePositionY;
 	_lastMousePositionX = x;
 	_lastMousePositionY = y;
-}
-
-
-void Input::mouseMotion(int x, int y) {
-	if(_mouseButton == GLUT_LEFT_BUTTON){
-
-		if(_stencilValue != 0 && _stencilValue != GameManager::getInstance()->keyToInt("tabuleiro"))
-			GameManager::getInstance()->updatePiece(GameManager::getInstance()->intToKey(_stencilValue),"translation",(x - _lastMousePositionX),(y - _lastMousePositionY));
-		else 
-			Camera::getInstance()->rotate((y- _lastMousePositionY), (x - _lastMousePositionX));
-	}
-	
-	else if(_mouseButton == GLUT_RIGHT_BUTTON){
-		if(_stencilValue != 0 && _stencilValue != GameManager::getInstance()->keyToInt("tabuleiro"))
-			GameManager::getInstance()->updatePiece(GameManager::getInstance()->intToKey(_stencilValue),"rotation",(x - _lastMousePositionX),(y - _lastMousePositionY));
-	}
-
-	_lastMousePositionX = x;
-	_lastMousePositionY = y;
 	
 }
 
 
-void Input::mouseOver(int x, int y){
+void Input::mousePassiveMotion(int x, int y){
 	glReadPixels(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
-	GameManager::getInstance()->selectPiece(GameManager::getInstance()->intToKey(_stencilValue));
+	_lastMousePositionX = x;
+	_lastMousePositionY = y;
 }
 
 
-void Input::mouseWheel(int wheel, int direction, int x, int y){
-	Camera::getInstance()->addToDistance(direction);
+void Input::mouseWheel(int direction){
+	_wheelDirection = -direction;
+}
+
+
+std::string Input::mouseOver(){
+	return GameManager::getInstance()->stencilToKey(_stencilValue);
+}
+
+
+glm::vec2 Input::getMouseMotion(){
+	return _mouseMotion;
+}
+
+
+int Input::getWheelDirection(){
+	return _wheelDirection;
 }

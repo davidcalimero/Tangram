@@ -30,6 +30,7 @@ void display()
 	GameManager::getInstance()->update();
 	Camera::getInstance()->put(((float)WinX)/((float)WinY));
 	GameManager::getInstance()->draw();
+	Input::getInstance()->reset();
 
 	glutSwapBuffers();
 }
@@ -46,30 +47,40 @@ void reshape(int w, int h)
 	glViewport(0, 0, WinX, WinY);
 }
 
-void keyboard(unsigned char key, int x, int y){
-	if (key > 96 && key < 123)
-		key -= 32; 
-	Input::getInstance()->keyHandler(key, x, y);
+void keyPressed(unsigned char key, int x, int y){
+	Input::getInstance()->keyPressed(key);
+}
+
+void keyUp(unsigned char key, int x, int y){
+	Input::getInstance()->keyUp(key);
+}
+
+void specialPressed(int key, int x, int y){
+	Input::getInstance()->specialPressed(key);
+}
+
+void specialUp(int key, int x, int y){
+	Input::getInstance()->specialUp(key);
 }
 
 void mouse(int button, int state, int x, int y) 
 {
-	Input::getInstance()->mouse(button, state, x, y);
+	Input::getInstance()->mouse(button, state);
 }
 
-void mouseMotion(int x, int y)
+void mouseClickMotion(int x, int y)
 {
-	Input::getInstance()->mouseMotion(x, y);
+	Input::getInstance()->mouseClickMotion(x, y);
 }
 
-void mouseOver(int x, int y)
+void mousePassiveMotion(int x, int y)
 {
-	Input::getInstance()->mouseOver(x, y);
+	Input::getInstance()->mousePassiveMotion(x, y);
 }
 
 void mouseWheel(int wheel, int direction, int x, int y)
 {
-	Input::getInstance()->mouseWheel(wheel, -direction, x, y);
+	Input::getInstance()->mouseWheel(direction);
 }
 
 void timer(int value)
@@ -91,11 +102,17 @@ void setupCallbacks()
 	glutDisplayFunc(display);
 	glutIdleFunc(idle);
 	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard);
+
+	glutKeyboardFunc(keyPressed);
+	glutKeyboardUpFunc(keyUp);
+	glutSpecialFunc(specialPressed);
+	glutSpecialUpFunc(specialUp);
+
 	glutMouseFunc(mouse);
-	glutPassiveMotionFunc(mouseOver);
-	glutMotionFunc(mouseMotion);
+	glutPassiveMotionFunc(mousePassiveMotion);
+	glutMotionFunc(mouseClickMotion);
 	glutMouseWheelFunc(mouseWheel);
+
 	glutTimerFunc(0,timer,0);
 }
 

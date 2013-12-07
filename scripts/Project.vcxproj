@@ -77,9 +77,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="eixoAzul.xml" />
-    <None Include="eixoVerde.xml" />
-    <None Include="eixoVermelho.xml" />
     <None Include="fs1.glsl" />
     <None Include="quadradoAmarelo.xml" />
     <None Include="quadradoLaranja.xml" />
@@ -92,23 +89,23 @@
     <None Include="vs1.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Axis.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\GameManager.cpp" />
     <ClCompile Include="..\src\Input.cpp" />
     <ClCompile Include="..\src\ProgramShader.cpp" />
     <ClCompile Include="..\src\Project.cpp" />
+    <ClCompile Include="..\src\Tabuleiro.cpp" />
     <ClCompile Include="..\src\TangramPieces.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Axis.h" />
     <ClInclude Include="..\src\Camera.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\GameManager.h" />
     <ClInclude Include="..\src\Input.h" />
     <ClInclude Include="..\src\ProgramShader.h" />
+    <ClInclude Include="..\src\Tabuleiro.h" />
     <ClInclude Include="..\src\TangramPieces.h" />
     <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>

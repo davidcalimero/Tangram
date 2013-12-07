@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Input.h"
 
 #include <iostream>
 #include <gtc/quaternion.hpp>
