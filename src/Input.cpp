@@ -3,9 +3,7 @@
 
 
 Input::Input(){
-	int i;
 	_wheelDirection = 0;
-
 	_keyPressedStates = new bool[SIZE];
 	_keyReleasedStates = new bool[SIZE];
 	_specialPressedStates = new bool[SIZE];
@@ -13,7 +11,7 @@ Input::Input(){
 	_mousePressedStates = new bool[3];
 	_mouseReleasedStates = new bool[3];
 
-    for (i = 0; i < SIZE; i++) {
+    for (int i = 0; i < SIZE; i++) {
         _keyPressedStates[i] = false;
 		_specialPressedStates[i] = false;
 		_keyReleasedStates[i] = false;
@@ -119,7 +117,6 @@ void Input::mouseClickMotion(int x, int y) {
 
 
 void Input::mousePassiveMotion(int x, int y){
-	glReadPixels(x, glutGet(GLUT_WINDOW_HEIGHT) - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 	_lastMousePositionX = x;
 	_lastMousePositionY = y;
 }
@@ -130,8 +127,11 @@ void Input::mouseWheel(int direction){
 }
 
 
-std::string Input::mouseOver(){
-	return GameManager::getInstance()->stencilToKey(_stencilValue);
+glm::vec2 Input::getMousePostion(){
+	glm::vec2 pos;
+	pos.x = _lastMousePositionX;
+	pos.y = _lastMousePositionY;
+	return pos;
 }
 
 

@@ -5,6 +5,7 @@
 
 #include "Utils.h"
 #include "Input.h"
+#include "GameManager.h"
 
 #include <iostream>
 #include <gtc/matrix_transform.hpp>

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "GameManager.h"
-#include "Camera.h"
-#include <iostream>
+#include <glm.hpp>
+#include "GL/freeglut.h"
 
 #define SIZE 256
 
@@ -12,7 +11,6 @@ class Input {
 		int _lastMousePositionX;
 		int _lastMousePositionY;
 		glm::vec2 _mouseMotion;
-		GLuint _stencilValue;
 
 		bool * _keyPressedStates; 
 		bool * _specialPressedStates;
@@ -43,7 +41,7 @@ class Input {
 		bool specialWasReleased(int key);
 		bool mouseWasPressed(int key);
 		bool mouseWasReleased(int key);
-		std::string mouseOver();
+		glm::vec2 getMousePostion();
 		glm::vec2 getMouseMotion();
 		int getWheelDirection();
 };

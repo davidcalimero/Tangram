@@ -176,8 +176,6 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {	
-	//std::vector<glm::vec4> v;
-	//Utils::loadObj("cube.obj");
 	init(argc, argv);
 	glutMainLoop();	
 	exit(EXIT_SUCCESS);

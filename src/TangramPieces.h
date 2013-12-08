@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "Input.h"
+#include "GameManager.h"
 
 #include <iostream>
 #include <gtc/quaternion.hpp>

@@ -4,11 +4,11 @@
 
 #include <iostream>
 
-class Tabuleiro : public Entity {
+class Board : public Entity {
 	private:
 		
 	public:
-		Tabuleiro(std::string id, char * vertexFile);
+		Board(std::string id, char * vertexFile);
 		virtual void draw();
 		void update();
 };

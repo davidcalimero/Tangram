@@ -83,8 +83,7 @@ void Camera::update(){
 		rotate(0, 0.05);
 
 	glm::vec2 mouse = Input::getInstance()->getMouseMotion();
-	if((Input::getInstance()->mouseOver().compare("background") == 0) || 
-		(Input::getInstance()->mouseOver().compare("tabuleiro") == 0))
+	if(GameManager::getInstance()->isMouseOver("backgroud") || GameManager::getInstance()->isMouseOver("tabuleiro"))
 		rotate(mouse.y, mouse.x);
 
 	_distance = MAX(MIN((_distance + Input::getInstance()->getWheelDirection()), 8), 2);

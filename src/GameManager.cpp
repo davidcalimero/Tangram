@@ -21,13 +21,28 @@ Entity * GameManager::getEntityById(std::string id){
 }
 
 
+bool GameManager::isMouseOver(std::string id){
+	if(id.compare("background") == 0 && _stencilValue == 0)
+		return true;
+
+	entityIterator e = _entities.find(id);
+	if(e == _entities.end())
+		return false;
+
+	int stencil = std::distance(_entities.begin(), e)+1;
+	if(stencil == _stencilValue)
+		return true;
+	return false;
+}
+
+
 void GameManager::init(){
 	
 	/**/
-	Tabuleiro * tabuleiro = new Tabuleiro("tabuleiro", "tabuleiro.xml");
-	tabuleiro->scale(1.8,1.8,0.1);
-	tabuleiro->translate(0,0,-0.05);
-	add(tabuleiro);
+	Board * board = new Board("tabuleiro", "tabuleiro.xml");
+	board->scale(1.8,1.8,0.1);
+	board->translate(0,0,-0.05);
+	add(board);
 	/**/
 	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "trianguloVermelho.xml");
 	trianguloVermelho->scale(sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.25);
@@ -76,16 +91,12 @@ void GameManager::draw(){
 			i->second->draw();
 	}
 
+	glm::vec2 mouse = Input::getInstance()->getMousePostion();
+	glm::vec2 m = Input::getInstance()->getMouseMotion();
+	if(!Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && !Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
+		glReadPixels(mouse.x, glutGet(GLUT_WINDOW_HEIGHT) - mouse.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
+
 	glUseProgram(0);
-}
-
-
-std::string GameManager::stencilToKey(int value){
-	if(value == 0) return "background";
-	entityIterator i = _entities.begin();
-	for(int j = 0; j < value-1; i++, j++);
-	return i->first;
-
 }
 
 

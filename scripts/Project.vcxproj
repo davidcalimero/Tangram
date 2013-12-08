@@ -95,7 +95,7 @@
     <ClCompile Include="..\src\Input.cpp" />
     <ClCompile Include="..\src\ProgramShader.cpp" />
     <ClCompile Include="..\src\Project.cpp" />
-    <ClCompile Include="..\src\Tabuleiro.cpp" />
+    <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\TangramPieces.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
   </ItemGroup>
@@ -105,7 +105,7 @@
     <ClInclude Include="..\src\GameManager.h" />
     <ClInclude Include="..\src\Input.h" />
     <ClInclude Include="..\src\ProgramShader.h" />
-    <ClInclude Include="..\src\Tabuleiro.h" />
+    <ClInclude Include="..\src\Board.h" />
     <ClInclude Include="..\src\TangramPieces.h" />
     <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>

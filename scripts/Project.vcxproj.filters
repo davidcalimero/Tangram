@@ -74,7 +74,7 @@
     <ClCompile Include="..\src\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Tabuleiro.cpp">
+    <ClCompile Include="..\src\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -100,7 +100,7 @@
     <ClInclude Include="..\src\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tabuleiro.h">
+    <ClInclude Include="..\src\Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

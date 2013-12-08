@@ -1,8 +1,8 @@
-#include "Tabuleiro.h"
+#include "Board.h"
 
-Tabuleiro::Tabuleiro(std::string id, char * vertexFile) : Entity(id, vertexFile, false){}
+Board::Board(std::string id, char * vertexFile) : Entity(id, vertexFile, false){}
 
-void Tabuleiro::draw(){
+void Board::draw(){
 	/*glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
@@ -13,4 +13,4 @@ void Tabuleiro::draw(){
 }
 
 
-void Tabuleiro::update(){}
+void Board::update(){}

@@ -20,7 +20,7 @@ void TangramPieces::update(){
 	glm::mat4 view = Camera::getInstance()->getView();
 	glm::vec2 mouse = Input::getInstance()->getMouseMotion();
 
-	if(Input::getInstance()->mouseOver().compare(_id) == 0){
+	if(GameManager::getInstance()->isMouseOver(_id)){
 
 		if(Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON)){
 			glm::mat4 t =  glm::inverse(view)* glm::translate(glm::vec3(mouse.x*clipX, mouse.y*clipY, 0)) * view;
