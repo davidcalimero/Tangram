@@ -72,6 +72,10 @@ glm::vec3 Entity::getPos(){
 	return glm::vec3(_px, _py, _pz);
 }
 
+glm::quat Entity::getQuat() {
+	return _q;
+}
+
 
 Entity::~Entity(){
 	glDisableVertexAttribArray(VERTICES);
