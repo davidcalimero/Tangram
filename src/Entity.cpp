@@ -36,7 +36,7 @@ void Entity::draw(){
 	glBindVertexArray(_vaoId);
 
 	//ORIGINAL PIECE
-	glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE, 
+	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, 
 						&(glm::translate(glm::mat4(), 
 							glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
 	glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
@@ -54,7 +54,7 @@ void Entity::draw(){
 		rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) * rotation;
 
 		glDisable(GL_CULL_FACE);
-		glUniformMatrix4fv(ProgramShader::getInstance()->getUniformModelMatrixId(), 1, GL_FALSE,
+		glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE,
 							&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
 								glm::mat4_cast(rotation)*
 								glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*

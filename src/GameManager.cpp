@@ -103,7 +103,7 @@ void GameManager::init(){
 
 
 void GameManager::draw(){
-	glUseProgram(ProgramShader::getInstance()->getProgramId());
+	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
 
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);

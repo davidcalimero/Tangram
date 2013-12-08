@@ -14,7 +14,6 @@ class ProgramShader {
 
 	private:
 		GLint _uniformModelMatrixId;
-		GLint _uboId;
 		GLuint _vertexShaderId;
 		GLuint _fragmentShaderId;
 		GLuint _programId;
@@ -25,8 +24,6 @@ class ProgramShader {
 		static ProgramShader * getInstance();
 		void createShaderProgram(char * vSFile, char * fSFile);
 		void destroyShaderProgram();
-		const GLuint getProgramId() const;
-		const GLuint getVertexShaderId() const;
-		const GLuint getFragmentShaderId() const;
-		const GLint getUniformModelMatrixId() const;
+		const GLuint getUId(std::string key) const;
+		const GLint getId(std::string key) const;
 };

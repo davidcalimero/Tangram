@@ -25,15 +25,15 @@ namespace Utils {
 		if(isOpenGLError()) {
 			std::cerr << error << std::endl;
 
-			glGetShaderInfoLog(ProgramShader::getInstance()->getVertexShaderId(), sizeof(result), &maxLength, result);
+			glGetShaderInfoLog(ProgramShader::getInstance()->getUId("VertexShader"), sizeof(result), &maxLength, result);
 			if(maxLength > 11)
 				std::cerr << "Error Vertex Shader: " << result;
 
-			glGetShaderInfoLog(ProgramShader::getInstance()->getFragmentShaderId(), sizeof(result), &maxLength, result);
+			glGetShaderInfoLog(ProgramShader::getInstance()->getUId("FragmentShader"), sizeof(result), &maxLength, result);
 			if(maxLength > 11)
 				std::cerr << "Error Fragment Shader: " << result;
 
-			glGetProgramInfoLog(ProgramShader::getInstance()->getProgramId(), sizeof(result), &maxLength, result);
+			glGetProgramInfoLog(ProgramShader::getInstance()->getUId("Program"), sizeof(result), &maxLength, result);
 			if(maxLength > 11)
 				std::cerr << "Error Program: " << result << std::endl;
 

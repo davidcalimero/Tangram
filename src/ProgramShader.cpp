@@ -31,8 +31,7 @@ void ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 	glBindAttribLocation(_programId, COLORS, "in_Color");
 	glLinkProgram(_programId);
 	_uniformModelMatrixId = glGetUniformLocation(_programId, "ModelMatrix");
-	_uboId = glGetUniformBlockIndex(_programId, "SharedMatrices");
-	glUniformBlockBinding(_programId, _uboId, 0);
+	glUniformBlockBinding(_programId, glGetUniformBlockIndex(_programId, "SharedMatrices"), 0);
 
 	Utils::checkOpenGLError("ERROR: Could not create shaders.");
 }
@@ -51,21 +50,16 @@ void ProgramShader::destroyShaderProgram()
 }
 
 
-const GLuint ProgramShader::getProgramId() const{
-	return _programId;
-}
-
-
-const GLuint ProgramShader::getVertexShaderId() const{
+const GLuint ProgramShader::getUId(std::string key) const{
+	if(key.compare("Program") == 0)
+		return _programId;
+	if(key.compare("VertexShader") == 0)
 		return _vertexShaderId;
-}
-
-
-const GLuint ProgramShader::getFragmentShaderId() const{
+	if(key.compare("FragmentShader") == 0)
 		return _fragmentShaderId;
 }
 
 
-const GLint ProgramShader::getUniformModelMatrixId() const{
-	return _uniformModelMatrixId;
+const GLint ProgramShader::getId(std::string key) const{
+	return glGetUniformLocation(_programId, key.c_str());
 }
