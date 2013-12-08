@@ -92,6 +92,12 @@ std::string Entity::getId(){
 }
 
 
+void Entity::setRotation(glm::quat q) {
+	_q = q;
+	//std::cout << " quaternion: [ " << _q.x << " " << _q.y << " " << _q.z << " " << _q.w << " ]" << std::endl;
+}
+
+
 void Entity::rotate(float x, float y, float z, float angle){
 	_q = glm::rotate(glm::quat(), angle, glm::vec3(x, y, z)) * _q;
 }

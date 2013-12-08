@@ -5,8 +5,8 @@
 TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile, true){}
 
 
-void TangramPieces::setPos(float px, float py, float pz, float rz){
-	rotate(0, 0, 1, rz);
+void TangramPieces::setPos(float px, float py, float pz, glm::quat q){
+	setRotation(q);
 	translate(px, py, pz);
 }
 

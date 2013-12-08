@@ -80,6 +80,7 @@
     <None Include="fs1.glsl" />
     <None Include="quadradoAmarelo.xml" />
     <None Include="quadradoLaranja.xml" />
+    <None Include="sceneTest.xml" />
     <None Include="tabuleiro.xml" />
     <None Include="trianguloAzul.xml" />
     <None Include="trianguloRosa.xml" />

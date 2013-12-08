@@ -38,6 +38,7 @@ class Entity {
 		virtual void draw();
 		glm::vec3 getPos();
 		std::string getId();
+		void setRotation(glm::quat q);
 		void rotate(float x, float y, float z, float angle);
 		void translate(float x, float y, float z);
 		void scale(float x, float y, float z);

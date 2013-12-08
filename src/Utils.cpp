@@ -106,6 +106,36 @@ namespace Utils {
 	}
 
 
+	void Utils::sceneParser(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
+		int i;
+		rapidxml::xml_document<> doc;
+		doc.parse<0>(readFile(file));
+
+		rapidxml::xml_node<> * rootNode = doc.first_node("scene");
+		rapidxml::xml_node<> * entitiesNode = rootNode->first_node("entities");
+		rapidxml::xml_node<> * temp;
+
+		for(rapidxml::xml_node<> *child = entitiesNode->first_node("entity"); child != NULL; child = child->next_sibling()) {
+			if(std::string(child->first_attribute("id")->value()).compare(id) == 0) {
+	
+				i = 0;
+				temp = child->first_node("quaternion");
+				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
+					(*quaternion)[i] = atof(attr->value());
+				}
+
+				i = 0;
+				temp = child->first_node("position");
+				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++)	{
+					(*position)[i] = atof(attr->value());
+				}
+				
+			}
+		}	
+
+	}
+
+
 	void Utils::loadObj(char* filename) {
 /*		std::vector<glm::vec4> vertices;
 		//std::vector<glm::vec4> normals;

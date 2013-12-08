@@ -20,10 +20,10 @@ void Light::setShaderLightValues(){
 	glUseProgram(ProgramShader::getInstance()->getProgramId());
 
 	// Get IDs
-	positionId = ProgramShader::getInstance()->getId("LightPosition");
+	/*positionId = ProgramShader::getInstance()->getId("LightPosition");
 	ambientId = ProgramShader::getInstance()->getId("AmbientLight");
 	diffuseId = ProgramShader::getInstance()->getId("DiffuseLight");
-	specularId = ProgramShader::getInstance()->getId("SpecularLight");
+	specularId = ProgramShader::getInstance()->getId("SpecularLight");*/
 
 	// Set Values
 	glUniform3fv(positionId, 1, glm::value_ptr(_position));

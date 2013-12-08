@@ -15,6 +15,6 @@ class TangramPieces : public Entity {
 
 	public:
 		TangramPieces(std::string id, char * vertexFile);
-		void setPos(float px, float py, float pz, float rz);
+		void setPos(float px, float py, float pz, glm::quat q);
 		void update();
 };

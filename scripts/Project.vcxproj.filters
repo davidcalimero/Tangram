@@ -48,6 +48,9 @@
     <None Include="vs1.glsl">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="sceneTest.xml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera.cpp">

@@ -15,6 +15,7 @@
 #include <glm.hpp>
 #include <sstream>
 #include <rapidxml.hpp>
+#include <gtc/quaternion.hpp>
 
 #define VERTICES 0
 #define COLORS 1
@@ -35,5 +36,6 @@ namespace Utils {
 	char * readFile(char * file);
 	GLubyte * index(int vertices);
 	Vertex * xmlParser(char * file, int *nVertices);
+	void sceneParser(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position);
 	void loadObj(char* filename);
 }
