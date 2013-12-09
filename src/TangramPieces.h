@@ -5,7 +5,6 @@
 #include "GameManager.h"
 
 #include <iostream>
-#include <gtc/quaternion.hpp>
 
 
 

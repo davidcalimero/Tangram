@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Camera.h"
-#include "Utils.h"
-#include "ProgramShader.h"
 #include "TangramPieces.h"
 #include "Board.h"
 #include <iostream>

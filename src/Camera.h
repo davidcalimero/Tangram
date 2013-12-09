@@ -3,16 +3,11 @@
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 
-#include "Utils.h"
-#include "Input.h"
 #include "GameManager.h"
 
-#include <iostream>
-#include <gtc/matrix_transform.hpp>
-#include <gtx/rotate_vector.hpp>
-#include <gtc/quaternion.hpp>
 #include <glm.hpp>
-#include <algorithm>
+#include <gtc\quaternion.hpp>
+#include <iostream>
 
 
 

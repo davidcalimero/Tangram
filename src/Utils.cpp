@@ -62,49 +62,6 @@ namespace Utils {
 		return buffer;
 	}
 
-	
-	GLubyte * Utils::index(int vertices){
-		GLubyte * indices = new GLubyte [vertices];
-		for(int i = 0; i < vertices; i++){
-			indices[i] = i;
-		}
-		return indices;
-	}
-		
-	
-	Vertex * Utils::xmlParser(char * file, int *nVertices){
-		int i = 0, v = 0;
-		Vertex * vertices;
-		rapidxml::xml_document<> doc;
-		doc.parse<0>(readFile(file));
-		rapidxml::xml_node<> * node = doc.first_node("object");
-		rapidxml::xml_node<> * temp;
-		
-		*nVertices = 0;
-		for(rapidxml::xml_node<> *child = node->first_node("vertex"); child != NULL; child = child->next_sibling(), (*nVertices)++);
-		
-		vertices = new Vertex[*nVertices];
-
-		for(rapidxml::xml_node<> *child = node->first_node("vertex"); child != NULL; child = child->next_sibling(), v++)
-		{
-			i = 0;
-			temp = child->first_node("position");
-			for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++)
-			{
-				vertices[v].XYZW[i] = atof(attr->value());
-			}
-
-			i = 0;
-			temp = child->first_node("color");
-			for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++)
-			{
-				vertices[v].RGBA[i] = atof(attr->value());
-			}
-		}
-
-		return vertices;
-	}
-
 
 	void Utils::loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
 		int i;
@@ -134,6 +91,7 @@ namespace Utils {
 		}	
 
 	}
+
 
 	void Utils::saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position) {
 		int i;
@@ -184,10 +142,14 @@ namespace Utils {
 	}
 
 
-	void Utils::loadObj(char* filename) {
-/*		std::vector<glm::vec4> vertices;
-		//std::vector<glm::vec4> normals;
-		std::vector<glm::vec4> obj;
+	void Utils::loadObj(char* filename, std::vector<unsigned int> &indices, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec2> &out_uvs, std::vector<glm::vec3> &out_normals){
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec2> uvs;
+		std::vector<glm::vec3> normals;
+
+		std::vector<unsigned int> uvIndices;
+		std::vector<unsigned int> normalIndices;
+
 		std::ifstream in(filename, std::ios::in);
 		if(!in){ 
 			std::cerr << "Cannot open " << filename << std::endl; 
@@ -198,50 +160,52 @@ namespace Utils {
 		while (getline(in, line)) {
 			if (line.substr(0,2) == "v "){
 				std::istringstream s(line.substr(2));
-				glm::vec4 v; 
-				s >> v.x;
-				s >> v.y;
-				s >> v.z;
-				v.w = 1.0f;
+				glm::vec3 v; 
+				s >> v.x >> v.y >> v.z;
 				vertices.push_back(v);
-				//std::cout << v.x << " " << v.y << " " << v.z << std::endl;
+				//std::cout << "vertices " << v.x << " " << v.y << " " << v.z << std::endl;
 			}
-/*			else if (line.substr(0,3) == "vt "){
+			else if (line.substr(0,3) == "vt "){
 				std::istringstream s(line.substr(3));
-				glm::vec4 v; 
-				s >> v.x;
-				s >> v.y;
-				s >> v.z;
-				v.w = 1.0f;
-				vertices.push_back(v);
+				glm::vec2 v; 
+				s >> v.x >> v.y;
+				uvs.push_back(v);
+				//std::cout << "uvs " << v.x << " " << v.y << std::endl;
 			}
 			else if (line.substr(0,3) == "vn "){
 				std::istringstream s(line.substr(3));
-				glm::vec4 v; 
-				s >> v.x;
-				s >> v.y;
-				s >> v.z;
-				v.w = 1.0f;
+				glm::vec3 v; 
+				s >> v.x >> v.y >> v.z;
 				normals.push_back(v);
-			}*/
-/*			else if (line.substr(0,2) == "f") {
+				//std::cout << "normals " << v.x << " " << v.y << " " << v.z << std::endl;
+			}
+			else if (line.substr(0,2) == "f ") {
 				std::istringstream s(line.substr(2));
 				std::string item, face;
 				int i = 0;
 				while(getline(s, face, ' ')){
 					std::istringstream s1(face.substr(0));
-					std::cout << face << std::endl;
 					while(getline(s1, item, '/')){
-						if(i == 0){
-							std::cout << item << std::endl;
-							obj.push_back(vertices.at(std::stoi(item) - 1));
-							std::cout << vertices.at(std::stoi(item) - 1).x << " " << vertices.at(std::stoi(item) - 1).y << " " << vertices.at(std::stoi(item) - 1).z << std::endl;
-						}
-						i++;
-						i = i % 3; 
+						if(i == 0) indices.push_back(stoi(item)-1);
+						else if(i == 1) uvIndices.push_back(stoi(item)-1);
+						else if(i == 2) normalIndices.push_back(stoi(item)-1);
+						i = ++i % 3; 
 					}
 				}
 			}
-		}*/
+		}
+		for(unsigned int i = 0; i < indices.size(); i++){
+			unsigned int vertexIndex = indices[i];
+			unsigned int uvIndex = uvIndices[i];
+			unsigned int normalIndex = normalIndices[i];
+		
+			glm::vec3 vertex = vertices[vertexIndex];
+			glm::vec2 uv = uvs[uvIndex];
+			glm::vec3 normal = normals[normalIndex];
+		
+			out_vertices.push_back(vertex);
+			out_uvs.push_back(uv);
+			out_normals.push_back(normal);
+		}
 	}
 }

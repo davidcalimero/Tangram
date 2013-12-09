@@ -1,16 +1,10 @@
 #pragma once
 
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-
 #include "Utils.h"
-#include "ProgramShader.h"
+#include "Mesh.h"
 
-#include <gtc/matrix_transform.hpp>
 #include <gtx/transform2.hpp>
-#include <gtc/quaternion.hpp>
 #include <glm.hpp>
-#include <string>
 #include <iostream>
 
 
@@ -18,19 +12,16 @@
 class Entity {
 
 	private:
-		GLuint _vaoId;
-		GLuint _vboId[2];
-		int _nVertices;
 		glm::quat _q;
 		glm::mat4 _matrix;
-		Vertex * _vertices;
 		bool _reflection;
 		float _height;
+		Mesh * _mesh;
 
 	protected:
 		float _px, _py, _pz;
 		std::string _id;
-		Entity(std::string id, char * vertexFile, bool reflection);
+		Entity(std::string id, char * objFile, bool reflection);
 
 	public:
 		~Entity();

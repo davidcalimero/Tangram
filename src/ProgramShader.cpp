@@ -26,19 +26,17 @@ void ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 	_programId = glCreateProgram();
 	glAttachShader(_programId, _vertexShaderId);
 	glAttachShader(_programId, _fragmentShaderId);
-
 	glBindAttribLocation(_programId, VERTICES, "in_Position");
 	glBindAttribLocation(_programId, COLORS, "in_Color");
+	glBindAttribLocation(_programId, NORMALS, "in_Normal");
 	glLinkProgram(_programId);
-	_uniformModelMatrixId = glGetUniformLocation(_programId, "ModelMatrix");
 	glUniformBlockBinding(_programId, glGetUniformBlockIndex(_programId, "SharedMatrices"), 0);
 
 	Utils::checkOpenGLError("ERROR: Could not create shaders.");
 }
 
 
-void ProgramShader::destroyShaderProgram()
-{
+void ProgramShader::destroyShaderProgram(){
 	glUseProgram(0);
 	glDetachShader(_programId, _vertexShaderId);
 	glDetachShader(_programId, _fragmentShaderId);

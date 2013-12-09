@@ -1,46 +1,23 @@
 #include "Entity.h"
+#include "Camera.h"
 
 
-
-Entity::Entity(std::string id, char * vertexFile, bool reflection){
+Entity::Entity(std::string id, char * objFile, bool reflection){
 	_id = id;
 	_height = _px = _py = _pz = 0.0;
-	_vertices = Utils::xmlParser(vertexFile, &_nVertices);
 	_reflection = reflection;
-
-	glGenVertexArrays(1, &_vaoId);
-	glBindVertexArray(_vaoId);
-	glGenBuffers(2, _vboId);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboId[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices[0])*_nVertices, _vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(VERTICES);
-	glVertexAttribPointer(VERTICES, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glEnableVertexAttribArray(COLORS);
-	glVertexAttribPointer(COLORS, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)sizeof(_vertices[0].XYZW));
-	GLubyte * indices = Utils::index(_nVertices);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _vboId[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices)*_nVertices, indices, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glDisableVertexAttribArray(VERTICES);
-	glDisableVertexAttribArray(COLORS);
-	glBindVertexArray(0);
-
-	Utils::checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
+	_mesh = new Mesh(objFile);
 }
 
 
 void Entity::draw(){
-	glBindVertexArray(_vaoId);
 
 	//ORIGINAL PIECE
-	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, 
-						&(glm::translate(glm::mat4(), 
-							glm::vec3(_px, _py, _pz))*glm::mat4_cast(_q)*_matrix)[0][0]);
-	glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-
+	glm::mat4 modelMatrix = glm::translate(glm::mat4(), glm::vec3(_px, _py, _pz)) * glm::mat4_cast(_q) * _matrix;
+	glm::mat4 normalMatrix = glm::transpose(glm::inverse(Camera::getInstance()->getView()*modelMatrix));
+	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
+	glUniformMatrix4fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
+	_mesh->draw();
 
 	//REFLECTED PIECE
 	if(_reflection){
@@ -49,19 +26,20 @@ void Entity::draw(){
 		glDepthMask(GL_TRUE);*/
 
 		glm::vec3 angles = glm::eulerAngles(_q);
-		glm::quat rotation = glm::rotate(glm::quat(),-angles.x,glm::vec3(1,0,0));
-		rotation = glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) * rotation;
-		rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) * rotation;
+		glm::quat rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) *
+							 glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) *
+							 glm::rotate(glm::quat(),-angles.x,glm::vec3(1,0,0));
+		glm::mat4 reflexModelMatrix = glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz)) *
+									  glm::mat4_cast(rotation) *
+									  glm::scale(glm::mat4(), glm::vec3(1, 1, -1)) *
+									  _matrix;
+		glm::mat4 reflexNormalMatrix = glm::transpose(glm::inverse(Camera::getInstance()->getView()*reflexModelMatrix));
+		glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &reflexModelMatrix[0][0]);
+		glUniformMatrix4fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
 
 		glDisable(GL_CULL_FACE);
-		glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE,
-							&( glm::translate(glm::mat4(), glm::vec3(_px, _py, -_pz))*
-								glm::mat4_cast(rotation)*
-								glm::scale(glm::mat4(), glm::vec3(1, 1, -1))*
-								_matrix)[0][0]);
-
-		glDrawElements(GL_TRIANGLES, _nVertices, GL_UNSIGNED_BYTE, (GLvoid*)0);
-		glEnable(GL_CULL_FACE);
+		_mesh->draw();
+		glEnable(GL_CULL_FACE);	
 	}
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
@@ -78,16 +56,7 @@ glm::quat Entity::getQuat() {
 
 
 Entity::~Entity(){
-	glDisableVertexAttribArray(VERTICES);
-	glDisableVertexAttribArray(COLORS);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	glDeleteBuffers(2, _vboId);
-	glDeleteVertexArrays(1, &_vaoId);
-
-	Utils::checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
+	_mesh->~Mesh();
 }
 
 

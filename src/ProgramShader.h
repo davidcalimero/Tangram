@@ -1,9 +1,5 @@
 #pragma once
 
-
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-
 #include "Utils.h"
 
 #include <iostream>
@@ -13,7 +9,6 @@
 class ProgramShader {
 
 	private:
-		GLint _uniformModelMatrixId;
 		GLuint _vertexShaderId;
 		GLuint _fragmentShaderId;
 		GLuint _programId;
