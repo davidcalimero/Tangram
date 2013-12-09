@@ -95,8 +95,9 @@ namespace Utils {
 
 	void Utils::saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position) {
 		int i;
-		char * charValue = new char[30];
-		//std::ostringstream valueStream;
+		std::string * strPos = new std::string[4];
+		std::string * strQuat = new std::string[4];
+		std::ostringstream valueStream;
 
 		// Reading the file
 		rapidxml::xml_document<> doc;
@@ -109,36 +110,57 @@ namespace Utils {
 
 		for(rapidxml::xml_node<> *child = entitiesNode->first_node("entity"); child != NULL; child = child->next_sibling()) {
 			if(std::string(child->first_attribute("id")->value()).compare(id) == 0) {
-
+				
+				// Quaternion
 				i = 0;
 				temp = child->first_node("quaternion");
 				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
 
-					std::cout << "Valor q:" << quaternion[i] << std::endl;	
+					//std::cout << "Atributo: " << attr->name() << std::endl;
+					//std::cout << "Valor q[" << i << "]" << quaternion[i] << std::endl;	
 
-					sprintf(charValue, "%f", quaternion[i]);
-					std::cout << "Valor:" << charValue << std::endl;
-					attr->value(charValue);
+					valueStream.str("");
+					valueStream << quaternion[i];					
+					strQuat[i] = std::string(valueStream.str());
 
-					//valueStream.str("");
-					//valueStream << quaternion[i];
-					//std::cout << "Valor:" << valueStream.str().data() << std::endl;	
-					//attr->value(valueStream.str().data(), valueStream.str().length());
+					//std::cout << "Valor:" << strQuat[i].data() << std::endl;
+					attr->value(strQuat[i].data(), valueStream.str().length());
 
-					std::cout << "Valor:" << attr->value() << std::endl;				
+					//std::cout << "Valor:" << attr->value() << std::endl;
 				}
+
+				// Position
+				i = 0;
+				temp = child->first_node("position");
+				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
+
+					//std::cout << "Atributo: " << attr->name() << std::endl;
+					//std::cout << "Valor p[" << i << "]" << position[i] << std::endl;	
+
+					valueStream.str("");
+					valueStream << position[i];					
+					strPos[i] = std::string(valueStream.str());
+
+					//std::cout << "Valor:" << strPos[i].data() << std::endl;
+					attr->value(strPos[i].data(), valueStream.str().length());
+
+					//std::cout << "Valor:" << attr->value() << std::endl;
+					
+				}
+
 			}
 		}
 
 		// Printing the new XML tree to the file
 
-		std::cout << doc << std::endl;
+		//std::cout << doc << std::endl;
+
 		std::string data;
 		std::ofstream streamfile;
 		streamfile.open(file);
 		rapidxml::print(std::back_inserter(data), doc);
 		streamfile << data;
-		streamfile.close();		
+		streamfile.close();	
 	}
 
 
