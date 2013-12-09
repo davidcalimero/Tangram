@@ -123,8 +123,10 @@ void GameManager::update(){
 		i->second->update();
 
 	if(Input::getInstance()->keyWasPressed('G')) {
-		TangramPieces * piece = (TangramPieces *) getEntityById("trianguloAzul");
-		Utils::saveScene("sceneTest.xml", "trianguloAzul", piece->getQuat(), piece->getPos());
+		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
+			if(i->second->getId().compare("tabuleiro") != 0)
+				Utils::saveScene("sceneTest.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
+		}
 	}
 }
 
