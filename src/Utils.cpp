@@ -63,6 +63,28 @@ namespace Utils {
 	}
 
 
+
+	int screenshot(std::string _filename, int _width, int _height) {
+		_filename.append(date_time());
+		_filename.append(".bmp");
+		std::cout << _filename << std::endl;
+		return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _width, _height);
+		return 1;
+	}
+	
+
+	std::string date_time(){
+	    time_t t = time(0);
+		struct tm * now = localtime( & t );
+
+		std::ostringstream datestream;
+		datestream  << '_' << now->tm_mday << '-' << (now->tm_mon + 1) << '-' << (now->tm_year + 1900)
+					<< '_' << now->tm_hour << '-' << now->tm_min << '-' << now->tm_sec;
+		
+		std::string s = datestream.str();
+		return s;
+	}
+
 	void Utils::loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
 		int i;
 		rapidxml::xml_document<> doc;

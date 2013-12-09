@@ -128,6 +128,16 @@ void GameManager::update(){
 				Utils::saveScene("sceneTest.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
 		}
 	}
+
+	if(Input::getInstance()->keyWasReleased('M')) {
+		std::string _filename = "screenshot";
+		int _width = 640;
+		int _height = 480;
+		int state = Utils::screenshot(_filename, _width, _height);
+
+		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
+	}
+
 }
 
 
