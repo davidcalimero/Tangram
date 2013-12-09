@@ -173,7 +173,14 @@ namespace Utils {
 		}
 
 		// Printing the new XML tree to the file
-		rapidxml::print(file, doc, 0);
+
+		std::cout << doc << std::endl;
+		std::string data;
+		std::ofstream streamfile;
+		streamfile.open(file);
+		rapidxml::print(std::back_inserter(data), doc);
+		streamfile << data;
+		streamfile.close();		
 	}
 
 
