@@ -63,13 +63,13 @@ namespace Utils {
 	}
 
 
+	int screenshot(std::string _filename, int _w, int _h) {
+		std::cout << _w << "  " << _h << std::endl;
 
-	int screenshot(std::string _filename, int _width, int _height) {
 		_filename.append(date_time());
 		_filename.append(".bmp");
 		std::cout << _filename << std::endl;
-		return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _width, _height);
-		return 1;
+		return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
 	}
 	
 
@@ -84,6 +84,7 @@ namespace Utils {
 		std::string s = datestream.str();
 		return s;
 	}
+
 
 	void Utils::loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
 		int i;

@@ -40,7 +40,7 @@ void GameManager::init(){
 
 	glm::quat qcoords;
 	glm::vec3 pcoords;
-	
+
 	/**/
 	Utils::loadScene("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
 	Board * board = new Board("tabuleiro", "cube.obj");
@@ -131,13 +131,11 @@ void GameManager::update(){
 
 	if(Input::getInstance()->keyWasReleased('M')) {
 		std::string _filename = "screenshot";
-		int _width = 640;
-		int _height = 480;
+		int _width = glutGet(GLUT_WINDOW_WIDTH);
+		int _height = glutGet(GLUT_WINDOW_HEIGHT);
 		int state = Utils::screenshot(_filename, _width, _height);
-
 		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
 	}
-
 }
 
 

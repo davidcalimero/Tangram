@@ -42,6 +42,7 @@ void idle() {
 void reshape(int w, int h) {
 	WinX = w;
 	WinY = h;
+
 	glViewport(0, 0, WinX, WinY);
 }
 
