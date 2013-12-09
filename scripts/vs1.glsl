@@ -23,6 +23,5 @@ void main(void)
 	ex_Position = vec3(ViewMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	ex_Color = in_Color;
 	ex_Normal = normalize(vec3(NormalMatrix * vec4(in_Normal, 1.0)));
-
 	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(in_Position, 1.0);
 }

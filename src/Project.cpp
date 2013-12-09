@@ -1,9 +1,4 @@
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-
 #include "GameManager.h"
-#include "Input.h"
-#include "Camera.h"
 
 #include <iostream>
 
@@ -26,7 +21,6 @@ void display() {
 	glClearStencil(0);
 
 	GameManager::getInstance()->update();
-	Camera::getInstance()->put(((float)WinX)/((float)WinY));
 	GameManager::getInstance()->draw();
 	Input::getInstance()->reset();
 

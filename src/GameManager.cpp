@@ -41,6 +41,8 @@ void GameManager::init(){
 	glm::quat qcoords;
 	glm::vec3 pcoords;
 
+	_light = new Light(glm::vec3(0.0,-4.0,4.0), glm::vec3(0.2,0.2,0.2), glm::vec3(0.5,0.5,0.5), glm::vec3(0.5,0.5,0.5));
+	
 	/**/
 	Utils::loadScene("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
 	Board * board = new Board("tabuleiro", "cube.obj");
@@ -104,6 +106,9 @@ void GameManager::init(){
 
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
+	Camera::getInstance()->put();
+	_light->setShaderLightValues();
+
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
 			i->second->draw();
@@ -122,7 +127,7 @@ void GameManager::update(){
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++)
 		i->second->update();
 
-	if(Input::getInstance()->keyWasPressed('G')) {
+	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->second->getId().compare("tabuleiro") != 0)
 				Utils::saveScene("sceneTest.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());

@@ -27,7 +27,7 @@ class Camera {
 	public:
 		~Camera();
 		static Camera * getInstance();
-		void put(float racio);
+		void put();
 		void rotate(float angleX, float angleZ);
 		void update();
 		glm::vec3 getCameraAngles();

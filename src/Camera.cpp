@@ -30,7 +30,8 @@ Camera * Camera::getInstance(){
 }
 
 
-void Camera::put(float racio){
+void Camera::put(){
+	float racio = (float)glutGet(GLUT_WINDOW_WIDTH) / (float)glutGet(GLUT_WINDOW_HEIGHT);
 	glm::mat4 projection;
 	glm::vec3 eye = _eye;
 	eye.y *= _distance;
@@ -46,6 +47,15 @@ void Camera::put(float racio){
 		projection = glm::perspective(38.0f, racio, 1.0f, 10.0f);
 
 	_view = _view*glm::mat4_cast(_q);
+
+	GLint id = ProgramShader::getInstance()->getId("EyeDirection");
+	glm::vec4 e = _view * glm::vec4(_center-eye, 1.0);
+	glm::vec3 x;
+	x.x = e.x;
+	x.y = e.y;
+	x.z = e.z;
+	glUniform3fv(id, 1, glm::value_ptr(eye));
+	//std::cout << e.x << e.y << e.z << std::endl;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float)*16, &_view[0][0]);

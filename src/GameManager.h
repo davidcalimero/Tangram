@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "TangramPieces.h"
 #include "Board.h"
+#include "Light.h"
+
 #include <iostream>
 #include <map>
 
@@ -15,6 +17,8 @@ class GameManager {
 		std::map<const std::string, Entity *> _entities;
 		GLuint _stencilValue;
 		GameManager();
+
+		Light * _light;
 
 	public:
 		static GameManager * getInstance();
