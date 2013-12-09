@@ -15,14 +15,12 @@ unsigned int FrameCount = 0;
 
 
 /////////////////////////////////////////////////////////////////////// CALLBACKS
-
-void cleanup()
-{
+void cleanup() {
 	GameManager::getInstance()->destroyBufferObjects();
 }
 
-void display()
-{
+
+void display() {
 	++FrameCount;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glClearStencil(0);
@@ -35,56 +33,60 @@ void display()
 	glutSwapBuffers();
 }
 
-void idle()
-{
+
+void idle() {
 	glutPostRedisplay();
 }
 
-void reshape(int w, int h)
-{
+
+void reshape(int w, int h) {
 	WinX = w;
 	WinY = h;
 	glViewport(0, 0, WinX, WinY);
 }
 
+
 void keyPressed(unsigned char key, int x, int y){
 	Input::getInstance()->keyPressed(key);
 }
+
 
 void keyUp(unsigned char key, int x, int y){
 	Input::getInstance()->keyUp(key);
 }
 
+
 void specialPressed(int key, int x, int y){
 	Input::getInstance()->specialPressed(key);
 }
 
-void specialUp(int key, int x, int y){
+
+void specialUp(int key, int x, int y) {
 	Input::getInstance()->specialUp(key);
+
 }
 
-void mouse(int button, int state, int x, int y) 
-{
+
+void mouse(int button, int state, int x, int y)  {
 	Input::getInstance()->mouse(button, state);
 }
 
-void mouseClickMotion(int x, int y)
-{
+void mouseClickMotion(int x, int y) {
 	Input::getInstance()->mouseClickMotion(x, y);
 }
 
-void mousePassiveMotion(int x, int y)
-{
+
+void mousePassiveMotion(int x, int y) {
 	Input::getInstance()->mousePassiveMotion(x, y);
 }
 
-void mouseWheel(int wheel, int direction, int x, int y)
-{
+
+void mouseWheel(int wheel, int direction, int x, int y) {
 	Input::getInstance()->mouseWheel(direction);
 }
 
-void timer(int value)
-{
+
+void timer(int value) {
 	std::ostringstream oss;
 	oss << CAPTION << ": " << FrameCount << " FPS @ (" << WinX << "x" << WinY << ")";
 	std::string s = oss.str();
@@ -96,8 +98,7 @@ void timer(int value)
 
 /////////////////////////////////////////////////////////////////////// SETUP
 
-void setupCallbacks() 
-{
+void setupCallbacks()  {
 	glutCloseFunc(cleanup);
 	glutDisplayFunc(display);
 	glutIdleFunc(idle);
@@ -123,7 +124,6 @@ void setupOpenGL() {
 	/* Stencil Buffer Initialization */
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	/* */
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -145,8 +145,7 @@ void setupGLEW() {
 	GLenum err_code = glGetError();
 }
 
-void setupGLUT(int argc, char* argv[])
-{
+void setupGLUT(int argc, char* argv[]) {
 	glutInit(&argc, argv);
 	
 	glutInitContextVersion(3, 1);
@@ -164,8 +163,7 @@ void setupGLUT(int argc, char* argv[])
 	}
 }
 
-void init(int argc, char* argv[])
-{
+void init(int argc, char* argv[]) {
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
@@ -174,8 +172,7 @@ void init(int argc, char* argv[])
 	setupCallbacks();
 }
 
-int main(int argc, char* argv[])
-{	
+int main(int argc, char* argv[]) {	
 	init(argc, argv);
 	glutMainLoop();	
 	exit(EXIT_SUCCESS);
