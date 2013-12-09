@@ -42,56 +42,56 @@ void GameManager::init(){
 	glm::vec3 pcoords;
 	
 	/**/
-	Utils::sceneParser("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
 	Board * board = new Board("tabuleiro", "tabuleiro.xml");
 	board->scale(1.8, 1.8, 0.1);
 	board->translate(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "trianguloVermelho", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "trianguloVermelho", &qcoords, &pcoords);
 	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "trianguloVermelho.xml");
 	trianguloVermelho->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.25);
 	trianguloVermelho->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVermelho);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "trianguloRoxo", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "trianguloRoxo", &qcoords, &pcoords);
 	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "trianguloRoxo.xml");
 	trianguloRoxo->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.23);
 	trianguloRoxo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRoxo);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "trianguloAzul", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "trianguloAzul", &qcoords, &pcoords);
 	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "trianguloAzul.xml");
 	trianguloAzul->scale(1.0/2.0, 1.0/2.0, 0.13);
 	trianguloAzul->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloAzul);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "trianguloVerde", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "trianguloVerde", &qcoords, &pcoords);
 	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "trianguloVerde.xml");
 	trianguloVerde->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.21);
 	trianguloVerde->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVerde);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "trianguloRosa", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "trianguloRosa", &qcoords, &pcoords);
 	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "trianguloRosa.xml");
 	trianguloRosa->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.17);
 	trianguloRosa->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRosa);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "quadradoLaranja", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "quadradoLaranja", &qcoords, &pcoords);
 	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "quadradoLaranja.xml");
 	quadradoLaranja->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.19);
 	quadradoLaranja->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoLaranja);
 
 	/**/
-	Utils::sceneParser("sceneTest.xml", "quadradoAmarelo", &qcoords, &pcoords);
+	Utils::loadScene("sceneTest.xml", "quadradoAmarelo", &qcoords, &pcoords);
 	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "quadradoAmarelo.xml");
 	quadradoAmarelo->scale(1.0/4.0, 1.0/2.0, 0.15);
 	quadradoAmarelo->shear(0.0, 1.0);
@@ -123,6 +123,11 @@ void GameManager::update(){
 	Camera::getInstance()->update();
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 		i->second->update();
+	}
+
+	if(Input::getInstance()->keyWasPressed('G')) {
+		TangramPieces * piece = (TangramPieces *) getEntityById("trianguloAzul");
+		Utils::saveScene("sceneTest.xml", "trianguloAzul", piece->getQuat(), piece->getPos());
 	}
 }
 

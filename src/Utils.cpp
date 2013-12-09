@@ -106,7 +106,7 @@ namespace Utils {
 	}
 
 
-	void Utils::sceneParser(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
+	void Utils::loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
 		int i;
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(readFile(file));
@@ -133,6 +133,47 @@ namespace Utils {
 			}
 		}	
 
+	}
+
+	void Utils::saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position) {
+		int i;
+		char * charValue = new char[30];
+		//std::ostringstream valueStream;
+
+		// Reading the file
+		rapidxml::xml_document<> doc;
+		doc.parse<0>(readFile(file));
+
+		// Modifying the XML tree
+		rapidxml::xml_node<> * rootNode = doc.first_node("scene");
+		rapidxml::xml_node<> * entitiesNode = rootNode->first_node("entities");
+		rapidxml::xml_node<> * temp;
+
+		for(rapidxml::xml_node<> *child = entitiesNode->first_node("entity"); child != NULL; child = child->next_sibling()) {
+			if(std::string(child->first_attribute("id")->value()).compare(id) == 0) {
+
+				i = 0;
+				temp = child->first_node("quaternion");
+				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
+
+					std::cout << "Valor q:" << quaternion[i] << std::endl;	
+
+					sprintf(charValue, "%f", quaternion[i]);
+					std::cout << "Valor:" << charValue << std::endl;
+					attr->value(charValue);
+
+					//valueStream.str("");
+					//valueStream << quaternion[i];
+					//std::cout << "Valor:" << valueStream.str().data() << std::endl;	
+					//attr->value(valueStream.str().data(), valueStream.str().length());
+
+					std::cout << "Valor:" << attr->value() << std::endl;				
+				}
+			}
+		}
+
+		// Printing the new XML tree to the file
+		rapidxml::print(file, doc, 0);
 	}
 
 
