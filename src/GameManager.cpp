@@ -41,7 +41,7 @@ void GameManager::init(){
 	glm::quat qcoords;
 	glm::vec3 pcoords;
 
-	_light = new Light(glm::vec3(0.0,-4.0,4.0), glm::vec3(0.2,0.2,0.2), glm::vec3(0.5,0.5,0.5), glm::vec3(0.5,0.5,0.5));
+	_light = new Light(glm::vec3(0-4.0,0.0,4.0), glm::vec3(0.2,0.2,0.2), glm::vec3(0.5,0.5,0.5), glm::vec3(0.5,0.5,0.5));
 	
 	/**/
 	Utils::loadScene("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
