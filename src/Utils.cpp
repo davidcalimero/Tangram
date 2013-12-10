@@ -77,6 +77,7 @@ namespace Utils {
 		return SOIL_save_image( _filename.c_str(), SOIL_SAVE_TYPE_BMP, _w, _h, 3, &buf[0]);*/
 		
 		return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
+	}
 	
 
 	std::string date_time(){
