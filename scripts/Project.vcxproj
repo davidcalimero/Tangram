@@ -77,20 +77,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="currentScene.xml" />
-    <None Include="fs1.glsl" />
-    <None Include="initialScene.xml" />
-    <None Include="quadradoAmarelo.xml" />
-    <None Include="quadradoLaranja.xml" />
-    <None Include="tabuleiro.xml" />
-    <None Include="trianguloAzul.xml" />
-    <None Include="trianguloRosa.xml" />
-    <None Include="trianguloRoxo.xml" />
-    <None Include="trianguloVerde.xml" />
-    <None Include="trianguloVermelho.xml" />
-    <None Include="vs1.glsl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\GameManager.cpp" />
@@ -114,6 +100,12 @@
     <ClInclude Include="..\src\Board.h" />
     <ClInclude Include="..\src\TangramPieces.h" />
     <ClInclude Include="..\src\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="scene\currentScene.xml" />
+    <None Include="scene\initialScene.xml" />
+    <None Include="shaders\fragment.glsl" />
+    <None Include="shaders\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
