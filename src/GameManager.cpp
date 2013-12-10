@@ -115,16 +115,18 @@ void GameManager::init(){
 void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
 	Camera::getInstance()->put();
-	_light->setShaderLightValues();
 
+	_light->setShaderLightValues(false);
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
 			i->second->draw();
 	}
 
-	glm::vec2 mp = Input::getInstance()->getMousePostion();
-	if(!Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && !Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
-		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
+	_light->setShaderLightValues(true);
+	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
+			glStencilFunc(GL_ALWAYS, 0, -1);
+			i->second->drawReflection();
+	}
 
 	glUseProgram(0);
 }
@@ -157,6 +159,14 @@ void GameManager::update(){
 			}
 		}
 	}
+}
+
+
+void GameManager::postProcessing(){
+	// Mouse Over
+	glm::vec2 mp = Input::getInstance()->getMousePostion();
+	if(!Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && !Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
+		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {

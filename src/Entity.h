@@ -27,6 +27,7 @@ class Entity {
 		~Entity();
 		virtual void update() = 0;
 		virtual void draw();
+		void drawReflection();
 		glm::vec3 getPos();
 		glm::quat getQuat();
 		std::string getId();

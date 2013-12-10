@@ -28,4 +28,5 @@ class GameManager {
 		void destroyBufferObjects();
 		void draw();
 		void update();
+		void postProcessing();
 };

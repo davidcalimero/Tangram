@@ -22,6 +22,7 @@ void display() {
 
 	GameManager::getInstance()->update();
 	GameManager::getInstance()->draw();
+	GameManager::getInstance()->postProcessing();
 	Input::getInstance()->reset();
 
 	glutSwapBuffers();
