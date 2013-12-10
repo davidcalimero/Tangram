@@ -69,8 +69,14 @@ namespace Utils {
 		_filename.append(date_time());
 		_filename.append(".bmp");
 		std::cout << _filename << std::endl;
+		glutSwapBuffers();
+        
+		/*std::vector< unsigned char > buf( _w * _h * 3 );
+		glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+        	glReadPixels( 0, 0, _w, _h, GL_RGB, GL_UNSIGNED_BYTE, &buf[0] );
+		return SOIL_save_image( _filename.c_str(), SOIL_SAVE_TYPE_BMP, _w, _h, 3, &buf[0]);*/
+		
 		return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
-	}
 	
 
 	std::string date_time(){
