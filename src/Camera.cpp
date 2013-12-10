@@ -3,7 +3,7 @@
 
 
 Camera::Camera(){
-	_type = 1;
+	_type = 0;
 	_distance = 4;
 	_eye = glm::vec3(0.0,-1.0,0.0);
 	_center = glm::vec3(0.0,0.0,0.0);
@@ -66,20 +66,10 @@ void Camera::rotate(float angleX, float angleZ){
 }
 
 
-glm::vec3 Camera::getCameraAngles() {
-	glm::vec3 angles = glm::eulerAngles(_q);
-	return glm::vec3(angles.x, angles.y, angles.z);
-}
-
-
 glm::mat4 Camera::getView(){
 	return _view;
 }
 
-
-void Camera::setRotation(glm::quat q) {
-	_q = q;
-}
 
 void Camera::update(){
 
@@ -90,40 +80,50 @@ void Camera::update(){
 		_type = !_type;
 
 	// Progressive rotation
-	if(Input::getInstance()->keyWasPressed('W') || Input::getInstance()->specialWasPressed(GLUT_KEY_UP))
+	if(Input::getInstance()->specialWasPressed(GLUT_KEY_UP))
 		rotate(-0.05, 0);
-	if(Input::getInstance()->keyWasPressed('S') || Input::getInstance()->specialWasPressed(GLUT_KEY_DOWN))
+	if(Input::getInstance()->specialWasPressed(GLUT_KEY_DOWN))
 		rotate(0.05, 0);
-	if(Input::getInstance()->keyWasPressed('A') || Input::getInstance()->specialWasPressed(GLUT_KEY_LEFT))
+	if(Input::getInstance()->specialWasPressed(GLUT_KEY_LEFT))
 		rotate(0, -0.05);
-	if(Input::getInstance()->keyWasPressed('D') || Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
+	if(Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
 		rotate(0, 0.05);
 
+	// 90 step rotation
+/*	if(Input::getInstance()->keyWasReleased('W')){
+		_q = glm::angleAxis(glm::eulerAngles(_q).y, glm::vec3(0,1,0));
+		rotate(floor((90 + glm::eulerAngles(_q).x)/90) * 90 - glm::eulerAngles(_q).x,
+			   90 * floor(glm::eulerAngles(_q).z/90.0+0.5) - glm::eulerAngles(_q).z);
+	}
+	if(Input::getInstance()->keyWasReleased('S')){
+		_q = glm::angleAxis(glm::eulerAngles(_q).y, glm::vec3(0,1,0));
+		rotate(ceil((glm::eulerAngles(_q).x - 90)/90) * 90 - glm::eulerAngles(_q).x,
+			    90 * floor(glm::eulerAngles(_q).z/90.0+0.5) - glm::eulerAngles(_q).z);
+	}
+	if(Input::getInstance()->keyWasReleased('A')){
+		_q = glm::angleAxis(glm::eulerAngles(_q).y, glm::vec3(0,1,0));
+		rotate(90 * floor(glm::eulerAngles(_q).x/90.0+0.5) - glm::eulerAngles(_q).x,
+			   floor((90 + glm::eulerAngles(_q).z)/90) * 90 - glm::eulerAngles(_q).z);
+	}
+	if(Input::getInstance()->keyWasReleased('D')){
+		_q = glm::angleAxis(glm::eulerAngles(_q).y, glm::vec3(0,1,0));
+		rotate(90 * floor(glm::eulerAngles(_q).x/90.0+0.5) - glm::eulerAngles(_q).x,
+			  ceil((glm::eulerAngles(_q).z - 90)/90) * 90 - glm::eulerAngles(_q).z);
+	}*/
+
 	// Views
-	if(Input::getInstance()->keyWasReleased('1')) {		// Top
-		q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));
-		setRotation(q);
-	}
-	if(Input::getInstance()->keyWasReleased('2')) {		// Bottom
-		q = glm::angleAxis(-90.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 0.0, 1.0));
-		setRotation(q);
-	}
-	if(Input::getInstance()->keyWasReleased('3')) {		// Front
-		q = glm::angleAxis(0.0f, glm::vec3(1.0, 0.0, 0.0));
-		setRotation(q);
-	}
-	if(Input::getInstance()->keyWasReleased('4')) {		// Back
-		q = glm::angleAxis(180.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 1.0, 0.0));
-		setRotation(q);
-	}	
-	if(Input::getInstance()->keyWasReleased('5')) {		// Left
-		q = glm::angleAxis(90.0f, glm::vec3(0.0, 0.0, 1.0));
-		setRotation(q);
-	}	
-	if(Input::getInstance()->keyWasReleased('6')) {		// Right
-		q = glm::angleAxis(270.0f, glm::vec3(0.0, 0.0, 1.0));
-		setRotation(q);
-	}
+	if(Input::getInstance()->keyWasReleased('1'))		// Top
+		_q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));
+	if(Input::getInstance()->keyWasReleased('2'))		// Bottom
+		_q = glm::angleAxis(-90.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 0.0, 1.0));
+	if(Input::getInstance()->keyWasReleased('3'))		// Front
+		_q = glm::angleAxis(0.0f, glm::vec3(1.0, 0.0, 0.0));
+	if(Input::getInstance()->keyWasReleased('4'))		// Back
+		_q = glm::angleAxis(180.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 1.0, 0.0));
+	if(Input::getInstance()->keyWasReleased('5'))		// Left
+		_q = glm::angleAxis(90.0f, glm::vec3(0.0, 0.0, 1.0));
+	if(Input::getInstance()->keyWasReleased('6'))		// Right
+		_q = glm::angleAxis(270.0f, glm::vec3(0.0, 0.0, 1.0));
 	
 	// spheric camera
 	glm::vec2 mouse = Input::getInstance()->getMouseMotion();

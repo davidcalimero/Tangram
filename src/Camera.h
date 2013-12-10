@@ -29,8 +29,6 @@ class Camera {
 		static Camera * getInstance();
 		void put();
 		void rotate(float angleX, float angleZ);
-		void setRotation(glm::quat q);
 		void update();
-		glm::vec3 getCameraAngles();
 		glm::mat4 getView();
 };
