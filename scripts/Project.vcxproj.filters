@@ -48,7 +48,10 @@
     <None Include="vs1.glsl">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="sceneTest.xml">
+    <None Include="currentScene.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="initialScene.xml">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
