@@ -1,0 +1,37 @@
+<scene>
+	<entities>
+		<entity id="quadradoAmarelo">
+			<quaternion x="0" y="0" z="0" w="1"/>
+			<position x="0.375" y="0.125" z="0.075"/>
+		</entity>
+		<entity id="quadradoLaranja">
+			<quaternion x="0" y="0" z="-0.92388" w="0.382683"/>
+			<position x="0" y="-0.25" z="0.095"/>
+		</entity>
+		<entity id="tabuleiro">
+			<quaternion x="0" y="0" z="0" w="0"/>
+			<position x="0.0" y="0.0" z="-0.05"/>
+		</entity>
+		<entity id="trianguloAzul">
+			<quaternion x="0" y="0" z="0.707107" w="0.707107"/>
+			<position x="0.375" y="-0.375" z="0.065"/>
+		</entity>
+		<entity id="trianguloRosa">
+			<quaternion x="0" y="0" z="-0.382683" w="0.92388"/>
+			<position x="0.125" y="0" z="0.085"/>
+		</entity>
+		<entity id="trianguloRoxo">
+			<quaternion x="0" y="0" z="0.92388" w="0.382683"/>
+			<position x="-0.25" y="0" z="0.115"/>
+		</entity>
+		<entity id="trianguloVerde">
+			<quaternion x="0" y="0" z="-0.92388" w="0.382683"/>
+			<position x="-0.327419" y="-0.389103" z="0.49341"/>
+		</entity>
+		<entity id="trianguloVermelho">
+			<quaternion x="0" y="0" z="0.382683" w="0.92388"/>
+			<position x="0" y="0.25" z="0.125"/>
+		</entity>
+	</entities>
+</scene>
+

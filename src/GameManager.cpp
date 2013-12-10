@@ -44,56 +44,56 @@ void GameManager::init(){
 	_light = new Light(glm::vec3(0-4.0,0.0,4.0), glm::vec3(0.2,0.2,0.2), glm::vec3(0.5,0.5,0.5), glm::vec3(0.5,0.5,0.5));
 	
 	/**/
-	Utils::loadScene("sceneTest.xml", "tabuleiro", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "tabuleiro", &qcoords, &pcoords);
 	Board * board = new Board("tabuleiro", "cube.obj");
 	board->scale(1.8, 1.8, 0.1);
 	board->translate(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "trianguloVermelho", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
 	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "prism.obj");
 	trianguloVermelho->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.25);
 	trianguloVermelho->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVermelho);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "trianguloRoxo", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "trianguloRoxo", &qcoords, &pcoords);
 	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "prism.obj");
 	trianguloRoxo->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.23);
 	trianguloRoxo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRoxo);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "trianguloAzul", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "trianguloAzul", &qcoords, &pcoords);
 	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "prism.obj");
 	trianguloAzul->scale(1.0/2.0, 1.0/2.0, 0.13);
 	trianguloAzul->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloAzul);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "trianguloVerde", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "trianguloVerde", &qcoords, &pcoords);
 	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "prism.obj");
 	trianguloVerde->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.21);
 	trianguloVerde->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVerde);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "trianguloRosa", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "trianguloRosa", &qcoords, &pcoords);
 	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "prism.obj");
 	trianguloRosa->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.17);
 	trianguloRosa->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRosa);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "quadradoLaranja", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "quadradoLaranja", &qcoords, &pcoords);
 	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "cube.obj");
 	quadradoLaranja->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.19);
 	quadradoLaranja->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoLaranja);
 
 	/**/
-	Utils::loadScene("sceneTest.xml", "quadradoAmarelo", &qcoords, &pcoords);
+	Utils::loadScene("currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
 	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "cube.obj");
 	quadradoAmarelo->scale(1.0/4.0, 1.0/2.0, 0.15);
 	quadradoAmarelo->shear(0.0, 1.0);
@@ -123,17 +123,34 @@ void GameManager::draw(){
 
 
 void GameManager::update(){
+
+	glm::quat qcoords;
+	glm::vec3 pcoords;
+
+	// Camera and entities update
 	Camera::getInstance()->update();
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++)
 		i->second->update();
 
+	// Scene saving
 	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->second->getId().compare("tabuleiro") != 0)
-				Utils::saveScene("sceneTest.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
+				Utils::saveScene("currentScene.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
 		}
 	}
 
+	// Scene reseting
+	if(Input::getInstance()->keyWasReleased('R')) {
+		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
+			if(i->second->getId().compare("tabuleiro") != 0) {
+				Utils::loadScene("initialScene.xml", i->second->getId(), &qcoords, &pcoords);			
+				i->second->resetPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
+			}
+		}
+	}
+
+	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {
 		std::string _filename = "screenshot";
 		int _width = glutGet(GLUT_WINDOW_WIDTH);

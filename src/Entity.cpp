@@ -65,9 +65,20 @@ std::string Entity::getId(){
 }
 
 
+void Entity::resetPos(float x, float y, float z, glm::quat q) {
+	setTranslation(x, y, z);
+	setRotation(q);
+}
+
 void Entity::setRotation(glm::quat q) {
 	_q = q;
 	//std::cout << " quaternion: [ " << _q.x << " " << _q.y << " " << _q.z << " " << _q.w << " ]" << std::endl;
+}
+
+void Entity::setTranslation(float x, float y, float z) {
+	_px = x;
+	_py = y;
+	_pz = z;
 }
 
 

@@ -30,7 +30,9 @@ class Entity {
 		glm::vec3 getPos();
 		glm::quat getQuat();
 		std::string getId();
+		void resetPos(float x, float y, float z, glm::quat q);
 		void setRotation(glm::quat q);
+		void setTranslation(float x, float y, float z);
 		void rotate(float x, float y, float z, float angle);
 		void translate(float x, float y, float z);
 		void scale(float x, float y, float z);
