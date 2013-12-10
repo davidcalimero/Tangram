@@ -48,7 +48,7 @@ void GameManager::init(){
 	Board * board = new Board("tabuleiro", "cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),glm::vec3(0.8,0.52,0.24),glm::vec3(0.8,0.52,0.24),10);
 	board->scale(1.8, 1.8, 0.1);
-	board->translate(pcoords.x, pcoords.y, pcoords.z);
+	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
 
 	/**/
@@ -153,7 +153,7 @@ void GameManager::update(){
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->second->getId().compare("tabuleiro") != 0) {
 				Utils::loadScene("initialScene.xml", i->second->getId(), &qcoords, &pcoords);			
-				i->second->resetPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
+				((TangramPieces *)i->second)->resetPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 			}
 		}
 	}

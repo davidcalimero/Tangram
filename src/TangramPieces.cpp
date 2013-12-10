@@ -7,7 +7,13 @@ TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, ver
 
 void TangramPieces::setPos(float px, float py, float pz, glm::quat q){
 	setRotation(q);
-	translate(px, py, pz);
+	setTranslation(px, py, pz);
+}
+
+
+void TangramPieces::resetPos(float x, float y, float z, glm::quat q) {
+	setTranslation(x, y, z);
+	setRotation(q);
 }
 
 

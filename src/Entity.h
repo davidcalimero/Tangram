@@ -31,7 +31,6 @@ class Entity {
 		glm::quat getQuat();
 		std::string getId();
 		Mesh * getMesh();
-		void resetPos(float x, float y, float z, glm::quat q);
 		void setRotation(glm::quat q);
 		void setTranslation(float x, float y, float z);
 		void rotate(float x, float y, float z, float angle);

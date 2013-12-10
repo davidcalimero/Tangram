@@ -11,7 +11,6 @@ class Input {
 		int _lastMousePositionX;
 		int _lastMousePositionY;
 		glm::vec2 _mouseMotion;
-
 		bool * _keyPressedStates; 
 		bool * _specialPressedStates;
 		bool * _keyReleasedStates;
@@ -19,12 +18,10 @@ class Input {
 		bool * _mousePressedStates;
 		bool * _mouseReleasedStates;
 		int _wheelDirection;
-
 		Input();
 
 	public:
 		static Input * getInstance();
-
 		void keyPressed(unsigned char key);
 		void keyUp(unsigned char key);
 		void specialPressed(int key);

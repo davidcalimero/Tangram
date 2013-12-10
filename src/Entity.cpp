@@ -70,14 +70,8 @@ Mesh * Entity::getMesh(){
 }
 
 
-void Entity::resetPos(float x, float y, float z, glm::quat q) {
-	setTranslation(x, y, z);
-	setRotation(q);
-}
-
 void Entity::setRotation(glm::quat q) {
 	_q = q;
-	//std::cout << " quaternion: [ " << _q.x << " " << _q.y << " " << _q.z << " " << _q.w << " ]" << std::endl;
 }
 
 void Entity::setTranslation(float x, float y, float z) {
@@ -95,10 +89,7 @@ void Entity::rotate(float x, float y, float z, float angle){
 void Entity::translate(float x, float y, float z){
 	_px += x;
 	_py += y;
-	_pz += z;
-
-	if(_id.compare("tabuleiro") != 0 && _pz < _height/2)
-		_pz = _height/2;
+	_pz = MAX(_pz + z, _height/2);
 }
 
 

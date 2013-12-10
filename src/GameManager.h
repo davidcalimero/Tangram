@@ -17,7 +17,6 @@ class GameManager {
 		std::map<const std::string, Entity *> _entities;
 		GLuint _stencilValue;
 		GameManager();
-
 		Light * _light;
 
 	public:

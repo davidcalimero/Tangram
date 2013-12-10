@@ -215,21 +215,18 @@ namespace Utils {
 				glm::vec3 v; 
 				s >> v.x >> v.y >> v.z;
 				vertices.push_back(v);
-				//std::cout << "vertices " << v.x << " " << v.y << " " << v.z << std::endl;
 			}
 			else if (line.substr(0,3) == "vt "){
 				std::istringstream s(line.substr(3));
 				glm::vec2 v; 
 				s >> v.x >> v.y;
 				uvs.push_back(v);
-				//std::cout << "uvs " << v.x << " " << v.y << std::endl;
 			}
 			else if (line.substr(0,3) == "vn "){
 				std::istringstream s(line.substr(3));
 				glm::vec3 v; 
 				s >> v.x >> v.y >> v.z;
 				normals.push_back(v);
-				//std::cout << "normals " << v.x << " " << v.y << " " << v.z << std::endl;
 			}
 			else if (line.substr(0,2) == "f ") {
 				std::istringstream s(line.substr(2));
