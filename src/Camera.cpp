@@ -77,9 +77,19 @@ glm::mat4 Camera::getView(){
 }
 
 
+void Camera::setRotation(glm::quat q) {
+	_q = q;
+}
+
 void Camera::update(){
+
+	glm::quat q;
+
+	// Alternate between orthographic and perspective
 	if(Input::getInstance()->keyWasReleased('P'))
 		_type = !_type;
+
+	// Progressive rotation
 	if(Input::getInstance()->keyWasPressed('W') || Input::getInstance()->specialWasPressed(GLUT_KEY_UP))
 		rotate(-0.05, 0);
 	if(Input::getInstance()->keyWasPressed('S') || Input::getInstance()->specialWasPressed(GLUT_KEY_DOWN))
@@ -89,9 +99,37 @@ void Camera::update(){
 	if(Input::getInstance()->keyWasPressed('D') || Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
 		rotate(0, 0.05);
 
+	// Views
+	if(Input::getInstance()->keyWasReleased('1')) {		// Top
+		q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));
+		setRotation(q);
+	}
+	if(Input::getInstance()->keyWasReleased('2')) {		// Front
+		q = glm::angleAxis(0.0f, glm::vec3(1.0, 0.0, 0.0));
+		setRotation(q);
+	}	
+	if(Input::getInstance()->keyWasReleased('3')) {		// Left
+		q = glm::angleAxis(90.0f, glm::vec3(0.0, 0.0, 1.0));
+		setRotation(q);
+	}
+	if(Input::getInstance()->keyWasReleased('4')) {		// Bottom
+		q = glm::angleAxis(-90.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 0.0, 1.0));
+		setRotation(q);
+	}
+	if(Input::getInstance()->keyWasReleased('5')) {		// Back
+		q = glm::angleAxis(180.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 1.0, 0.0));
+		setRotation(q);
+	}	
+	if(Input::getInstance()->keyWasReleased('6')) {		// Right
+		q = glm::angleAxis(270.0f, glm::vec3(0.0, 0.0, 1.0));
+		setRotation(q);
+	}
+	
+	// spheric camera
 	glm::vec2 mouse = Input::getInstance()->getMouseMotion();
 	if(GameManager::getInstance()->isMouseOver("background") || GameManager::getInstance()->isMouseOver("tabuleiro"))
 		rotate(mouse.y, mouse.x);
 
+	// zoom
 	_distance = MAX(MIN((_distance + Input::getInstance()->getWheelDirection()), 8), 2);
 }
