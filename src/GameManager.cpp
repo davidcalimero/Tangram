@@ -41,67 +41,69 @@ void GameManager::init(){
 	glm::quat qcoords;
 	glm::vec3 pcoords;
 
+	ProgramShader::getInstance()->createShaderProgram("shaders/vertex.glsl", "shaders/fragment.glsl");
+
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), glm::vec3(0.5,0.5,0.5), glm::vec3(0.9,0.9,0.9), glm::vec3(0.9,0.9,0.9));
 	
 	/**/
-	Utils::loadScene("currentScene.xml", "tabuleiro", &qcoords, &pcoords);
-	Board * board = new Board("tabuleiro", "cube.obj");
+	Utils::loadScene("scene/currentScene.xml", "tabuleiro", &qcoords, &pcoords);
+	Board * board = new Board("tabuleiro", "mesh/cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),glm::vec3(0.8,0.52,0.24),glm::vec3(0.8,0.52,0.24),10);
 	board->scale(1.8, 1.8, 0.1);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
-	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "prism.obj");
+	Utils::loadScene("scene/currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
+	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "mesh/prism.obj");
 	trianguloVermelho->getMesh()->setValues(glm::vec3(0.59,0.17,0.17),glm::vec3(1.0,0.3,0.3),glm::vec3(1.0,0.3,0.3),10);
 	trianguloVermelho->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.25);
 	trianguloVermelho->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVermelho);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "trianguloRoxo", &qcoords, &pcoords);
-	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "prism.obj");
+	Utils::loadScene("scene/currentScene.xml", "trianguloRoxo", &qcoords, &pcoords);
+	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "mesh/prism.obj");
 	trianguloRoxo->getMesh()->setValues(glm::vec3(0.19,0.02,0.19),glm::vec3(0.5,0.2,0.5),glm::vec3(0.5,0.2,0.5),10);
 	trianguloRoxo->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.23);
 	trianguloRoxo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRoxo);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "trianguloAzul", &qcoords, &pcoords);
-	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "prism.obj");
+	Utils::loadScene("scene/currentScene.xml", "trianguloAzul", &qcoords, &pcoords);
+	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "mesh/prism.obj");
 	trianguloAzul->getMesh()->setValues(glm::vec3(0.09,0.33,0.45),glm::vec3(0.2,0.6,0.8),glm::vec3(0.2,0.6,0.8),10);
 	trianguloAzul->scale(1.0/2.0, 1.0/2.0, 0.13);
 	trianguloAzul->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloAzul);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "trianguloVerde", &qcoords, &pcoords);
-	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "prism.obj");
+	Utils::loadScene("scene/currentScene.xml", "trianguloVerde", &qcoords, &pcoords);
+	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "mesh/prism.obj");
 	trianguloVerde->getMesh()->setValues(glm::vec3(0.09,0.39,0.09),glm::vec3(0.2,0.7,0.2),glm::vec3(0.2,0.7,0.2),10);
 	trianguloVerde->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.21);
 	trianguloVerde->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVerde);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "trianguloRosa", &qcoords, &pcoords);
-	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "prism.obj");
+	Utils::loadScene("scene/currentScene.xml", "trianguloRosa", &qcoords, &pcoords);
+	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "mesh/prism.obj");
 	trianguloRosa->getMesh()->setValues(glm::vec3(0.67,0.50,0.55),glm::vec3(1.0,0.7,0.8),glm::vec3(1.0,0.7,0.8),10);
 	trianguloRosa->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.17);
 	trianguloRosa->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRosa);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "quadradoLaranja", &qcoords, &pcoords);
-	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "cube.obj");
+	Utils::loadScene("scene/currentScene.xml", "quadradoLaranja", &qcoords, &pcoords);
+	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "mesh/cube.obj");
 	quadradoLaranja->getMesh()->setValues(glm::vec3(0.61,0.32,0.02),glm::vec3(1.0,0.5,0.0),glm::vec3(1.0,0.5,0.0),10);
 	quadradoLaranja->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.19);
 	quadradoLaranja->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoLaranja);
 
 	/**/
-	Utils::loadScene("currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
-	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "cube.obj");
+	Utils::loadScene("scene/currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
+	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "mesh/cube.obj");
 	quadradoAmarelo->getMesh()->setValues(glm::vec3(0.63,0.63,0.10),glm::vec3(0.9,0.9,0.0),glm::vec3(0.9,0.9,0.0),10);
 	quadradoAmarelo->scale(1.0/4.0, 1.0/2.0, 0.15);
 	quadradoAmarelo->shear(0.0, 1.0);
@@ -146,7 +148,7 @@ void GameManager::update(){
 	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->second->getId().compare("tabuleiro") != 0)
-				Utils::saveScene("currentScene.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
+				Utils::saveScene("scene/currentScene.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
 		}
 	}
 
@@ -154,7 +156,7 @@ void GameManager::update(){
 	if(Input::getInstance()->keyWasReleased('R')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
 			if(i->second->getId().compare("tabuleiro") != 0) {
-				Utils::loadScene("initialScene.xml", i->second->getId(), &qcoords, &pcoords);			
+				Utils::loadScene("scene/initialScene.xml", i->second->getId(), &qcoords, &pcoords);			
 				((TangramPieces *)i->second)->resetPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 			}
 		}

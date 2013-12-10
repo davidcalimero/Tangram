@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#define CAPTION "Le Tangram 3D"
+#define CAPTION "Le InsTangram 3D"
 
 int WinX = 640, WinY = 480;
 int WindowHandle = 0;
@@ -117,7 +117,6 @@ void setupOpenGL() {
 	std::cerr << "CONTEXT: OpenGL v" << glGetString(GL_VERSION) << std::endl;
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	
-	/* Stencil Buffer Initialization */
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
@@ -163,7 +162,6 @@ void init(int argc, char* argv[]) {
 	setupGLUT(argc, argv);
 	setupGLEW();
 	setupOpenGL();
-	ProgramShader::getInstance()->createShaderProgram("vs1.glsl", "fs1.glsl");
 	GameManager::getInstance()->init();
 	setupCallbacks();
 }
