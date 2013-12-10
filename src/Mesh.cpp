@@ -42,6 +42,19 @@ Mesh::Mesh(char * objFile){
 
 void Mesh::draw(){
 	glBindVertexArray(_vaoId);
+	
+	// Get IDs
+	GLint ambientId = ProgramShader::getInstance()->getId("MaterialAmbient");
+	GLint diffuseId = ProgramShader::getInstance()->getId("MaterialDiffuse");
+	GLint specularId = ProgramShader::getInstance()->getId("MaterialSpecular");
+	GLint shininessId = ProgramShader::getInstance()->getId("MaterialShininess");
+
+	// Set Values
+	glUniform1f(shininessId, _shininess);
+	glUniform3fv(ambientId, 1, glm::value_ptr(_ambientColor));
+	glUniform3fv(diffuseId, 1, glm::value_ptr(_diffuseColor));
+	glUniform3fv(specularId, 1, glm::value_ptr(_specularColor));
+
 	glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
 	//glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_BYTE, (GLvoid*)0);
 }
@@ -59,4 +72,12 @@ Mesh::~Mesh(){
 	glDeleteVertexArrays(1, &_vaoId);
 
 	Utils::checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
+}
+
+
+void Mesh::setValues(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float shininess){
+	_ambientColor = ambient;
+	_diffuseColor = diffuse;
+	_specularColor = specular;
+	_shininess = shininess;
 }

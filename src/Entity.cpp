@@ -65,6 +65,11 @@ std::string Entity::getId(){
 }
 
 
+Mesh * Entity::getMesh(){
+	return _mesh;
+}
+
+
 void Entity::resetPos(float x, float y, float z, glm::quat q) {
 	setTranslation(x, y, z);
 	setRotation(q);

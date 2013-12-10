@@ -13,7 +13,11 @@ uniform vec3 DiffuseLight;
 uniform vec3 SpecularLight;
 
 // Material Shininess
-uniform float Shininess;
+// Material Attributes
+uniform vec3 MaterialAmbient;
+uniform vec3 MaterialDiffuse;
+uniform vec3 MaterialSpecular;
+uniform float MaterialShininess;
 
 // Camera View Vector
 uniform vec3 EyeDirection;
@@ -37,18 +41,18 @@ void main(void)
 	vec3 H = normalize(L + E);
 
 	// Ambient Component
-	vec3 ambient = AmbientLight;
+	vec3 ambient = MaterialAmbient * AmbientLight;
 
 	// Diffuse Component
 	float NdotL = max(dot(N, L), 0.0);
-	vec3 diffuse = DiffuseLight * NdotL;
+	vec3 diffuse = MaterialDiffuse * DiffuseLight * NdotL;
 
 	// Specular Component
 	vec3 specular = vec3(0.0);
 	if(NdotL > 0)
 	{
 		float NdotH = max(dot(N, H), 0.0);
-		specular = SpecularLight * pow(NdotH, 32.0);
+		specular = MaterialSpecular * SpecularLight * pow(NdotH, MaterialShininess);
 	}
 	
 	//out_Color = vec4(ex_Normal, 1.0);
