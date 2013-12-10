@@ -104,20 +104,20 @@ void Camera::update(){
 		q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));
 		setRotation(q);
 	}
-	if(Input::getInstance()->keyWasReleased('2')) {		// Front
-		q = glm::angleAxis(0.0f, glm::vec3(1.0, 0.0, 0.0));
-		setRotation(q);
-	}	
-	if(Input::getInstance()->keyWasReleased('3')) {		// Left
-		q = glm::angleAxis(90.0f, glm::vec3(0.0, 0.0, 1.0));
-		setRotation(q);
-	}
-	if(Input::getInstance()->keyWasReleased('4')) {		// Bottom
+	if(Input::getInstance()->keyWasReleased('2')) {		// Bottom
 		q = glm::angleAxis(-90.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 0.0, 1.0));
 		setRotation(q);
 	}
-	if(Input::getInstance()->keyWasReleased('5')) {		// Back
+	if(Input::getInstance()->keyWasReleased('3')) {		// Front
+		q = glm::angleAxis(0.0f, glm::vec3(1.0, 0.0, 0.0));
+		setRotation(q);
+	}
+	if(Input::getInstance()->keyWasReleased('4')) {		// Back
 		q = glm::angleAxis(180.0f, glm::vec3(1.0, 0.0, 0.0)) * glm::angleAxis(180.0f, glm::vec3(0.0, 1.0, 0.0));
+		setRotation(q);
+	}	
+	if(Input::getInstance()->keyWasReleased('5')) {		// Left
+		q = glm::angleAxis(90.0f, glm::vec3(0.0, 0.0, 1.0));
 		setRotation(q);
 	}	
 	if(Input::getInstance()->keyWasReleased('6')) {		// Right
