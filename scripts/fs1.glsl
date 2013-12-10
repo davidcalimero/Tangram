@@ -37,19 +37,20 @@ void main(void)
 	vec3 H = normalize(L + E);
 
 	// Ambient Component
-	vec4 ambient = vec4(AmbientLight, 1.0);
+	vec3 ambient = AmbientLight;
 
 	// Diffuse Component
 	float NdotL = max(dot(N, L), 0.0);
-	vec4 diffuse = vec4(DiffuseLight, 1.0) * NdotL;
+	vec3 diffuse = DiffuseLight * NdotL;
 
 	// Specular Component
-	vec4 specular = vec4(0.0);
+	vec3 specular = vec3(0.0);
 	if(NdotL > 0)
 	{
 		float NdotH = max(dot(N, H), 0.0);
-		specular = vec4(SpecularLight, 1.0) * pow(NdotH, Shininess);
+		specular = SpecularLight * pow(NdotH, 32.0);
 	}
 	
-	out_Color = normalize(vec4(vec3(ambient + diffuse + specular), 1.0));
+	//out_Color = vec4(ex_Normal, 1.0);
+	out_Color = vec4(ambient + diffuse + specular, 1.0);
 }
