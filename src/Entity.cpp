@@ -14,9 +14,9 @@ void Entity::draw(){
 
 	//ORIGINAL PIECE
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(), glm::vec3(_px, _py, _pz)) * glm::mat4_cast(_q) * _matrix;
-	glm::mat4 normalMatrix = glm::transpose(glm::inverse(Camera::getInstance()->getView()*modelMatrix));
+	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*modelMatrix));
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
-	glUniformMatrix4fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
+	glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
 	_mesh->draw();
 
 	//REFLECTED PIECE
@@ -33,9 +33,9 @@ void Entity::draw(){
 									  glm::mat4_cast(rotation) *
 									  glm::scale(glm::mat4(), glm::vec3(1, 1, -1)) *
 									  _matrix;
-		glm::mat4 reflexNormalMatrix = glm::transpose(glm::inverse(Camera::getInstance()->getView()*reflexModelMatrix));
+		glm::mat3 reflexNormalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*reflexModelMatrix));
 		glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &reflexModelMatrix[0][0]);
-		glUniformMatrix4fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
+		glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
 
 		glDisable(GL_CULL_FACE);
 		_mesh->draw();

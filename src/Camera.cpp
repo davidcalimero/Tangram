@@ -49,11 +49,10 @@ void Camera::put(){
 	_view = _view*glm::mat4_cast(_q);
 
 	GLint id = ProgramShader::getInstance()->getId("EyeDirection");
-	glm::vec4 e = glm::mat4_cast(_q) * glm::vec4(_center-eye, 1.0) / sqrt(glm::vec4(_center-eye, 1.0).x*glm::vec4(_center-eye, 1.0).x+glm::vec4(_center-eye, 1.0).y*glm::vec4(_center-eye, 1.0).y+glm::vec4(_center-eye, 1.0).z+glm::vec4(_center-eye, 1.0).z+1);
-	e.x = -e.x;
-	e.z = -e.z;
+	glm::vec4 e = glm::mat4_cast(_q) * glm::normalize(glm::vec4(_center-eye, 1.0));
+	e.x *= -1;
+	e.z *= -1;
 	glUniform3fv(id, 1, glm::value_ptr(glm::normalize(glm::vec3(e))));
-	//std::cout << e.x << " " << e.y << " " << e.z << std::endl;
 
 	glBindBuffer(GL_UNIFORM_BUFFER, _vboUBId);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float)*16, &_view[0][0]);

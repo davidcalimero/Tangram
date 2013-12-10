@@ -31,7 +31,7 @@ void main(void)
 {
 	// Blinn-Phong Reflexion Model
 	// Vector Initialization
-	vec3 L = normalize(vec3(ViewMatrix * ModelMatrix * vec4(LightPosition, 1.0)) - ex_Position);
+	vec3 L = normalize(vec3(ViewMatrix * vec4(LightPosition, 1.0)) - ex_Position);
 	vec3 E = normalize(-EyeDirection);
 	vec3 N = normalize(ex_Normal);
 	vec3 H = normalize(L + E);
@@ -48,9 +48,8 @@ void main(void)
 	if(NdotL > 0)
 	{
 		float NdotH = max(dot(N, H), 0.0);
-		specular = vec4(SpecularLight, 1.0) /** pow(NdotH, Shininess)*/;
+		specular = vec4(SpecularLight, 1.0) * pow(NdotH, Shininess);
 	}
 	
-	out_Color = vec4(ex_Normal, 1.0);
-	//out_Color = ambient + diffuse + specular;
+	out_Color = normalize(vec4(vec3(ambient + diffuse + specular), 1.0));
 }

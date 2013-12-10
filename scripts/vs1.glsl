@@ -9,7 +9,7 @@ out vec4 ex_Color;
 out vec3 ex_Normal;
 
 uniform mat4 ModelMatrix;
-uniform mat4 NormalMatrix;
+uniform mat3 NormalMatrix;
 
 layout(std140) uniform SharedMatrices
 {
@@ -19,9 +19,8 @@ layout(std140) uniform SharedMatrices
 
 void main(void)
 {
-	
 	ex_Position = vec3(ViewMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	ex_Color = in_Color;
-	ex_Normal = normalize(vec3(NormalMatrix * vec4(in_Normal, 1.0)));
+	ex_Normal = normalize(NormalMatrix * in_Normal);
 	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(in_Position, 1.0);
 }
