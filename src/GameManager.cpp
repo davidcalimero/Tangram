@@ -150,6 +150,7 @@ void GameManager::update(){
 			if(i->second->getId().compare("tabuleiro") != 0)
 				Utils::saveScene("scene/currentScene.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
 		}
+		std::cout << "Saved in scene/currentScene.xml" << std::endl;
 	}
 
 	// Scene reseting
@@ -172,7 +173,7 @@ void GameManager::postProcessing(){
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {
-		std::string _filename = "screenshot";
+		std::string _filename = "screenshots/screenshot";
 		int _width = glutGet(GLUT_WINDOW_WIDTH);
 		int _height = glutGet(GLUT_WINDOW_HEIGHT);
 		int state = Utils::screenshot(_filename, _width, _height);

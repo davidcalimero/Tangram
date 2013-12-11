@@ -64,12 +64,11 @@ namespace Utils {
 
 
 	int screenshot(std::string _filename, int _w, int _h) {
-		std::cout << _w << "  " << _h << std::endl;
+		//std::cout << _w << "  " << _h << std::endl;
 
 		_filename.append(date_time());
 		_filename.append(".bmp");
-		std::cout << _filename << std::endl;
-		glutSwapBuffers();
+		std::cout << "Saved in " << _filename << std::endl;
         
 		/*std::vector< unsigned char > buf( _w * _h * 3 );
 		glPixelStorei( GL_PACK_ALIGNMENT, 1 );
