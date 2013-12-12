@@ -44,7 +44,7 @@ void Camera::put(){
 			projection = glm::ortho(-1.5*_distance/4, 1.5*_distance/4, -1.5/racio*_distance/4, 1.5/racio*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
 	}
 	else
-		projection = glm::perspective(38.0f, racio, 1.0f, 10.0f);
+		projection = glm::perspective(38.0f, racio, 1.0f, 15.0f);
 
 	_view = _view*glm::mat4_cast(_q);
 
@@ -131,5 +131,5 @@ void Camera::update(){
 		rotate(mouse.y, mouse.x);
 
 	// zoom
-	_distance = MAX(MIN((_distance + Input::getInstance()->getWheelDirection()), 8), 2);
+	_distance = MAX(MIN((_distance + Input::getInstance()->getWheelDirection()), 10), 2);
 }
