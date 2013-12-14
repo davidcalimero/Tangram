@@ -45,6 +45,28 @@ void GameManager::init(){
 
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), glm::vec3(0.5,0.5,0.5), glm::vec3(0.9,0.9,0.9), glm::vec3(0.9,0.9,0.9));
 	
+	glGenFramebuffers(1, &frameBufferPP);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+
+	//Texture images
+	glGenTextures(1, &texColorBufferPP);
+	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+	_width = glutGet(GLUT_WINDOW_WIDTH);
+	_height = glutGet(GLUT_WINDOW_HEIGHT);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
+
+	//Checking if everything is allright!
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
+		std::cout << "cenaz" << std::endl;
+	}
+	else std::cout << "Framebuffer cannot be used!" << std::endl;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "tabuleiro", &qcoords, &pcoords);
 	Board * board = new Board("tabuleiro", "mesh/cube.obj");
@@ -109,7 +131,6 @@ void GameManager::init(){
 	quadradoAmarelo->shear(0.0, 1.0);
 	quadradoAmarelo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoAmarelo);
-
 	/**/
 }
 
@@ -129,7 +150,6 @@ void GameManager::draw(){
 			glStencilFunc(GL_ALWAYS, 0, -1);
 			i->second->drawReflection();
 	}
-
 	glUseProgram(0);
 }
 
@@ -166,18 +186,34 @@ void GameManager::update(){
 
 
 void GameManager::postProcessing(){
+
 	// Mouse Over
 	glm::vec2 mp = Input::getInstance()->getMousePostion();
-	if(!Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && !Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
-		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
+	if( !Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && 
+		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
+		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, 
+					 GL_UNSIGNED_INT, &_stencilValue);
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {
 		std::string _filename = "screenshots/screenshot";
-		int _width = glutGet(GLUT_WINDOW_WIDTH);
-		int _height = glutGet(GLUT_WINDOW_HEIGHT);
+		_width = glutGet(GLUT_WINDOW_WIDTH);
+		_height = glutGet(GLUT_WINDOW_HEIGHT);
 		int state = Utils::screenshot(_filename, _width, _height);
 		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
+	}
+
+	if(Input::getInstance()->keyWasReleased('E')) {
+
+		//verificar qual é o framebuffer que ta usado
+
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
+			std::cout << "Vai usar o framebuffer normal.... " << std::endl;
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
+		else std::cout << "The effect could not be applied. Error in Framebuffer!" << std::endl;
+	
 	}
 }
 
@@ -187,4 +223,5 @@ void GameManager::destroyBufferObjects(){
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++)
 		i->second->~Entity();
 	Camera::getInstance()->~Camera();
+	glDeleteFramebuffers(1, &frameBufferPP);
 }
