@@ -10,7 +10,11 @@
 		</entity>
 		<entity id="mesa">
 			<quaternion x="0" y="0" z="0" w="0"/>
-			<position x="0.0" y="0.0" z="-0.05"/>
+			<position x="0.0" y="0.0" z="-0.2"/>
+		</entity>
+		<entity id="espelho">
+			<quaternion x="0" y="0" z="0" w="0"/>
+			<position x="0.0" y="0.0" z="-0.1"/>
 		</entity>
 		<entity id="trianguloAzul">
 			<quaternion x="0" y="0" z="0.707107" w="0.707107"/>

@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "TangramPieces.h"
 #include "Board.h"
+#include "Mirror.h"
 #include "Light.h"
 
 #include <iostream>

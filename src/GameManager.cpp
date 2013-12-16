@@ -25,16 +25,19 @@ bool GameManager::isMouseOver(std::string id){
 	if(id.compare("background") == 0 && _stencilValue == 0)
 		return true;
 
+	if(id.compare("espelho") == 0 && _stencilValue == 1)
+		return true;
+
 	entityIterator e = _entities.find(id);
 	if(e == _entities.end())
 		return false;
 
-	int stencil = std::distance(_entities.begin(), e)+1;
+	int stencil = std::distance(_entities.begin(), e)+2;
 	if(stencil == _stencilValue)
 		return true;
 	return false;
 }
-
+Mirror * mirror;
 
 void GameManager::init(){
 
@@ -67,13 +70,23 @@ void GameManager::init(){
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-	/**/
+		/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);
 	Board * board = new Board("mesa", "mesh/cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),glm::vec3(0.8,0.52,0.24),glm::vec3(0.8,0.52,0.24),10);
-	board->scale(1.8, 1.8, 0.1);
+	board->scale(2.5, 2.5, 0.2);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
+
+	/**/
+	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
+	mirror = new Mirror("espelho", "mesh/cube.obj");
+	mirror->getMesh()->setValues(glm::vec3(0.1,0.1,0.1),glm::vec3(0.1,0.1,0.1),glm::vec3(0.1,0.1,0.1),10);
+	mirror->scale(1.8, 1.8, 0.2);
+	mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
+	//add(mirror);
+
+
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
@@ -140,11 +153,18 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 
 	_light->setShaderLightValues(false);
+	glStencilFunc(GL_GREATER, 1 , -1);
+	mirror->draw();
+	
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-			glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
-			i->second->draw();
+	//	if(i->first.compare("espelho") == 0)
+			glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
+	//	else if(i->first.compare("espelho") == 0)
+	//		glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+1 , 1);
+	//	else
+	//		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
+		i->second->draw();
 	}
-
 	_light->setShaderLightValues(true);
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 			glStencilFunc(GL_ALWAYS, 0, -1);
@@ -193,6 +213,8 @@ void GameManager::postProcessing(){
 		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
 		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, 
 					 GL_UNSIGNED_INT, &_stencilValue);
+
+	std::cout << _stencilValue << std::endl;
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {

@@ -16,7 +16,10 @@ void Entity::draw(){
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*modelMatrix));
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 	glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
+	
+	//glDisable(GL_STENCIL_TEST);
 	_mesh->draw();
+	//glEnable(GL_STENCIL_TEST);
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
 }
@@ -32,6 +35,7 @@ void Entity::drawReflection(){
 		glStencilMask(0x00);
 		glDepthMask(GL_TRUE);
 		/* */
+		
 		glm::vec3 angles = glm::eulerAngles(_q);
 		glm::quat rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) *
 							 glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) *
@@ -45,6 +49,7 @@ void Entity::drawReflection(){
 		glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
 
 		glDisable(GL_CULL_FACE);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		_mesh->draw();
 		glEnable(GL_CULL_FACE);	
 	}

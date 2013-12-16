@@ -12,6 +12,10 @@
 			<quaternion x="0" y="0" z="0" w="0"/>
 			<position x="0.0" y="0.0" z="-0.05"/>
 		</entity>
+		<entity id="espelho">
+			<quaternion x="0" y="0" z="0" w="0"/>
+			<position x="0.0" y="0.0" z="10.0"/>
+		</entity>
 		<entity id="trianguloAzul">
 			<quaternion x="0" y="0" z="0.707107" w="0.707107"/>
 			<position x="0.375" y="-0.375" z="0.065"/>

@@ -1,11 +1,11 @@
-#include "Board.h"
+#include "Mirror.h"
 
-Board::Board(std::string id, char * vertexFile) : Entity(id, vertexFile, false){}
+Mirror::Mirror(std::string id, char * vertexFile) : Entity(id, vertexFile, false){}
 
-void Board::draw(){
+void Mirror::draw(){
 	
 	// Reflexoes
-	/* * /
+	/* */
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
@@ -15,8 +15,7 @@ void Board::draw(){
 
 	Entity::draw();
 
-	//glDepthMask(GL_TRUE);
+	glDepthMask(GL_TRUE);
 }
 
-
-void Board::update(){}
+void Mirror::update(){}
