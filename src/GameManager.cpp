@@ -78,6 +78,7 @@ void GameManager::init(){
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 	add(board);
 
+
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
 	mirror = new Mirror("espelho", "mesh/cube.obj");
