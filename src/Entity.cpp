@@ -25,10 +25,13 @@ void Entity::draw(){
 void Entity::drawReflection(){
 
 	if(_reflection){
-		/*glStencilFunc(GL_EQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDepthMask(GL_TRUE);*/
 
+		// Reflexoes
+		/* */
+		glStencilFunc(GL_EQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDepthMask(GL_TRUE);
+		/* */
 		glm::vec3 angles = glm::eulerAngles(_q);
 		glm::quat rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) *
 							 glm::rotate(glm::quat(),-angles.y,glm::vec3(0,1,0)) *

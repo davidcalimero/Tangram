@@ -68,8 +68,8 @@ void GameManager::init(){
 
 
 	/**/
-	Utils::loadScene("scene/currentScene.xml", "tabuleiro", &qcoords, &pcoords);
-	Board * board = new Board("tabuleiro", "mesh/cube.obj");
+	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);
+	Board * board = new Board("mesa", "mesh/cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),glm::vec3(0.8,0.52,0.24),glm::vec3(0.8,0.52,0.24),10);
 	board->scale(1.8, 1.8, 0.1);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
@@ -167,7 +167,7 @@ void GameManager::update(){
 	// Scene saving
 	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
-			if(i->second->getId().compare("tabuleiro") != 0)
+			if(i->second->getId().compare("mesa") != 0)
 				Utils::saveScene("scene/currentScene.xml", i->second->getId(), i->second->getQuat(), i->second->getPos());
 		}
 		std::cout << "Saved in scene/currentScene.xml" << std::endl;
@@ -176,7 +176,7 @@ void GameManager::update(){
 	// Scene reseting
 	if(Input::getInstance()->keyWasReleased('R')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
-			if(i->second->getId().compare("tabuleiro") != 0) {
+			if(i->second->getId().compare("mesa") != 0) {
 				Utils::loadScene("scene/initialScene.xml", i->second->getId(), &qcoords, &pcoords);			
 				((TangramPieces *)i->second)->resetPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 			}

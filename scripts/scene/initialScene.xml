@@ -8,7 +8,7 @@
 			<quaternion x="0" y="0" z="-0.92388" w="0.382683"/>
 			<position x="0.0" y="-0.25" z="0.095"/>
 		</entity>
-		<entity id="tabuleiro">
+		<entity id="mesa">
 			<quaternion x="0" y="0" z="0" w="0"/>
 			<position x="0.0" y="0.0" z="-0.05"/>
 		</entity>
