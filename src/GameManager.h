@@ -23,6 +23,7 @@ class GameManager {
 		GLuint frameBufferPP;
 		GLuint texColorBufferPP;
 		GLuint rboDepthStencilPP;
+		GLuint depthrenderbufferPP;
 
 
 	public:

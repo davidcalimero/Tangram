@@ -10,6 +10,7 @@ out vec3 ex_Position;
 out vec4 ex_Color;
 out vec3 ex_Normal;
 
+
 // Matrix
 uniform mat4 ModelMatrix;
 uniform mat3 NormalMatrix;

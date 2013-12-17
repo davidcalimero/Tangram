@@ -38,6 +38,7 @@ bool GameManager::isMouseOver(std::string id){
 	return false;
 }
 Mirror * mirror;
+Board * board;
 
 void GameManager::init(){
 
@@ -52,18 +53,28 @@ void GameManager::init(){
 					   glm::vec3(0.9,0.9,0.9), 
 					   glm::vec3(0.9,0.9,0.9));
 	
+
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-
-	//Texture images
 	glGenTextures(1, &texColorBufferPP);
 	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+
 	_width = glutGet(GLUT_WINDOW_WIDTH);
 	_height = glutGet(GLUT_WINDOW_HEIGHT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
+
+	glGenRenderbuffers(1, &depthrenderbufferPP);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbufferPP);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbufferPP);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texColorBufferPP, 0);
+	GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+	glDrawBuffers(1, DrawBuffers);
+
 
 	//Checking if everything is allright!
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
@@ -74,15 +85,15 @@ void GameManager::init(){
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-		/**/
+	/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);
-	Board * board = new Board("mesa", "mesh/cube.obj");
+	board = new Board("mesa", "mesh/cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),
 								glm::vec3(0.8,0.52,0.24),
 								glm::vec3(0.8,0.52,0.24),10);
 	board->scale(2.5, 2.5, 0.2);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
-	add(board);
+	//add(board);
 
 
 	/**/
@@ -91,7 +102,7 @@ void GameManager::init(){
 	mirror->getMesh()->setValues(glm::vec3(0.1,0.1,0.1),
 								 glm::vec3(0.1,0.1,0.1),
 								 glm::vec3(0.1,0.1,0.1),10);
-	mirror->scale(1.8, 1.8, 0.05);
+	mirror->scale(2.2, 2.2, 0.05);
 	mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 
 
@@ -173,10 +184,17 @@ void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
 	Camera::getInstance()->put();
 
+	/*glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+	_width = glutGet(GLUT_WINDOW_WIDTH);
+	_height = glutGet(GLUT_WINDOW_HEIGHT);
+	glViewport(0,0,_width,_height);*/
+
+
 	// BOARD
 	_light->setShaderLightValues(false);	
 	glStencilFunc(GL_GEQUAL, 1 , -1); 
-	_entities.find("mesa")->second->draw();
+	//_entities.find("mesa")->second->draw();
+	//board->draw();
 
 	// MIRROR	
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -187,11 +205,10 @@ void GameManager::draw(){
 	mirror->draw();	
 	glDepthMask(GL_TRUE);
 
-	
 	// SCENE
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-			glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
-		if(i->first.compare("mesa") != 0)
+		glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
+		//if(i->first.compare("mesa") != 0)
 			i->second->draw();
 	}
 
@@ -201,7 +218,7 @@ void GameManager::draw(){
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 				i->second->drawReflection();
 	}
-	
+
 	glUseProgram(0);
 }
 
