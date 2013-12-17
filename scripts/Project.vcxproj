@@ -19,7 +19,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -106,7 +106,9 @@
     <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="scene\currentScene.xml" />
+    <None Include="scene\currentScene.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="scene\initialScene.xml" />
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\vertex.glsl" />

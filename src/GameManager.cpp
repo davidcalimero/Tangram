@@ -83,7 +83,7 @@ void GameManager::init(){
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
 	mirror = new Mirror("espelho", "mesh/cube.obj");
 	mirror->getMesh()->setValues(glm::vec3(0.1,0.1,0.1),glm::vec3(0.1,0.1,0.1),glm::vec3(0.1,0.1,0.1),10);
-	mirror->scale(1.8, 1.8, 0.2);
+	mirror->scale(1.8, 1.8, 0.05);
 	mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 	//add(mirror);
 
@@ -153,27 +153,37 @@ void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
 	Camera::getInstance()->put();
 
-	_light->setShaderLightValues(false);
-	glStencilFunc(GL_GREATER, 1 , -1);
-	mirror->draw();
+	// BOARD
+	_light->setShaderLightValues(false);	
+	glStencilFunc(GL_GEQUAL, 1 , -1); 
+	_entities.find("mesa")->second->draw();
+
+	// MIRROR	
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF);
+	glDepthMask(GL_FALSE);
+	glClear(GL_STENCIL_BUFFER_BIT);	
+	mirror->draw();	
+	glDepthMask(GL_TRUE);
+
 	
+	// SCENE
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-	//	if(i->first.compare("espelho") == 0)
 			glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
-	//	else if(i->first.compare("espelho") == 0)
-	//		glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+1 , 1);
-	//	else
-	//		glStencilFunc(GL_ALWAYS, std::distance(_entities.begin(), i)+1 , -1);
-		i->second->draw();
+		if(i->first.compare("mesa") != 0)
+			i->second->draw();
 	}
+
+	// REFLECTIONS
 	_light->setShaderLightValues(true);
+	glStencilFunc(GL_EQUAL, 1, 0xFF); 
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-			glStencilFunc(GL_ALWAYS, 0, -1);
-			i->second->drawReflection();
+				i->second->drawReflection();
 	}
+	
 	glUseProgram(0);
 }
-
 
 void GameManager::update(){
 
