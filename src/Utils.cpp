@@ -217,7 +217,7 @@ namespace Utils {
 			}
 			else if (line.substr(0,3) == "vt "){
 				std::istringstream s(line.substr(3));
-				glm::vec2 v; 
+				glm::vec2 v;
 				s >> v.x >> v.y;
 				uvs.push_back(v);
 			}

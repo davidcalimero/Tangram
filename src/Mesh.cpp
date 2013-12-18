@@ -5,7 +5,7 @@
 
 Mesh::Mesh(char * objFile){
 	Utils::loadObj(objFile, _indices, _vertices, _uvs, _normals);
-	
+
 	glGenVertexArrays(1, &_vaoId);
 	glBindVertexArray(_vaoId);
 
@@ -21,6 +21,24 @@ Mesh::Mesh(char * objFile){
 	glEnableVertexAttribArray(UVS);
 	glVertexAttribPointer(UVS, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+	// BEGIN TEXTURES
+	glGenTextures(1, &_tex);
+
+	glBindTexture(GL_TEXTURE_2D, _tex);
+	int width, height;
+	unsigned char* image = SOIL_load_image("textures/wood.bmp", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+
+	float color[] = {0.0, 0.0, 0.0, 1.0};
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// END TEXTURES
+
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo[2]);
 	glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(glm::vec3), &_normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(NORMALS);
@@ -28,7 +46,8 @@ Mesh::Mesh(char * objFile){
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _vbo[3]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned short), &_indices[0] , GL_STATIC_DRAW);
-
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -42,7 +61,7 @@ Mesh::Mesh(char * objFile){
 
 void Mesh::draw(){
 	glBindVertexArray(_vaoId);
-	
+	glBindTexture(GL_TEXTURE_2D, _tex);
 	// Get IDs
 	GLint ambientId = ProgramShader::getInstance()->getId("MaterialAmbient");
 	GLint diffuseId = ProgramShader::getInstance()->getId("MaterialDiffuse");
@@ -56,11 +75,14 @@ void Mesh::draw(){
 	glUniform3fv(specularId, 1, glm::value_ptr(_specularColor));
 
 	glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
 	//glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_BYTE, (GLvoid*)0);
 }
 
 
 Mesh::~Mesh(){
+	glDeleteTextures(1, &_tex);
+
 	glDisableVertexAttribArray(VERTICES);
 	glDisableVertexAttribArray(UVS);
 	glDisableVertexAttribArray(NORMALS);

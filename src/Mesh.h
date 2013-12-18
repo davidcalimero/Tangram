@@ -19,6 +19,7 @@ class Mesh {
 		glm::vec3 _diffuseColor;
 		glm::vec3 _specularColor;
 		float _shininess;
+		GLuint _tex;
 		
 	public:
 		Mesh(char * objFile);

@@ -29,6 +29,7 @@ void ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 	glBindAttribLocation(_programId, VERTICES, "in_Position");
 	glBindAttribLocation(_programId, COLORS, "in_Color");
 	glBindAttribLocation(_programId, NORMALS, "in_Normal");
+	glBindAttribLocation(_programId, UVS, "in_TexCoord");
 	glLinkProgram(_programId);
 	glUniformBlockBinding(_programId, glGetUniformBlockIndex(_programId, "SharedMatrices"), 0);
 

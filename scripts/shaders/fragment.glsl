@@ -4,6 +4,7 @@
 in vec3 ex_Position;
 in vec4 ex_Color;
 in vec3 ex_Normal;
+in vec2 ex_TexCoord;
 
 // Out
 out vec4 out_Color;
@@ -19,6 +20,9 @@ uniform vec3 MaterialAmbient;
 uniform vec3 MaterialDiffuse;
 uniform vec3 MaterialSpecular;
 uniform float MaterialShininess;
+
+// Texture Sample
+uniform sampler2D tex;
 
 // Camera View Vector
 uniform vec3 EyeDirection;
@@ -58,4 +62,5 @@ void main(void)
 	
 	//out_Color = vec4(ex_Normal, 1.0);
 	out_Color = vec4(ambient + diffuse + specular, 1.0);
+	out_Color = texture(tex, ex_TexCoord) * out_Color;
 }
