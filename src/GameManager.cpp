@@ -37,8 +37,8 @@ bool GameManager::isMouseOver(std::string id){
 		return true;
 	return false;
 }
+
 Mirror * mirror;
-Board * board;
 
 void GameManager::init(){
 
@@ -87,13 +87,13 @@ void GameManager::init(){
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);
-	board = new Board("mesa", "mesh/cube.obj");
+	Board * board = new Board("mesa", "mesh/cube.obj");
 	board->getMesh()->setValues(glm::vec3(0.47,0.30,0.14),
 								glm::vec3(0.8,0.52,0.24),
 								glm::vec3(0.8,0.52,0.24),10);
 	board->scale(2.5, 2.5, 0.2);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
-	//add(board);
+	add(board);
 
 
 	/**/
@@ -189,34 +189,27 @@ void GameManager::draw(){
 	_height = glutGet(GLUT_WINDOW_HEIGHT);
 	glViewport(0,0,_width,_height);*/
 
-
-	// BOARD
-	_light->setShaderLightValues(false);	
-	glStencilFunc(GL_GEQUAL, 1 , -1); 
-	//_entities.find("mesa")->second->draw();
-	//board->draw();
-
-	// MIRROR	
+	_light->setShaderLightValues(false);
+	
+	// MIRROR
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
-	glDepthMask(GL_FALSE);
-	glClear(GL_STENCIL_BUFFER_BIT);	
+	glDepthMask(GL_FALSE);	
 	mirror->draw();	
-	glDepthMask(GL_TRUE);
 
 	// SCENE
+	glDepthMask(GL_TRUE);
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 		glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
-		//if(i->first.compare("mesa") != 0)
-			i->second->draw();
+		i->second->draw();
 	}
 
 	// REFLECTIONS
 	_light->setShaderLightValues(true);
 	glStencilFunc(GL_EQUAL, 1, 0xFF); 
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-				i->second->drawReflection();
+		i->second->drawReflection();
 	}
 
 	glUseProgram(0);
