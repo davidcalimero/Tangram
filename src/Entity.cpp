@@ -41,7 +41,6 @@ void Entity::drawReflection(){
 		glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
 
 		glDisable(GL_CULL_FACE);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		_mesh->draw();
 		glEnable(GL_CULL_FACE);	
 	}

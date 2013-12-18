@@ -106,6 +106,7 @@
     <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="materials\espelho.mtl" />
     <None Include="materials\mesa.mtl" />
     <None Include="materials\quadradoAmarelo.mtl" />
     <None Include="materials\quadradoLaranja.mtl" />

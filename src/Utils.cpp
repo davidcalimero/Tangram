@@ -64,8 +64,6 @@ namespace Utils {
 
 
 	int screenshot(std::string _filename, int _w, int _h) {
-		//std::cout << _w << "  " << _h << std::endl;
-
 		_filename.append(date_time());
 		_filename.append(".bmp");
 		std::cout << "Saved in " << _filename << std::endl;
@@ -144,46 +142,25 @@ namespace Utils {
 				i = 0;
 				temp = child->first_node("quaternion");
 				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
-
-					//std::cout << "Atributo: " << attr->name() << std::endl;
-					//std::cout << "Valor q[" << i << "]" << quaternion[i] << std::endl;	
-
 					valueStream.str("");
 					valueStream << quaternion[i];					
 					strQuat[i] = std::string(valueStream.str());
-
-					//std::cout << "Valor:" << strQuat[i].data() << std::endl;
 					attr->value(strQuat[i].data(), valueStream.str().length());
-
-					//std::cout << "Valor:" << attr->value() << std::endl;
 				}
 
 				// Position
 				i = 0;
 				temp = child->first_node("position");
 				for(rapidxml::xml_attribute<> *attr = temp->first_attribute(); attr != NULL; attr = attr->next_attribute(), i++) {
-
-					//std::cout << "Atributo: " << attr->name() << std::endl;
-					//std::cout << "Valor p[" << i << "]" << position[i] << std::endl;	
-
 					valueStream.str("");
 					valueStream << position[i];					
 					strPos[i] = std::string(valueStream.str());
-
-					//std::cout << "Valor:" << strPos[i].data() << std::endl;
-					attr->value(strPos[i].data(), valueStream.str().length());
-
-					//std::cout << "Valor:" << attr->value() << std::endl;
-					
+					attr->value(strPos[i].data(), valueStream.str().length());					
 				}
-
 			}
 		}
 
 		// Printing the new XML tree to the file
-
-		//std::cout << doc << std::endl;
-
 		std::string data;
 		std::ofstream streamfile;
 		streamfile.open(file);
@@ -197,7 +174,6 @@ namespace Utils {
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> normals;
-
 		std::vector<unsigned int> uvIndices;
 		std::vector<unsigned int> normalIndices;
 
@@ -234,9 +210,16 @@ namespace Utils {
 				while(getline(s, face, ' ')){
 					std::istringstream s1(face.substr(0));
 					while(getline(s1, item, '/')){
-						if(i == 0) indices.push_back(stoi(item)-1);
-						else if(i == 1) uvIndices.push_back(stoi(item)-1);
-						else if(i == 2) normalIndices.push_back(stoi(item)-1);
+						if(item.size() && i == 0 && stoi(item) > 0 && stoi(item) <= vertices.size())
+							indices.push_back(stoi(item)-1);
+						else if(item.size() && i == 1 && stoi(item) > 0 && stoi(item) <= uvs.size())
+							uvIndices.push_back(stoi(item)-1);
+						else if(item.size() && i == 2 && stoi(item) > 0 && stoi(item) <= normals.size())
+							normalIndices.push_back(stoi(item)-1);
+						else{
+							std::cerr << "Invalid index on " << filename << std::endl; 
+							exit(1); 
+						}
 						i = ++i % 3; 
 					}
 				}
@@ -293,11 +276,6 @@ namespace Utils {
 				texture = line.substr(7);
 				count++;
 			}
-		}
-
-		if(count < 4){ 
-			std::cerr << "Materiais incompletos no ficheiro " << filename << std::endl; 
-			exit(1); 
 		}
 	}
 }

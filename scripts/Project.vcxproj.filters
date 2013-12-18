@@ -130,5 +130,8 @@
     <None Include="materials\trianguloVermelho.mtl">
       <Filter>Material Files</Filter>
     </None>
+    <None Include="materials\espelho.mtl">
+      <Filter>Material Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

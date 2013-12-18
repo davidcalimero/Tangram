@@ -89,28 +89,6 @@ void Camera::update(){
 	if(Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
 		rotate(0, 0.05);
 
-	// 90 step rotation
-	if(Input::getInstance()->keyWasReleased('W')){
-		rotate(90, 0);
-		//rotate(floor((90 + glm::eulerAngles(_q).x)/90) * 90 - glm::eulerAngles(_q).x,
-		//	   90 * floor(glm::eulerAngles(_q).z/90.0+0.5) - glm::eulerAngles(_q).z);
-	}
-	if(Input::getInstance()->keyWasReleased('S')){
-		rotate(-90, 0);
-		//rotate(ceil((glm::eulerAngles(_q).x - 90)/90) * 90 - glm::eulerAngles(_q).x,
-		//	    90 * floor(glm::eulerAngles(_q).z/90.0+0.5) - glm::eulerAngles(_q).z);
-	}
-	if(Input::getInstance()->keyWasReleased('A')){
-		rotate(0, 90);
-		//rotate(90 * floor(glm::eulerAngles(_q).x/90.0+0.5) - glm::eulerAngles(_q).x,
-		//	   floor((90 + glm::eulerAngles(_q).z)/90) * 90 - glm::eulerAngles(_q).z);
-	}
-	if(Input::getInstance()->keyWasReleased('D')){
-		rotate(0, -90);
-		//rotate(90 * floor(glm::eulerAngles(_q).x/90.0+0.5) - glm::eulerAngles(_q).x,
-		//	  ceil((glm::eulerAngles(_q).z - 90)/90) * 90 - glm::eulerAngles(_q).z);
-	}
-
 	// Views
 	if(Input::getInstance()->keyWasReleased('1'))		// Top
 		_q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));
