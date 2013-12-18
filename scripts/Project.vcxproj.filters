@@ -9,12 +9,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{4d92eac6-63ce-4754-8672-bac9bdadd91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shader Files">
-      <UniqueIdentifier>{4d92eac6-63ce-4754-8672-bac9bdadd91e}</UniqueIdentifier>
+    <Filter Include="Material Files">
+      <UniqueIdentifier>{5a9ff3be-d8ca-4aa3-9eac-fb27a5854731}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,16 +95,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="scene\currentScene.xml">
-      <Filter>Resource Files</Filter>
+      <Filter>Scene Files</Filter>
     </None>
     <None Include="scene\initialScene.xml">
-      <Filter>Resource Files</Filter>
+      <Filter>Scene Files</Filter>
     </None>
     <None Include="shaders\fragment.glsl">
       <Filter>Shader Files</Filter>
     </None>
     <None Include="shaders\vertex.glsl">
       <Filter>Shader Files</Filter>
+    </None>
+    <None Include="materials\mesa.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\quadradoAmarelo.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\quadradoLaranja.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\trianguloAzul.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\trianguloRosa.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\trianguloRoxo.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\trianguloVerde.mtl">
+      <Filter>Material Files</Filter>
+    </None>
+    <None Include="materials\trianguloVermelho.mtl">
+      <Filter>Material Files</Filter>
     </None>
   </ItemGroup>
 </Project>

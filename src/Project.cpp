@@ -118,6 +118,7 @@ void setupOpenGL() {
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	
 	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);

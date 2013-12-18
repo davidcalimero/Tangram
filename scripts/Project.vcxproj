@@ -106,6 +106,14 @@
     <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="materials\mesa.mtl" />
+    <None Include="materials\quadradoAmarelo.mtl" />
+    <None Include="materials\quadradoLaranja.mtl" />
+    <None Include="materials\trianguloAzul.mtl" />
+    <None Include="materials\trianguloRosa.mtl" />
+    <None Include="materials\trianguloRoxo.mtl" />
+    <None Include="materials\trianguloVerde.mtl" />
+    <None Include="materials\trianguloVermelho.mtl" />
     <None Include="scene\currentScene.xml">
       <SubType>Designer</SubType>
     </None>

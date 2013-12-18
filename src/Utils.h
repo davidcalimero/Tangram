@@ -39,4 +39,5 @@ namespace Utils {
 	void loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position);
 	void saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position);
 	void loadObj(char* filename, std::vector<unsigned int> &indices, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec2> &out_uvs, std::vector<glm::vec3> &out_normals);
+	void loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess, std::string &texture);
 }

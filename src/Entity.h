@@ -21,7 +21,7 @@ class Entity {
 	protected:
 		float _px, _py, _pz;
 		std::string _id;
-		Entity(std::string id, char * objFile, bool reflection);
+		Entity(std::string id, char * objFile, char * mtlFile, bool reflection);
 
 	public:
 		~Entity();

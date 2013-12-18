@@ -19,11 +19,11 @@ class Mesh {
 		glm::vec3 _diffuseColor;
 		glm::vec3 _specularColor;
 		float _shininess;
+		std::string _texture;
 		GLuint _tex;
 		
 	public:
-		Mesh(char * objFile);
+		Mesh(char * objFile, char * mtlFile);
 		~Mesh();
-		void setValues(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float shininess);
 		void draw();
 };

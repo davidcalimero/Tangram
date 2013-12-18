@@ -23,6 +23,7 @@ uniform float MaterialShininess;
 
 // Texture Sample
 uniform sampler2D tex;
+uniform float withTexture;
 
 // Camera View Vector
 uniform vec3 EyeDirection;
@@ -59,8 +60,11 @@ void main(void)
 		float NdotH = max(dot(N, H), 0.0);
 		specular = MaterialSpecular * SpecularLight * pow(NdotH, MaterialShininess);
 	}
+
+	vec4 texColor = texture(tex, ex_TexCoord);
+	if(withTexture == 0.0f) 
+		texColor = vec4(1.0);
 	
 	//out_Color = vec4(ex_Normal, 1.0);
-	out_Color = vec4(ambient + diffuse + specular, 1.0);
-	out_Color = texture(tex, ex_TexCoord) * out_Color;
+	out_Color = vec4(ambient + diffuse + specular, 1.0) * texColor;
 }

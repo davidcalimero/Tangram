@@ -2,11 +2,12 @@
 #include "Camera.h"
 
 
-Entity::Entity(std::string id, char * objFile, bool reflection){
+Entity::Entity(std::string id, char * objFile, char * mtlFile, bool reflection){
 	_id = id;
 	_height = _px = _py = _pz = 0.0;
 	_reflection = reflection;
-	_mesh = new Mesh(objFile);
+
+	_mesh = new Mesh(objFile, mtlFile);
 }
 
 
@@ -17,9 +18,7 @@ void Entity::draw(){
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 	glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
 	
-	//glDisable(GL_STENCIL_TEST);
 	_mesh->draw();
-	//glEnable(GL_STENCIL_TEST);
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
 }

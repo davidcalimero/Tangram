@@ -2,7 +2,7 @@
 
 
 
-TangramPieces::TangramPieces(std::string id, char * vertexFile) : Entity(id, vertexFile, true){}
+TangramPieces::TangramPieces(std::string id, char * vertexFile, char * mtlFile) : Entity(id, vertexFile, mtlFile, true){}
 
 
 void TangramPieces::setPos(float px, float py, float pz, glm::quat q){

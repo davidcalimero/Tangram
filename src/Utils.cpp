@@ -242,6 +242,7 @@ namespace Utils {
 				}
 			}
 		}
+
 		for(unsigned int i = 0; i < indices.size(); i++){
 			unsigned int vertexIndex = indices[i];
 			unsigned int uvIndex = uvIndices[i];
@@ -254,6 +255,49 @@ namespace Utils {
 			out_vertices.push_back(vertex);
 			out_uvs.push_back(uv);
 			out_normals.push_back(normal);
+		}
+	}
+
+
+	void Utils::loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess, std::string &texture){
+		std::ifstream in(filename, std::ios::in);
+		int count = 0;
+		if(!in){ 
+			std::cerr << "Cannot open " << filename << std::endl; 
+			exit(1); 
+		}
+
+		std::string line;
+		while (getline(in, line)) {
+			if (line.substr(0,3) == "Ka "){
+				std::istringstream s(line.substr(3));
+				s >> ambient.x >> ambient.y >> ambient.z;
+				count++;
+			}
+			else if (line.substr(0,3) == "Kd "){
+				std::istringstream s(line.substr(3));
+				s >> diffuse.x >> diffuse.y >> diffuse.z;
+				count++;
+			}
+			else if (line.substr(0,3) == "Ks "){
+				std::istringstream s(line.substr(3));
+				s >> specular.x >> specular.y >> specular.z;
+				count++;
+			}
+			else if (line.substr(0,3) == "Ns "){
+				std::istringstream s(line.substr(3));
+				s >> shininess;
+				count++;
+			}
+			else if (line.substr(0,7) == "map_Kd "){
+				texture = line.substr(7);
+				count++;
+			}
+		}
+
+		if(count < 4){ 
+			std::cerr << "Materiais incompletos no ficheiro " << filename << std::endl; 
+			exit(1); 
 		}
 	}
 }

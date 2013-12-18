@@ -8,7 +8,7 @@ class Board : public Entity {
 	private:
 		
 	public:
-		Board(std::string id, char * vertexFile);
+		Board(std::string id, char * vertexFile, char * mtlFile);
 		virtual void draw();
 		void update();
 };

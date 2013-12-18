@@ -13,7 +13,7 @@ class TangramPieces : public Entity {
 	private:
 
 	public:
-		TangramPieces(std::string id, char * vertexFile);
+		TangramPieces(std::string id, char * vertexFile, char * mtlFile);
 		void setPos(float px, float py, float pz, glm::quat q);
 		void resetPos(float x, float y, float z, glm::quat q);
 		void update();
