@@ -57,12 +57,13 @@ void GameManager::init(){
 					   glm::vec3(0.9,0.9,0.9), 
 					   glm::vec3(0.9,0.9,0.9));
 	
+	_postProcessing = 0;
+
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
 	mirror = new Mirror("espelho", "mesh/cube.obj", "materials/espelho.mtl");
 	mirror->scale(2.2, 2.2, 0.05);
 	mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
-
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
