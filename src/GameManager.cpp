@@ -128,8 +128,8 @@ void GameManager::init(){
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
-	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "mesh/cube.obj", "materials/quadradoAmarelo.mtl");
-	quadradoAmarelo->scale(1.0/4.0, 1.0/2.0, 0.15);
+	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "mesh/parallellogram.obj", "materials/quadradoAmarelo.mtl");
+	quadradoAmarelo->scale(1, 1, 0.15);
 	quadradoAmarelo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoAmarelo);
 	/**/
@@ -252,7 +252,7 @@ void GameManager::postProcessing(){
 		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
 		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 
-	std::cout << _stencilValue << std::endl;
+	//std::cout << _stencilValue << std::endl;
 
 	// Apply postprocessing
 	if(Input::getInstance()->keyWasReleased('E')) {
