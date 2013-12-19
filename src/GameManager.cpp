@@ -45,12 +45,34 @@ void GameManager::init(){
 	glm::quat qcoords;
 	glm::vec3 pcoords;
 
-	ProgramShader::getInstance()->createShaderProgram("shaders/vertex.glsl", 
-													  "shaders/fragment.glsl");
+	_program = ProgramShader::getInstance()->createShaderProgram("shaders/vertex.glsl", 
+																 "shaders/fragment.glsl");
+
+	_postProgram = ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
+																	 "shaders/fragmentPostProcessing.glsl");
 
 	glGenFramebuffers(1, &frameBufferPP);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+	//Color Texture
 	glGenTextures(1, &texColorBufferPP);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+	int width = glutGet(GLUT_WINDOW_WIDTH);
+	int height = glutGet(GLUT_WINDOW_HEIGHT);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
+	//RederBuffer
 	glGenRenderbuffers(1, &rboStencilDepthPP);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
+	
+	assert(glCheckFramebufferStatus(GL_FRAMEBUFFER));
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+
 
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), 
 					   glm::vec3(0.5,0.5,0.5), 
@@ -58,6 +80,8 @@ void GameManager::init(){
 					   glm::vec3(0.9,0.9,0.9));
 	
 	_postProcessing = 0;
+
+	quad = new Frame("plano", "mesh/quad.obj", "materials/quad.mtl");
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);	
@@ -127,27 +151,15 @@ void GameManager::init(){
 
 
 void GameManager::draw(){
-	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
+	ProgramShader::getInstance()->bind(_program);
 	Camera::getInstance()->put();
 
 	if(_postProcessing){
-		//Texture images
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
-		_width = glutGet(GLUT_WINDOW_WIDTH);
-		_height = glutGet(GLUT_WINDOW_HEIGHT);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
-		glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
-		GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-		glDrawBuffers(1, DrawBuffers);
-		//glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		//glViewport(0,0,_width, _height);
+		glClearColor(0.9,0.1,0.1,1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
+
 	_light->setShaderLightValues(false);
 
 	// PIECES
@@ -171,23 +183,21 @@ void GameManager::draw(){
 	}
 
 	if(_postProcessing) {
-		glUseProgram(0);
-		ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
-														  "shaders/fragmentPostProcessing.glsl");
-		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
-			std::cout << "Vai usar o framebuffer PostProcessing.... " << std::endl;
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(0.1,0.1,0.9,1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		ProgramShader::getInstance()->bind(_postProgram);
+		glUniform1i(ProgramShader::getInstance()->getId("tex"), 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_STENCIL_TEST);
+		quad->draw();
+		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_DEPTH_TEST);
+	}
 
-			std::string _filename = "teste.jpg";
-			SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _width, _height);
-			_postProcessing = 0;
-
-			std::cout << "Voltou ao framebuffer Normal.... " << std::endl;
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		}
-		else std::cout << "The effect could not be applied. Error in Framebuffer!" << std::endl;
-	} 
-	else glUseProgram(0);
+	ProgramShader::getInstance()->unBind();
 }
 
 void GameManager::update(){
@@ -233,20 +243,19 @@ void GameManager::update(){
 
 void GameManager::postProcessing(){
 
-	_width = glutGet(GLUT_WINDOW_WIDTH);
-	_height = glutGet(GLUT_WINDOW_HEIGHT);
+	int width = glutGet(GLUT_WINDOW_WIDTH);
+	int height = glutGet(GLUT_WINDOW_HEIGHT);
 
 	// Mouse Over
 	glm::vec2 mp = Input::getInstance()->getMousePostion();
 	if( !Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && 
 		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
-		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, 
-					 GL_UNSIGNED_INT, &_stencilValue);
+		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {
 		std::string _filename = "screenshots/screenshot";
-		Utils::screenshot(_filename, _width, _height);
+		Utils::screenshot(_filename, width, height);
 	}
 
 	// Apply postprocessing

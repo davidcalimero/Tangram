@@ -3,22 +3,25 @@
 #include "Utils.h"
 
 #include <iostream>
+#include <vector>
+#include <glm.hpp>
 
 
 
 class ProgramShader {
 
 	private:
-		GLuint _vertexShaderId;
-		GLuint _fragmentShaderId;
-		GLuint _programId;
+		glm::vec3 _activeProgram;
+		std::vector<glm::vec3> _programId;
 		int compileShader(char * shaderFile, int shaderType);
 		ProgramShader();
 
 	public:
 		static ProgramShader * getInstance();
-		void createShaderProgram(char * vSFile, char * fSFile);
+		int createShaderProgram(char * vSFile, char * fSFile);
 		void destroyShaderProgram();
-		const GLuint getUId(std::string key) const;
-		const GLint getId(std::string key) const;
+		const GLuint getUId(std::string key);
+		const GLint getId(std::string key);
+		void bind(GLuint id);
+		void unBind();
 };

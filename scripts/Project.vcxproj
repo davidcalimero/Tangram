@@ -110,6 +110,7 @@
   <ItemGroup>
     <None Include="materials\espelho.mtl" />
     <None Include="materials\mesa.mtl" />
+    <None Include="materials\quad.mtl" />
     <None Include="materials\quadradoAmarelo.mtl" />
     <None Include="materials\quadradoLaranja.mtl" />
     <None Include="materials\trianguloAzul.mtl" />
@@ -123,10 +124,8 @@
     <None Include="scene\initialScene.xml" />
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\fragmentPostProcessing.glsl" />
-    <None Include="shaders\fragment_example.glsl" />
     <None Include="shaders\vertex.glsl" />
     <None Include="shaders\vertexPostProcessing.glsl" />
-    <None Include="shaders\vertex_example.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

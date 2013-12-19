@@ -104,10 +104,10 @@ void main(void) {
 	vec4 final_Color;
 	float SepiaValue = 0.7;
 	float NoiseValue = 0.1;
-	float ScratchValue = 1;
+	float ScratchValue = 5;
 	float InnerVignetting = 0.5;
 	float OuterVignetting = 1.0;
-	float RandomValue = 1;
+	float RandomValue = 0.5;
 
 	// SEPIA
 		// Grayscale Conversion
@@ -128,15 +128,16 @@ void main(void) {
     	final_Color = final_Color + NoiseValue * (final_Color - noise_Overlay);
 	
 	// SCRATCHES
-	float dist = (1.0 / ScratchValue);
-    float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
-    final_Color *= scratch();
+		float dist = (1.0 / ScratchValue);
+		float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
+		final_Color *= scratch();
 
 	// VIGNETTING
-  	float dist1 = distance(vec2(0.5, 0.5), ex_TexCoord) * 1.414213;
-    float vignetting = clamp((OuterVignetting - dist1) / (OuterVignetting - InnerVignetting), 0.0, 1.0);
-	final_Color *= vignetting;
+  		float dist1 = distance(vec2(0.5, 0.5), ex_TexCoord) * 1.414213;
+		float vignetting = clamp((OuterVignetting - dist1) / (OuterVignetting - InnerVignetting), 0.0, 1.0);
+		final_Color *= vignetting;
 
 	
-	out_Color = final_Color;
+	//out_Color = final_Color;
+	out_Color = text;
 }

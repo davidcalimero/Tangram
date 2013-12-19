@@ -17,15 +17,17 @@ class GameManager {
 	private:
 		typedef std::map<const std::string, Entity *>::iterator entityIterator;
 		std::map<const std::string, Entity *> _entities;
-		int _width, _height;
 		GameManager();
 		Light * _light;
+		Frame * quad;
 		Mirror * _mirror;
 		GLuint _stencilValue;
 		GLuint frameBufferPP;
 		GLuint texColorBufferPP;
 		GLuint rboStencilDepthPP;
 		int _postProcessing;
+		GLuint _program;
+		GLuint _postProgram;
 
 
 	public:
