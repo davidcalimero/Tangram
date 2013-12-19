@@ -12,7 +12,8 @@ uniform sampler2D tex;
 
 vec4 grayscale(vec4 color){
 	float avg = 0.2126 * color.x + 0.7152 * color.y + 0.0722 * color.z;
-	return vec4(avg, avg, avg, 0.0);
+
+	return vec4(avg, avg, avg, 1.0);
 }
 
 vec4 blend(vec4 src, vec4 dst){
@@ -72,13 +73,13 @@ vec4 blend(vec4 src, vec4 dst){
 }
 
 vec4 scratch(){ 
-	float xPeriod = 3;
-    float yPeriod = 8;
+	float xPeriod = 6;
+    float yPeriod = 1;
     float pi = 3.141592;
-    float phase = 0.3;
-    float turbulence = snoise(ex_TexCoord * 2.5);
+    float phase = 0.5;
+    float turbulence = snoise(ex_TexCoord *	0.69);
     float vScratch = 0.5 + (sin(((ex_TexCoord.x * xPeriod + ex_TexCoord.y * yPeriod + turbulence)) * pi + phase) * 0.5);
-    vScratch = clamp((vScratch * 10000.0) + 0.35, 0.0, 1.0);
+    vScratch = clamp((vScratch * 100000.0) + 0.65, 0.0, 1.0);
 	return vec4(vScratch, vScratch, vScratch, 1.0);
 }
 
@@ -89,14 +90,14 @@ void main(void) {
 	vec4 text = texture(tex, ex_TexCoord);
 
 	// Sepia color
-	vec4 sepia_Color = vec4(112.0 / 255.0, 66.0 / 255.0, 20.0 / 255.0, 0.0);
+	//vec4 sepia_Color = vec4(112.0 / 255.0, 66.0 / 255.0, 20.0 / 255.0, 0.0);
 	vec4 final_Color;
 	float SepiaValue = 0.7;
 	float NoiseValue = 0.1;
-	float ScratchValue = 5;
+	float ScratchValue = 4;
 	float InnerVignetting = 0.5;
 	float OuterVignetting = 1.0;
-	float RandomValue = 0.5;
+	float RandomValue = 1;
 
 	// SEPIA
 		// Grayscale Conversion
@@ -104,22 +105,24 @@ void main(void) {
 		final_Color = grayscale;
 
 		// Overload with sepia color
-		final_Color = blend(sepia_Color, grayscale);
-		final_Color = grayscale + SepiaValue * (sepia_Color - grayscale);
+		//final_Color = blend(sepia_Color, grayscale);
+		//final_Color = grayscale + SepiaValue * (sepia_Color - grayscale);
 	
 
 	// NOISE
-		float noise = snoise(ex_TexCoord * vec2(1366.0 + RandomValue * 705.0,  1366.0 + RandomValue * 705.0)) * 0.5;
-		final_Color += noise * NoiseValue;
+		//float noise = snoise(ex_TexCoord * vec2(100.0 + RandomValue * 100,  100 + RandomValue * 100.0)) * 0.5;
+		//final_Color += noise * NoiseValue;
 
 		// Simulate ISO on camera
-		vec4 noise_Overlay = blend(final_Color, vec4(noise));
-    	final_Color = final_Color + NoiseValue * (final_Color - noise_Overlay);
+		//vec4 noise_Overlay = blend(final_Color, vec4(noise));
+    	//final_Color = final_Color + NoiseValue * (final_Color - noise_Overlay);
 	
 	// SCRATCHES
-		float dist = (1.0 / ScratchValue);
-		float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
-		final_Color *= scratch();
+			float dist = (1.0 / ScratchValue);
+			float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
+			if(d < 0.6){
+				final_Color *= scratch();
+			}
 
 	// VIGNETTING
   		float dist1 = distance(vec2(0.5, 0.5), ex_TexCoord) * 1.414213;

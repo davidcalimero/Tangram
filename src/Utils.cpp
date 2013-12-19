@@ -71,10 +71,11 @@ namespace Utils {
 
 		glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 		glReadPixels( 0, 0, _w, _h, GL_RGB, GL_UNSIGNED_BYTE, &buf[0] );
-		
+
 		_w= glutGet(GLUT_WINDOW_WIDTH);
 		_h = glutGet(GLUT_WINDOW_HEIGHT);
 		int state = SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
+
 
 		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
 		else std::cout << "Saved in " << _filename << std::endl;

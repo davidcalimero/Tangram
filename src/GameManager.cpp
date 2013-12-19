@@ -255,15 +255,17 @@ void GameManager::postProcessing(){
 
 	std::cout << _stencilValue << std::endl;
 
-	// Taking screenshot
-	if(Input::getInstance()->keyWasReleased('M')) {
-		std::string _filename = "screenshots/screenshot";
-		Utils::screenshot(_filename, width, height);
-	}
-
 	// Apply postprocessing
 	if(Input::getInstance()->keyWasReleased('E')) {
 		_postProcessing = (_postProcessing+1)%2;
+	}
+
+	// Taking screenshot
+	if(Input::getInstance()->keyWasReleased('M')) {
+		std::string _filename = "screenshots/screenshot";
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		Utils::screenshot(_filename, width, height);
+		//glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 	}
 }
 
