@@ -53,25 +53,14 @@ void GameManager::init(){
 
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-	//Color Texture
 	glGenTextures(1, &texColorBufferPP);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
-	int width = glutGet(GLUT_WINDOW_WIDTH);
-	int height = glutGet(GLUT_WINDOW_HEIGHT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
-	//RederBuffer
 	glGenRenderbuffers(1, &rboStencilDepthPP);
-	glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
-	
-	assert(glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	
+
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), 
 					   glm::vec3(0.5,0.5,0.5), 
 					   glm::vec3(0.9,0.9,0.9), 
@@ -155,7 +144,19 @@ void GameManager::draw(){
 
 	if(_postProcessing){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		glClearColor(0.9,0.1,0.1,1.0);
+		//Color Texture
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+		int width = glutGet(GLUT_WINDOW_WIDTH);
+		int height = glutGet(GLUT_WINDOW_HEIGHT);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
+		glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
+		assert(glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -183,7 +184,7 @@ void GameManager::draw(){
 
 	if(_postProcessing) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearColor(0.1,0.1,0.9,1.0);
+		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		ProgramShader::getInstance()->bind(_postProgram);
 		glUniform1i(ProgramShader::getInstance()->getId("tex"), 0);
@@ -262,7 +263,7 @@ void GameManager::postProcessing(){
 
 	// Apply postprocessing
 	if(Input::getInstance()->keyWasReleased('E')) {
-		_postProcessing = 1;
+		_postProcessing = (_postProcessing+1)%2;
 	}
 }
 

@@ -126,7 +126,6 @@ void main(void) {
 		float vignetting = clamp((OuterVignetting - dist1) / (OuterVignetting - InnerVignetting), 0.0, 1.0);
 		final_Color *= vignetting;
 
-	
 	out_Color = final_Color;
 	//out_Color = text;
 }

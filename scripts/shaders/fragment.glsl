@@ -87,8 +87,8 @@ void main(void)
 
 		tst = mix(marbleColor, veinColor, lrp);
 	}
-	/**/
 
+	/**/
 	// Blinn-Phong Model
 	// Vector Initialization
 	vec3 L = normalize(vec3(ViewMatrix * vec4(LightPosition, 1.0)) - ex_Position); //sem view -> luz segue camara, com view -> luz segue cena
