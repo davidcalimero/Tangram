@@ -133,5 +133,17 @@
     <None Include="materials\espelho.mtl">
       <Filter>Material Files</Filter>
     </None>
+    <None Include="shaders\fragment_example.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\fragmentPostProcessing.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\vertex_example.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="shaders\vertexPostProcessing.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

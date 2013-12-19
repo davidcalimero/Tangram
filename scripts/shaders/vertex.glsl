@@ -11,6 +11,7 @@ out vec3 ex_Position;
 out vec4 ex_Color;
 out vec3 ex_Normal;
 out vec2 ex_TexCoord;
+out vec3 mc_Position;
 
 // Matrix
 uniform mat4 ModelMatrix;
@@ -28,4 +29,5 @@ void main(void)
 	ex_Position = vec3(ViewMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(in_Position, 1.0);
 	ex_TexCoord = in_TexCoord;
+	mc_Position = in_Position;
 }

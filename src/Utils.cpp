@@ -90,7 +90,7 @@ namespace Utils {
 	}
 
 
-	void Utils::loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
+	void loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position){
 		int i;
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(readFile(file));
@@ -120,7 +120,7 @@ namespace Utils {
 	}
 
 
-	void Utils::saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position) {
+	void saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position) {
 		int i;
 		std::string * strPos = new std::string[4];
 		std::string * strQuat = new std::string[4];
@@ -170,7 +170,7 @@ namespace Utils {
 	}
 
 
-	void Utils::loadObj(char* filename, std::vector<unsigned int> &indices, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec2> &out_uvs, std::vector<glm::vec3> &out_normals){
+	void loadObj(char* filename, std::vector<unsigned int> &indices, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec2> &out_uvs, std::vector<glm::vec3> &out_normals){
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> normals;
@@ -242,7 +242,7 @@ namespace Utils {
 	}
 
 
-	void Utils::loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess, std::string &texture){
+	void loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess, std::string &texture){
 		std::ifstream in(filename, std::ios::in);
 		int count = 0;
 		if(!in){ 
