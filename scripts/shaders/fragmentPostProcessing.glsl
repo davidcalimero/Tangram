@@ -79,7 +79,7 @@ vec4 scratch(){
     float phase = 0.5;
     float turbulence = snoise(ex_TexCoord *	0.69);
     float vScratch = 0.5 + (sin(((ex_TexCoord.x * xPeriod + ex_TexCoord.y * yPeriod + turbulence)) * pi + phase) * 0.5);
-    vScratch = clamp((vScratch * 100000.0) + 0.65, 0.0, 1.0);
+    vScratch = clamp((vScratch * 10000.0) + 0.65, 0.0, 1.0);
 	return vec4(vScratch, vScratch, vScratch, 1.0);
 }
 
@@ -110,19 +110,17 @@ void main(void) {
 	
 
 	// NOISE
-		//float noise = snoise(ex_TexCoord * vec2(100.0 + RandomValue * 100,  100 + RandomValue * 100.0)) * 0.5;
-		//final_Color += noise * NoiseValue;
+		float noise = snoise(ex_TexCoord * vec2(100.0 + RandomValue * 100,  100 + RandomValue * 100.0)) * 0.5;
+		final_Color += noise * NoiseValue;
 
 		// Simulate ISO on camera
-		//vec4 noise_Overlay = blend(final_Color, vec4(noise));
-    	//final_Color = final_Color + NoiseValue * (final_Color - noise_Overlay);
+		vec4 noise_Overlay = blend(final_Color, vec4(noise));
+    	final_Color = final_Color + NoiseValue * (final_Color - noise_Overlay);
 	
 	// SCRATCHES
-			float dist = (1.0 / ScratchValue);
-			float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
-			if(d < 0.6){
-				final_Color *= scratch();
-			}
+		float dist = (1.0 / ScratchValue);
+		float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
+		if(d < 0.69) final_Color *= scratch();
 
 	// VIGNETTING
   		float dist1 = distance(vec2(0.5, 0.5), ex_TexCoord) * 1.414213;

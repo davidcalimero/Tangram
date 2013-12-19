@@ -130,7 +130,6 @@ void GameManager::init(){
 	Utils::loadScene("scene/currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
 	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "mesh/cube.obj", "materials/quadradoAmarelo.mtl");
 	quadradoAmarelo->scale(1.0/4.0, 1.0/2.0, 0.15);
-	quadradoAmarelo->shear(0.0, 1.0);
 	quadradoAmarelo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoAmarelo);
 	/**/
@@ -265,7 +264,6 @@ void GameManager::postProcessing(){
 		std::string _filename = "screenshots/screenshot";
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		Utils::screenshot(_filename, width, height);
-		//glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 	}
 }
 

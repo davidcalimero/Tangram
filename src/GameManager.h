@@ -24,6 +24,7 @@ class GameManager {
 		GLuint _stencilValue;
 		GLuint frameBufferPP;
 		GLuint texColorBufferPP;
+		GLuint texColorBufferNoise;
 		GLuint rboStencilDepthPP;
 		int _postProcessing;
 		GLuint _program;
