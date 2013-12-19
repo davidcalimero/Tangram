@@ -2,6 +2,7 @@
 
 #include "Utils.h"
 #include "Mesh.h"
+#include "Texture.h"
 
 #include <gtx/transform2.hpp>
 #include <glm.hpp>
@@ -17,6 +18,7 @@ class Entity {
 		bool _reflection;
 		float _height;
 		Mesh * _mesh;
+		Texture * _texture;
 
 	protected:
 		float _px, _py, _pz;

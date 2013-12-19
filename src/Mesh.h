@@ -19,8 +19,6 @@ class Mesh {
 		glm::vec3 _diffuseColor;
 		glm::vec3 _specularColor;
 		float _shininess;
-		std::string _texture;
-		GLuint _tex;
 
 		float animationTryOut;
 		bool _selected;

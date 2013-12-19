@@ -3,11 +3,19 @@
 
 
 Entity::Entity(std::string id, char * objFile, char * mtlFile, bool reflection){
+	std::string texture;
+	
 	_id = id;
 	_height = _px = _py = _pz = 0.0;
 	_reflection = reflection;
 
 	_mesh = new Mesh(objFile, mtlFile);
+	_texture = NULL;
+
+	Utils::loadTexture(mtlFile, texture);
+
+	if(texture.size() > 0) 
+		_texture = new Texture(texture);
 }
 
 
@@ -18,7 +26,15 @@ void Entity::draw(){
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 	glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
 	
+	if(_texture != NULL) {
+		_texture->bind();	
+		glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
+	}
+	else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
 	_mesh->draw();
+	
+	if(_texture != NULL)
+		_texture->unbind();
 
 	Utils::checkOpenGLError("ERROR: Could not draw scene.");
 }
@@ -41,7 +57,17 @@ void Entity::drawReflection(){
 		glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
 
 		glDisable(GL_CULL_FACE);
+
+		if(_texture != NULL) {
+			_texture->bind();	
+			glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
+		}
+		else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
 		_mesh->draw();
+	
+		if(_texture != NULL)
+			_texture->unbind();
+
 		glEnable(GL_CULL_FACE);	
 	}
 
@@ -60,6 +86,8 @@ glm::quat Entity::getQuat() {
 
 Entity::~Entity(){
 	_mesh->~Mesh();
+	if(_texture != NULL)
+		_texture->~Texture();
 }
 
 

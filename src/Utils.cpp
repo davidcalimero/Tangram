@@ -247,9 +247,8 @@ namespace Utils {
 	}
 
 
-	void loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess, std::string &texture){
+	void loadMaterial(char* filename, glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, float &shininess){
 		std::ifstream in(filename, std::ios::in);
-		int count = 0;
 		if(!in){ 
 			std::cerr << "Cannot open " << filename << std::endl; 
 			exit(1); 
@@ -260,27 +259,35 @@ namespace Utils {
 			if (line.substr(0,3) == "Ka "){
 				std::istringstream s(line.substr(3));
 				s >> ambient.x >> ambient.y >> ambient.z;
-				count++;
 			}
 			else if (line.substr(0,3) == "Kd "){
 				std::istringstream s(line.substr(3));
 				s >> diffuse.x >> diffuse.y >> diffuse.z;
-				count++;
 			}
 			else if (line.substr(0,3) == "Ks "){
 				std::istringstream s(line.substr(3));
 				s >> specular.x >> specular.y >> specular.z;
-				count++;
 			}
 			else if (line.substr(0,3) == "Ns "){
 				std::istringstream s(line.substr(3));
 				s >> shininess;
-				count++;
 			}
-			else if (line.substr(0,7) == "map_Kd "){
+
+		}
+	}
+
+	void Utils::loadTexture(char* filename, std::string &texture){
+		std::ifstream in(filename, std::ios::in);
+
+		if(!in){ 
+			std::cerr << "Cannot open " << filename << std::endl; 
+			exit(1); 
+		}
+
+		std::string line;
+		while (getline(in, line)) {
+			if (line.substr(0,7) == "map_Kd ")
 				texture = line.substr(7);
-				count++;
-			}
 		}
 	}
 }

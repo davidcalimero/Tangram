@@ -25,32 +25,8 @@ Mesh::Mesh(char * objFile, char * mtlFile){
 	glEnableVertexAttribArray(UVS);
 	glVertexAttribPointer(UVS, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	Utils::loadMaterial(mtlFile, _ambientColor, _diffuseColor, _specularColor, _shininess, _texture);
-
-	if(_texture.size() > 0){
-		glGenTextures(1, &_tex);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, _tex);
-		int width, height;
-		std::string textura = "textures/";
-		textura.append(_texture);
-
-		unsigned char* image = SOIL_load_image(textura.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-		SOIL_free_image_data(image);
-
-		float color[] = {0.0, 0.0, 0.0, 1.0};
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
+	Utils::loadMaterial(mtlFile, _ambientColor, _diffuseColor, _specularColor, _shininess);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo[2]);
 	glBufferData(GL_ARRAY_BUFFER, _normals.size() * sizeof(glm::vec3), &_normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(NORMALS);
@@ -92,20 +68,12 @@ void Mesh::draw(){
 	glUniform3fv(diffuseId, 1, glm::value_ptr(_diffuseColor));
 	glUniform3fv(specularId, 1, glm::value_ptr(_specularColor));
 
-	if(_texture.size() > 0){
-		glBindTexture(GL_TEXTURE_2D, _tex);
-		glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
-	}
-	else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
-
 	glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
-	glBindTexture(GL_TEXTURE_2D, 0);
 	//glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_BYTE, (GLvoid*)0);
 }
 
 
 Mesh::~Mesh(){
-	glDeleteTextures(1, &_tex);
 
 	glDisableVertexAttribArray(VERTICES);
 	glDisableVertexAttribArray(UVS);
