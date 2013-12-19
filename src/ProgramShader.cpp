@@ -30,7 +30,7 @@ int ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 	program.y = vertexShaderId;
 	program.z = fragmentShaderId;
 	_programId.push_back(program);
-	_activeProgram = program;
+
 	glAttachShader(id, vertexShaderId);
 	glAttachShader(id, fragmentShaderId);
 	glBindAttribLocation(id, VERTICES, "in_Position");
@@ -38,7 +38,7 @@ int ProgramShader::createShaderProgram(char * vSFile, char * fSFile){
 	glBindAttribLocation(id, NORMALS, "in_Normal");
 	glBindAttribLocation(id, UVS, "in_TexCoord");
 	glLinkProgram(id);
-	glUniformBlockBinding(id, glGetUniformBlockIndex(id, "SharedMatrices"), 0);
+	//glUniformBlockBinding(id, glGetUniformBlockIndex(id, "SharedMatrices"), 0);
 
 	Utils::checkOpenGLError("ERROR: Could not create shaders.");
 

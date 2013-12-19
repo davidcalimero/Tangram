@@ -1,9 +1,6 @@
 #version 150
 
 // In
-in vec3 ex_Position;
-in vec4 ex_Color;
-in vec3 ex_Normal;
 in vec2 ex_TexCoord;
 
 // Out
@@ -12,14 +9,6 @@ out vec4 out_Color;
 // Texture Attributes
 uniform sampler2D tex;
 
-
-// Matrix
-uniform mat4 ModelMatrix;
-layout(std140) uniform SharedMatrices
-{
-	mat4 ViewMatrix;
-	mat4 ProjectionMatrix;
-};
 
 vec4 grayscale(vec4 color){
 	float avg = 0.2126 * color.x + 0.7152 * color.y + 0.0722 * color.z;
@@ -120,7 +109,7 @@ void main(void) {
 	
 
 	// NOISE
-		float noise = snoise(ex_TexCoord * vec2(800.0 + RandomValue * 600.0,  800.0 + RandomValue * 600.0)) * 0.5;
+		float noise = snoise(ex_TexCoord * vec2(1366.0 + RandomValue * 705.0,  1366.0 + RandomValue * 705.0)) * 0.5;
 		final_Color += noise * NoiseValue;
 
 		// Simulate ISO on camera
@@ -138,6 +127,6 @@ void main(void) {
 		final_Color *= vignetting;
 
 	
-	//out_Color = final_Color;
-	out_Color = text;
+	out_Color = final_Color;
+	//out_Color = text;
 }

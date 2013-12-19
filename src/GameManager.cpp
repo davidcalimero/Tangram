@@ -72,8 +72,6 @@ void GameManager::init(){
 	assert(glCheckFramebufferStatus(GL_FRAMEBUFFER));
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
-
-
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), 
 					   glm::vec3(0.5,0.5,0.5), 
 					   glm::vec3(0.9,0.9,0.9), 
@@ -153,6 +151,7 @@ void GameManager::init(){
 void GameManager::draw(){
 	ProgramShader::getInstance()->bind(_program);
 	Camera::getInstance()->put();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	if(_postProcessing){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
@@ -195,6 +194,7 @@ void GameManager::draw(){
 		quad->draw();
 		glEnable(GL_STENCIL_TEST);
 		glEnable(GL_DEPTH_TEST);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 	}
 
 	ProgramShader::getInstance()->unBind();
@@ -251,6 +251,8 @@ void GameManager::postProcessing(){
 	if( !Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && 
 		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
 		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
+
+	std::cout << _stencilValue << std::endl;
 
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {

@@ -39,7 +39,7 @@ void Board::baseScale(float x, float y, float z) {
 void Board::draw(){	
 	glDisable(GL_STENCIL_TEST);
 	glEnable(GL_POLYGON_OFFSET_FILL);
-	glPolygonOffset(-1.0f, 1.0);	
+	glPolygonOffset(1.0f, 1.0);	
 	base->draw();	
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	left->draw();	

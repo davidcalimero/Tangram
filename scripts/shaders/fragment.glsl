@@ -83,7 +83,7 @@ void main(void)
 		float intensity = clamp(noise * noiseIntensity, 0.0, 1.0);
 		intensity = sin(mc_Position.y * 9.0 + intensity * 25.0) * 0.5 + 0.5;
 
-		float lrp = fract(animationTryOut + intensity);
+		float lrp = fract(/*animationTryOut +*/ intensity);
 
 		tst = mix(marbleColor, veinColor, lrp);
 	}
