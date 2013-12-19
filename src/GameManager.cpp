@@ -200,6 +200,15 @@ void GameManager::update(){
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++)
 		i->second->update();
 
+	//Check if mouse over object
+	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
+		if(isMouseOver(i->first)){
+			i->second->activateAnimation();
+		}
+		else
+			i->second->desactivateAnimation();
+	}
+
 	// Scene saving
 	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {

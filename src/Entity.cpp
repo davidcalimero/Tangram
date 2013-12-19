@@ -117,3 +117,12 @@ void Entity::lerp(float x, float y, float z, float k){
 	float zf = ((_pz - (_pz * k)) + (z * k)) - _pz;
 	translate(xf,yf,zf);
 }
+
+void Entity::activateAnimation(){
+	_mesh->activateAnimation();
+}
+
+
+void Entity::desactivateAnimation(){
+	_mesh->desactivateAnimation();
+}

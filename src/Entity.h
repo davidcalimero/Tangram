@@ -39,4 +39,7 @@ class Entity {
 		void scale(float x, float y, float z);
 		void shear(float x, float y);
 		void lerp(float x, float y, float z, float k);
+
+		void activateAnimation();
+		void desactivateAnimation();
 };

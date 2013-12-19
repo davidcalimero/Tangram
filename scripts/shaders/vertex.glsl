@@ -29,5 +29,7 @@ void main(void)
 	ex_Position = vec3(ViewMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(in_Position, 1.0);
 	ex_TexCoord = in_TexCoord;
-	mc_Position = in_Position;
+
+	float noiseScale = 0.04;
+	mc_Position = in_Position * noiseScale;
 }

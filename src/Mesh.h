@@ -21,9 +21,15 @@ class Mesh {
 		float _shininess;
 		std::string _texture;
 		GLuint _tex;
+
+		float animationTryOut;
+		bool _selected;
 		
 	public:
 		Mesh(char * objFile, char * mtlFile);
 		~Mesh();
 		void draw();
+
+		void activateAnimation();
+		void desactivateAnimation();
 };

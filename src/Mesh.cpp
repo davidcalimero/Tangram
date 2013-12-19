@@ -4,6 +4,10 @@
 
 
 Mesh::Mesh(char * objFile, char * mtlFile){
+	animationTryOut = 0.0f;
+	_selected = false;
+
+
 	Utils::loadObj(objFile, _indices, _vertices, _uvs, _normals);
 
 	glGenVertexArrays(1, &_vaoId);
@@ -26,6 +30,7 @@ Mesh::Mesh(char * objFile, char * mtlFile){
 	if(_texture.size() > 0){
 		glGenTextures(1, &_tex);
 
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, _tex);
 		int width, height;
 		std::string textura = "textures/";
@@ -68,6 +73,13 @@ Mesh::Mesh(char * objFile, char * mtlFile){
 void Mesh::draw(){
 	glBindVertexArray(_vaoId);
 
+	if(_selected){
+		animationTryOut = animationTryOut + 0.001;	
+	}
+
+	glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), animationTryOut);
+
+
 	// Get IDs
 	GLint ambientId = ProgramShader::getInstance()->getId("MaterialAmbient");
 	GLint diffuseId = ProgramShader::getInstance()->getId("MaterialDiffuse");
@@ -106,4 +118,14 @@ Mesh::~Mesh(){
 	glDeleteVertexArrays(1, &_vaoId);
 
 	Utils::checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
+}
+
+void Mesh::activateAnimation(){
+	_selected = true;
+}
+
+
+void Mesh::desactivateAnimation(){
+	_selected = false;
+	animationTryOut = 0.0f;
 }
