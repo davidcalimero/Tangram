@@ -24,7 +24,7 @@ class Entity {
 		Entity(std::string id, char * objFile, char * mtlFile, bool reflection);
 
 	public:
-		~Entity();
+		virtual ~Entity();
 		virtual void update() = 0;
 		virtual void draw();
 		void drawReflection();

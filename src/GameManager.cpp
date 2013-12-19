@@ -38,7 +38,7 @@ bool GameManager::isMouseOver(std::string id){
 	return false;
 }
 
-Mirror * mirror;
+
 
 void GameManager::init(){
 
@@ -60,10 +60,18 @@ void GameManager::init(){
 	_postProcessing = 0;
 
 	/**/
+	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);	
+	Board * board = new Board("mesa", "mesh/cube.obj", "materials/mesa.mtl");	
+	board->baseScale(2.2, 2.2, 0.0);
+	board->borderScale(0.1, 2.1, 0.1);
+	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);	
+	add(board);
+
+	/**/
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
-	mirror = new Mirror("espelho", "mesh/cube.obj", "materials/espelho.mtl");
-	mirror->scale(2.2, 2.2, 0.05);
-	mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
+	_mirror = new Mirror("espelho", "mesh/cube.obj", "materials/espelho.mtl");
+	_mirror->scale(2.0, 2.0, 0.0001);
+	_mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
@@ -152,7 +160,7 @@ void GameManager::draw(){
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilMask(0xFF);
 	glDepthMask(GL_FALSE);	
-	mirror->draw();
+	_mirror->draw();
 	glDepthMask(GL_TRUE);
 
 	// REFLECTIONS

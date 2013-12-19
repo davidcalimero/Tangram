@@ -4,6 +4,7 @@
 #include "TangramPieces.h"
 #include "Board.h"
 #include "Mirror.h"
+#include "Frame.h"
 #include "Light.h"
 
 #include <iostream>
@@ -19,6 +20,7 @@ class GameManager {
 		int _width, _height;
 		GameManager();
 		Light * _light;
+		Mirror * _mirror;
 		GLuint _stencilValue;
 		GLuint frameBufferPP;
 		GLuint texColorBufferPP;
