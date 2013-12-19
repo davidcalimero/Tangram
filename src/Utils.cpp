@@ -63,17 +63,21 @@ namespace Utils {
 	}
 
 
-	int screenshot(std::string _filename, int _w, int _h) {
+	void screenshot(std::string _filename, int _w, int _h) {
 		_filename.append(date_time());
 		_filename.append(".bmp");
-		std::cout << "Saved in " << _filename << std::endl;
         
 		std::vector< unsigned char > buf( _w * _h * 3 );
+
 		glPixelStorei( GL_PACK_ALIGNMENT, 1 );
-        	glReadPixels( 0, 0, _w, _h, GL_RGB, GL_UNSIGNED_BYTE, &buf[0] );
-		return SOIL_save_image( _filename.c_str(), SOIL_SAVE_TYPE_BMP, _w, _h, 3, &buf[0]);
+		glReadPixels( 0, 0, _w, _h, GL_RGB, GL_UNSIGNED_BYTE, &buf[0] );
 		
-		//return SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
+		_w= glutGet(GLUT_WINDOW_WIDTH);
+		_h = glutGet(GLUT_WINDOW_HEIGHT);
+		int state = SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _w, _h);
+
+		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
+		else std::cout << "Saved in " << _filename << std::endl;
 	}
 	
 

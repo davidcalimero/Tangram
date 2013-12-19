@@ -82,9 +82,13 @@ vec4 blend(vec4 src, vec4 dst){
 		return 130.0 * dot(m, g);
 }
 
-vec4 scratch(){
-	float xPeriod = 8.0;
-    float yPeriod = 1.0;
+float rand(vec2 n) {
+  return 0.5 + 0.5 * fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453);
+}
+
+vec4 scratch(){ 
+	float xPeriod = 3;
+    float yPeriod = 8;
     float pi = 3.141592;
     float phase = 0.3;
     float turbulence = snoise(ex_TexCoord * 2.5);
@@ -104,10 +108,10 @@ void main(void) {
 	vec4 final_Color;
 	float SepiaValue = 0.7;
 	float NoiseValue = 0.1;
-	float ScratchValue = 0.3;
+	float ScratchValue = 1;
 	float InnerVignetting = 0.5;
 	float OuterVignetting = 1.0;
-	float RandomValue = 0.5;
+	float RandomValue = 1;
 
 	// SEPIA
 		// Grayscale Conversion

@@ -48,51 +48,15 @@ void GameManager::init(){
 	ProgramShader::getInstance()->createShaderProgram("shaders/vertex.glsl", 
 													  "shaders/fragment.glsl");
 
+	glGenFramebuffers(1, &frameBufferPP);
+	glGenTextures(1, &texColorBufferPP);
+	glGenRenderbuffers(1, &rboStencilDepthPP);
+
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), 
 					   glm::vec3(0.5,0.5,0.5), 
 					   glm::vec3(0.9,0.9,0.9), 
 					   glm::vec3(0.9,0.9,0.9));
 	
-
-	glGenFramebuffers(1, &frameBufferPP);
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-	glGenTextures(1, &texColorBufferPP);
-	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
-
-	_width = glutGet(GLUT_WINDOW_WIDTH);
-	_height = glutGet(GLUT_WINDOW_HEIGHT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
-
-	glGenRenderbuffers(1, &depthrenderbufferPP);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbufferPP);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbufferPP);
-
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texColorBufferPP, 0);
-	GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-	glDrawBuffers(1, DrawBuffers);
-
-
-	//Checking if everything is allright!
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
-		//std::cout << "cenaz" << std::endl;
-	}
-	else std::cout << "Framebuffer cannot be used!" << std::endl;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
-	/** /
-	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);
-	Board * board = new Board("mesa", "mesh/cube.obj", "materials/mesa.mtl");
-	board->scale(2.5, 2.5, 0.2);
-	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);
-	//add(board);
-
-
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
 	mirror = new Mirror("espelho", "mesh/cube.obj", "materials/espelho.mtl");
@@ -157,14 +121,27 @@ void GameManager::draw(){
 	glUseProgram(ProgramShader::getInstance()->getUId("Program"));
 	Camera::getInstance()->put();
 
-	/*glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-	_width = glutGet(GLUT_WINDOW_WIDTH);
-	_height = glutGet(GLUT_WINDOW_HEIGHT);
-	glViewport(0,0,_width,_height);*/
-	
+	if(_postProcessing){
+		//Texture images
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+		_width = glutGet(GLUT_WINDOW_WIDTH);
+		_height = glutGet(GLUT_WINDOW_HEIGHT);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
+		glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _width, _height);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
+		GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+		glDrawBuffers(1, DrawBuffers);
+		//glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+		//glViewport(0,0,_width, _height);
+	}
 	_light->setShaderLightValues(false);
 
-	// SCENE
+	// PIECES
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
 		glStencilFunc(GL_GREATER, std::distance(_entities.begin(), i)+2 , -1);
 		i->second->draw();
@@ -184,7 +161,24 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	glUseProgram(0);
+	if(_postProcessing) {
+		glUseProgram(0);
+		ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
+														  "shaders/fragmentPostProcessing.glsl");
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
+			std::cout << "Vai usar o framebuffer PostProcessing.... " << std::endl;
+
+			std::string _filename = "teste.jpg";
+			SOIL_save_screenshot(_filename.c_str(), SOIL_SAVE_TYPE_BMP, 0, 0, _width, _height);
+			_postProcessing = 0;
+
+			std::cout << "Voltou ao framebuffer Normal.... " << std::endl;
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
+		else std::cout << "The effect could not be applied. Error in Framebuffer!" << std::endl;
+	} 
+	else glUseProgram(0);
 }
 
 void GameManager::update(){
@@ -218,7 +212,11 @@ void GameManager::update(){
 }
 
 
+
 void GameManager::postProcessing(){
+
+	_width = glutGet(GLUT_WINDOW_WIDTH);
+	_height = glutGet(GLUT_WINDOW_HEIGHT);
 
 	// Mouse Over
 	glm::vec2 mp = Input::getInstance()->getMousePostion();
@@ -227,28 +225,15 @@ void GameManager::postProcessing(){
 		glReadPixels(mp.x, glutGet(GLUT_WINDOW_HEIGHT) - mp.y - 1, 1, 1, GL_STENCIL_INDEX, 
 					 GL_UNSIGNED_INT, &_stencilValue);
 
-	//std::cout << _stencilValue << std::endl;
-
 	// Taking screenshot
 	if(Input::getInstance()->keyWasReleased('M')) {
 		std::string _filename = "screenshots/screenshot";
-		_width = glutGet(GLUT_WINDOW_WIDTH);
-		_height = glutGet(GLUT_WINDOW_HEIGHT);
-		int state = Utils::screenshot(_filename, _width, _height);
-		if (!state) std::cout << "Error: Cannot save the screenshot" << std::endl;
+		Utils::screenshot(_filename, _width, _height);
 	}
 
+	// Apply postprocessing
 	if(Input::getInstance()->keyWasReleased('E')) {
-
-		//verificar qual é o framebuffer que ta usado
-
-		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE){
-			std::cout << "Vai usar o framebuffer normal.... " << std::endl;
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		}
-		else std::cout << "The effect could not be applied. Error in Framebuffer!" << std::endl;
-	
+		_postProcessing = 1;
 	}
 }
 
