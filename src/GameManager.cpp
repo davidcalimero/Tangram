@@ -41,8 +41,8 @@ void GameManager::init(){
 	_postProgram = ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
 																	 "shaders/fragmentPostProcessing.glsl");
 
+	animationTryOut = 0;
 	_greyscale = false;
-	_sepia = false;
 	_noise = false;
 	_vignette = false;
 
@@ -146,7 +146,7 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if(_greyscale || _sepia || _noise || _vignette){
+	if(_greyscale || _noise || _vignette){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		//Color Texture
 		_quad->predraw();
@@ -174,7 +174,7 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	if(_greyscale || _sepia || _noise || _vignette) {
+	if(_greyscale || _noise || _vignette) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -191,11 +191,6 @@ void GameManager::draw(){
 		else
 			glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 0.0);
 
-		if(_sepia)
-			glUniform1i(ProgramShader::getInstance()->getId("sepiaEffect"), 1.0);
-		else
-			glUniform1i(ProgramShader::getInstance()->getId("sepiaEffect"), 0.0);
-
 		if(_noise)
 			glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 1.0);
 		else
@@ -205,6 +200,9 @@ void GameManager::draw(){
 			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 1.0);
 		else
 			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 0.0);
+
+		glUniform1f(ProgramShader::getInstance()->getId("RandomValue"), (rand() % 20));
+		glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), animationTryOut);
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_STENCIL_TEST);
@@ -248,17 +246,17 @@ void GameManager::update(){
 		}
 	}
 
+	if(_noise)
+		animationTryOut += 0.01;
+
 	// Apply postprocessing
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1)) {
 		_greyscale = !_greyscale;
 	}
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F2)) {
-		_sepia = !_sepia;
-	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
 		_noise = !_noise;
 	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4)) {
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
 		_vignette = !_vignette;
 	}
 }

@@ -13,9 +13,11 @@ uniform sampler2D tex;
 uniform int width;
 uniform int height;
 uniform int greyscaleEffect;
-uniform int sepiaEffect;
 uniform int noiseEffect;
 uniform int vignetteEffect;
+
+uniform float RandomValue;
+uniform float animationTryOut;
 
 // Blending two colors
 vec4 blend(vec4 src, vec4 dst){
@@ -90,7 +92,8 @@ vec4 sepia(vec4 color, float SepiaValue){
 
 // Apply noise - falta os tamanhos
 vec4 noise(vec4 color, float NoiseValue, float RandomValue){
-	float noise = snoise(ex_TexCoord * vec2(1280 + RandomValue * 800,  1280 + RandomValue * 800)) * 0.5;
+	float noise = snoise(ex_TexCoord * vec2(width + RandomValue * height,  width + RandomValue * height)) * 2.0;
+	//float noise_aux = fract(noise + animationTryOut);
 	return (color + (noise * NoiseValue));
 }
 
@@ -102,11 +105,11 @@ vec4 noiseandiso(vec4 color, float NoiseValue, float RandomValue){
 
 
 vec4 scratch_aux(){
-	float xPeriod = 8;
-    float yPeriod = 0;
+	float xPeriod = 0;
+    float yPeriod = 4;
     float pi = 3.141592;
-    float phase = 1;
-    float turbulence = 0;
+    float phase = RandomValue * 6;
+    float turbulence = fract(animationTryOut) * 2;
 	// snoise(ex_TexCoord *	0.69);
     float vScratch = 0.5 + (sin(((ex_TexCoord.x * xPeriod + ex_TexCoord.y * yPeriod + turbulence)) * pi + phase) * 0.5);
     vScratch = clamp((vScratch * 10.0) + 0.65, 0.0, 1.0);
@@ -114,9 +117,9 @@ vec4 scratch_aux(){
 }
 
 vec4 scratchs(vec4 tex, float ScratchValue, float RandomValue){ 
-	float dist = (1.0 / ScratchValue);
+	float dist = (1.0 / ScratchValue) * RandomValue;
 	float d = distance(ex_TexCoord, vec2(RandomValue * dist, RandomValue * dist));
-	if(d < 0.69) return (tex *= scratch_aux());
+	if(d < 0.90) return (tex *= scratch_aux());
 	else return tex;
 }
 
@@ -134,7 +137,6 @@ void main(void) {
 	
 	float SepiaValue = 0.7;
 	float NoiseValue = 0.1;
-	float RandomValue = 1;
 	float ScratchValue = 4;
 	float InnerVignetting = 0.6;
 	float OuterVignetting = 1.0;
@@ -142,11 +144,10 @@ void main(void) {
 	if(greyscaleEffect == 1.0)
 		final_Color = grayscale(final_Color);
 
-	if(sepiaEffect == 1.0)
-		final_Color = sepia(final_Color, SepiaValue);
-
-	if(noiseEffect == 1.0)
+	if(noiseEffect == 1.0){
 		final_Color = noise(final_Color, NoiseValue, RandomValue);
+		final_Color = scratchs(final_Color, ScratchValue, RandomValue);
+	}
 
 	if(vignetteEffect == 1.0)
 		final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
