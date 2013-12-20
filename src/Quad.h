@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Utils.h"
-//#include "Texture.h"
 #include "Entity.h"
 
 #include <iostream>

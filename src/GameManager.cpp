@@ -170,6 +170,7 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
+	// POST PROCESSING
 	if(_greyscale || _noise || _vignette || _freichen) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
@@ -182,25 +183,17 @@ void GameManager::draw(){
 		glUniform1i(ProgramShader::getInstance()->getId("width"), width);
 		glUniform1i(ProgramShader::getInstance()->getId("height"), height);
 		
-		if(_greyscale)
-			glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 1.0);
-		else
-			glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 0.0);
+		if(_greyscale) glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 1.0);
+		else glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 0.0);
 
-		if(_noise)
-			glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 1.0);
-		else
-			glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 0.0);
+		if(_noise) glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 1.0);
+		else glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 0.0);
 
-		if(_vignette)
-			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 1.0);
-		else
-			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 0.0);
+		if(_vignette) glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 1.0);
+		else glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 0.0);
 
-		if(_freichen)
-			glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 1.0);
-		else
-			glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 0.0);
+		if(_freichen) glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 1.0);
+		else glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 0.0);
 
 		glUniform1f(ProgramShader::getInstance()->getId("RandomValue"), (rand() % 20));
 		glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), animationTryOut);
@@ -241,22 +234,17 @@ void GameManager::update(){
 		}
 	}
 
-	if(_noise)
-		animationTryOut += 0.01;
+	if(_noise) animationTryOut += 0.01;
 
 	// Apply postprocessing
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1)) {
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1))
 		_greyscale = !_greyscale;
-	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F2)) {
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F2))
 		_noise = !_noise;
-	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3))
 		_vignette = !_vignette;
-	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4)) {
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4))
 		_freichen = !_freichen;
-	}
 }
 
 

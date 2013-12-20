@@ -1,5 +1,7 @@
 #include "Quad.h"
 
+
+
 Quad::Quad(std::string id) : Entity(id, false) {
 
 }

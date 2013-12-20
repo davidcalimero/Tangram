@@ -9,11 +9,11 @@ Board::Board(std::string id) : Entity(id, false){
 }
 
 Board::~Board() {		
-		((Entity *)_base)->~Entity();		
-		((Entity *)_left)->~Entity();
-		((Entity *)_right)->~Entity();
-		((Entity *)_front)->~Entity();
-		((Entity *)_back)->~Entity();
+	((Entity *)_base)->~Entity();		
+	((Entity *)_left)->~Entity();
+	((Entity *)_right)->~Entity();
+	((Entity *)_front)->~Entity();
+	((Entity *)_back)->~Entity();
 }
 
 void Board::setTranslation(float x, float y, float z) {

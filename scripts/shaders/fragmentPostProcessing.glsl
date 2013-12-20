@@ -44,7 +44,6 @@ vec4 blend(vec4 src, vec4 dst){
 // Apply Perceptual Grayscale
 vec4 grayscale(vec4 color){
 	float avg = 0.2126 * color.x + 0.7152 * color.y + 0.0722 * color.z;
-
 	return vec4(avg, avg, avg, 1.0);
 }
 
@@ -104,7 +103,7 @@ vec4 sepia(vec4 color, float SepiaValue){
 		return 130.0 * dot(m, g);
 }
 
-// Apply noise - falta os tamanhos
+// Apply noise
 vec4 noise(vec4 color, float NoiseValue, float RandomValue){
 	float noise = snoise(ex_TexCoord * vec2(width + RandomValue * height,  width + RandomValue * height)) * 2.0;
 	//float noise_aux = fract(noise + animationTryOut);
@@ -123,7 +122,6 @@ vec4 scratch_aux(){
     float pi = 3.141592;
     float phase = RandomValue * 6;
     float turbulence = fract(animationTryOut) * 2;
-	// snoise(ex_TexCoord *	0.69);
     float vScratch = 0.5 + (sin(((ex_TexCoord.x * xPeriod + ex_TexCoord.y * yPeriod + turbulence)) * pi + phase) * 0.5);
     vScratch = clamp((vScratch * 10.0) + 0.65, 0.0, 1.0);
 	return vec4(vScratch, vScratch, vScratch, 1.0);
@@ -191,7 +189,6 @@ void main(void) {
 
 	if(freichenEffect == 1.0)
 		final_Color = freichen(final_Color);
-
 
 	out_Color = final_Color;
 }

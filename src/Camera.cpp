@@ -39,9 +39,13 @@ void Camera::put(){
 
 	if(_type){
 		if (racio > 1)
-			projection = glm::ortho(-1.5*racio*_distance/4, 1.5*racio*_distance/4, -1.5*_distance/4, 1.5*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
+			projection = glm::ortho(-1.5*racio*_distance/4, 
+									1.5*racio*_distance/4, -1.5*_distance/4, 
+									1.5*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
 		else 
-			projection = glm::ortho(-1.5*_distance/4, 1.5*_distance/4, -1.5/racio*_distance/4, 1.5/racio*_distance/4, 1.0*_distance/4, 10.0*_distance/4);
+			projection = glm::ortho(-1.5*_distance/4, 1.5*_distance/4, 
+									-1.5/racio*_distance/4, 1.5/racio*_distance/4, 
+									1.0*_distance/4, 10.0*_distance/4);
 	}
 	else
 		projection = glm::perspective(38.0f, racio, 1.0f, 15.0f);

@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+
+
 class Board : public Entity {
 	private:
 		Frame * _base;

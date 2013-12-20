@@ -88,10 +88,8 @@ glm::quat Entity::getQuat() {
 
 
 Entity::~Entity(){
-	if(_mesh != NULL)
-		_mesh->~Mesh();
-	if(_texture != NULL)
-		_texture->~Texture();
+	if(_mesh != NULL) _mesh->~Mesh();
+	if(_texture != NULL) _texture->~Texture();
 }
 
 
@@ -162,12 +160,10 @@ void Entity::lerp(float x, float y, float z, float k){
 }
 
 void Entity::activateAnimation(){
-	if(_texture != NULL)
-		_texture->activateAnimation();
+	if(_texture != NULL) _texture->activateAnimation();
 }
 
 
 void Entity::desactivateAnimation(){
-	if(_texture != NULL)
-		_texture->desactivateAnimation();
+	if(_texture != NULL) _texture->desactivateAnimation();
 }

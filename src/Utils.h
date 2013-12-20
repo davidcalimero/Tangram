@@ -34,8 +34,8 @@ namespace Utils {
 	bool isOpenGLError();
 	void checkOpenGLError(std::string error);	
 	char * readFile(char * file);
-	void screenshot(std::string _filename, int _width, int _height); // 
-	std::string date_time(); //
+	void screenshot(std::string _filename, int _width, int _height);
+	std::string date_time();
 	void loadScene(char * file, std::string id, glm::quat * quaternion, glm::vec3 * position);
 	void saveScene(char * file, std::string id, glm::quat quaternion, glm::vec3 position);
 	void loadObj(char* filename, std::vector<unsigned int> &indices, std::vector<glm::vec3> &out_vertices, std::vector<glm::vec2> &out_uvs, std::vector<glm::vec3> &out_normals);
