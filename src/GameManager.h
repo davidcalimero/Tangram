@@ -27,7 +27,7 @@ class GameManager {
 		GLuint _program;
 		GLuint _postProgram;
 
-		bool _greyscale, _noise, _vignette;
+		bool _greyscale, _noise, _vignette, _freichen;
 		float animationTryOut;
 
 

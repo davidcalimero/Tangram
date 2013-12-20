@@ -45,6 +45,7 @@ void GameManager::init(){
 	_greyscale = false;
 	_noise = false;
 	_vignette = false;
+	_freichen = false;
 
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
@@ -146,7 +147,7 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if(_greyscale || _noise || _vignette){
+	if(_greyscale || _noise || _vignette || _freichen){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		_quad->predraw();
 	}
@@ -169,7 +170,7 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	if(_greyscale || _noise || _vignette) {
+	if(_greyscale || _noise || _vignette || _freichen) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -195,6 +196,11 @@ void GameManager::draw(){
 			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 1.0);
 		else
 			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 0.0);
+
+		if(_freichen)
+			glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 1.0);
+		else
+			glUniform1i(ProgramShader::getInstance()->getId("freichenEffect"), 0.0);
 
 		glUniform1f(ProgramShader::getInstance()->getId("RandomValue"), (rand() % 20));
 		glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), animationTryOut);
@@ -247,6 +253,9 @@ void GameManager::update(){
 	}
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
 		_vignette = !_vignette;
+	}
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4)) {
+		_freichen = !_freichen;
 	}
 }
 

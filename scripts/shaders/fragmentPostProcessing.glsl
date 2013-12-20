@@ -15,9 +15,23 @@ uniform int height;
 uniform int greyscaleEffect;
 uniform int noiseEffect;
 uniform int vignetteEffect;
+uniform int freichenEffect;
 
 uniform float RandomValue;
 uniform float animationTryOut;
+
+uniform mat3 G[9] = mat3[](
+	1.0/(2.0*sqrt(2.0)) * mat3( 1.0, sqrt(2.0), 1.0, 0.0, 0.0, 0.0, -1.0, -sqrt(2.0), -1.0 ),
+	1.0/(2.0*sqrt(2.0)) * mat3( 1.0, 0.0, -1.0, sqrt(2.0), 0.0, -sqrt(2.0), 1.0, 0.0, -1.0 ),
+	1.0/(2.0*sqrt(2.0)) * mat3( 0.0, -1.0, sqrt(2.0), 1.0, 0.0, -1.0, -sqrt(2.0), 1.0, 0.0 ),
+	1.0/(2.0*sqrt(2.0)) * mat3( sqrt(2.0), -1.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, -sqrt(2.0) ),
+	1.0/2.0 * mat3( 0.0, 1.0, 0.0, -1.0, 0.0, -1.0, 0.0, 1.0, 0.0 ),
+	1.0/2.0 * mat3( -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0 ),
+	1.0/6.0 * mat3( 1.0, -2.0, 1.0, -2.0, 4.0, -2.0, 1.0, -2.0, 1.0 ),
+	1.0/6.0 * mat3( -2.0, 1.0, -2.0, 1.0, 4.0, 1.0, -2.0, 1.0, -2.0 ),
+	1.0/3.0 * mat3( 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 )
+);
+
 
 // Blending two colors
 vec4 blend(vec4 src, vec4 dst){
@@ -103,7 +117,6 @@ vec4 noiseandiso(vec4 color, float NoiseValue, float RandomValue){
     return (noise + NoiseValue * (noise - noise_Overlay));
 }
 
-
 vec4 scratch_aux(){
 	float xPeriod = 0;
     float yPeriod = 4;
@@ -129,6 +142,30 @@ vec4 vignetting(vec4 tex, float InnerVignetting, float OuterVignetting){
 	return tex*= vignetting;
 }
 
+vec4 freichen(vec4 tex_Color){
+	mat3 I;
+	float cnv[9];
+	vec3 sample;
+
+	// Fetch neighbourhood and use the RGB vector's length as intensity value
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			sample = texelFetch(tex, ivec2(gl_FragCoord) + ivec2(i-1, j-1), 0 ).rgb;
+			I[i][j] = length(sample); 
+		}
+	}
+	
+	// Convolution values for all the masks
+	for (int i=0; i < 9; i++) {
+		float dptexel3 = dot(G[i][0], I[0]) + dot(G[i][1], I[1]) + dot(G[i][2], I[2]);
+		cnv[i] = dptexel3 * dptexel3; 
+	}
+
+	float M = (cnv[0] + cnv[1]) + (cnv[2] + cnv[3]);
+	float S = (cnv[4] + cnv[5]) + (cnv[6] + cnv[7]) + (cnv[8] + M); 
+	
+	return tex_Color*vec4(sqrt(M/S))*5;
+}
 
 void main(void) {
 
@@ -151,6 +188,9 @@ void main(void) {
 
 	if(vignetteEffect == 1.0)
 		final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
+
+	if(freichenEffect == 1.0)
+		final_Color = freichen(final_Color);
 
 
 	out_Color = final_Color;
