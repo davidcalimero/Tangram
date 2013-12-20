@@ -3,6 +3,8 @@
 Texture::Texture(std::string textureName) {
 	int width, height;
 
+	_animationTryOut = 0.0f;
+	_selected = false;
 	_textureName = textureName;
 	
 	glGenTextures(1, &_textureID);
@@ -34,8 +36,21 @@ Texture::~Texture(){
 
 void Texture::bind() {
 	glBindTexture(GL_TEXTURE_2D, _textureID);
+	if(_selected) _animationTryOut += 0.001;
+	glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), _animationTryOut);
 }
 
 void Texture::unbind() {
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), 0.0f);
+}
+
+void Texture::activateAnimation(){
+	_selected = true;
+}
+
+
+void Texture::desactivateAnimation(){
+	_selected = false;
+	_animationTryOut = 0.0f;
 }

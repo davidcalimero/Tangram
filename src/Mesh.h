@@ -20,14 +20,8 @@ class Mesh {
 		glm::vec3 _specularColor;
 		float _shininess;
 
-		float animationTryOut;
-		bool _selected;
-		
 	public:
 		Mesh(char * objFile, char * mtlFile);
 		~Mesh();
 		void draw();
-
-		void activateAnimation();
-		void desactivateAnimation();
 };

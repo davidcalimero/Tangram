@@ -20,7 +20,7 @@ class Quad : public Entity {
 		
 
 	public:
-		Quad(std::string id, char * objFile, char * mtlFile);
+		Quad(std::string id);
 		void init();
 		void predraw();
 		void draw();

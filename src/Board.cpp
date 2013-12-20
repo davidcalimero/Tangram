@@ -1,38 +1,38 @@
 #include "Board.h"
 
-Board::Board(std::string id, char * vertexFile, char * mtlFile) : Entity(id, vertexFile, mtlFile, false){
-		base = new Frame("mesaBase", "mesh/plane.obj", mtlFile);
-		left = new Frame("mesaMolduraEsquerda", vertexFile, mtlFile);
-		right = new Frame("mesaMolduraDireita", vertexFile, mtlFile);
-		front = new Frame("mesaMolduraFrente", vertexFile, mtlFile);
-		back = new Frame("mesaMolduraTras", vertexFile, mtlFile);
+Board::Board(std::string id) : Entity(id, false){
+	_base = new Frame("mesaBase");
+	_left = new Frame("mesaMolduraEsquerda");
+	_right = new Frame("mesaMolduraDireita");
+	_front = new Frame("mesaMolduraFrente");
+	_back = new Frame("mesaMolduraTras");
 }
 
 Board::~Board() {		
-		((Entity *)base)->~Entity();		
-		((Entity *)left)->~Entity();
-		((Entity *)right)->~Entity();
-		((Entity *)front)->~Entity();
-		((Entity *)back)->~Entity();
+		((Entity *)_base)->~Entity();		
+		((Entity *)_left)->~Entity();
+		((Entity *)_right)->~Entity();
+		((Entity *)_front)->~Entity();
+		((Entity *)_back)->~Entity();
 }
 
 void Board::setTranslation(float x, float y, float z) {
-	base->setTranslation(x, y, z);
-	left->setTranslation(x - 1.05, y + 0.05, z + 0.05);
-	right->setTranslation(x + 1.05, y - 0.05, z + 0.05);
-	front->setTranslation(x - 0.05, y - 1.05, z + 0.05);
-	back->setTranslation(x + 0.05, y + 1.05, z + 0.05);
+	_base->setTranslation(x, y, z);
+	_left->setTranslation(x - 1.05, y + 0.05, z + 0.05);
+	_right->setTranslation(x + 1.05, y - 0.05, z + 0.05);
+	_front->setTranslation(x - 0.05, y - 1.05, z + 0.05);
+	_back->setTranslation(x + 0.05, y + 1.05, z + 0.05);
 }
 
 void Board::borderScale(float x, float y, float z) {
-	left->scale(x, y, z);
-	right->scale(x, y, z);
-	front->scale(y, x, z);
-	back->scale(y, x, z);
+	_left->scale(x, y, z);
+	_right->scale(x, y, z);
+	_front->scale(y, x, z);
+	_back->scale(y, x, z);
 }
 
 void Board::baseScale(float x, float y, float z) {
-	base->scale(x, y, z);
+	_base->scale(x, y, z);
 }
 
 
@@ -40,13 +40,31 @@ void Board::draw(){
 	glDisable(GL_STENCIL_TEST);
 	glEnable(GL_POLYGON_OFFSET_FILL);
 	glPolygonOffset(1.0f, 1.0);	
-	base->draw();	
+	_base->draw();	
 	glDisable(GL_POLYGON_OFFSET_FILL);
-	left->draw();	
-	right->draw();	
-	front->draw();	
-	back->draw();
+	_left->draw();	
+	_right->draw();	
+	_front->draw();	
+	_back->draw();
 	glEnable(GL_STENCIL_TEST);
+}
+
+
+void Board::setMesh(char * base , char * border, char * mtl){
+	_base->setMesh(base, mtl);
+	_left->setMesh(border, mtl);
+	_right->setMesh(border, mtl);
+	_front->setMesh(border, mtl);
+	_back->setMesh(border, mtl);
+}
+
+
+void Board::setTexture(char * filename){
+	_base->setTexture(filename);
+	_left->setTexture(filename);
+	_right->setTexture(filename);
+	_front->setTexture(filename);
+	_back->setTexture(filename);
 }
 
 

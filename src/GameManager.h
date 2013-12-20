@@ -21,7 +21,7 @@ class GameManager {
 		Light * _light;
 		Quad * _quad;
 		Mirror * _mirror;
-		GLuint _stencilValue;
+		Entity * _selected;
 		GLuint frameBufferPP;
 		GLuint texColorBufferNoise;
 		int _postProcessing;

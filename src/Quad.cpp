@@ -1,6 +1,6 @@
 #include "Quad.h"
 
-Quad::Quad(std::string id, char * objFile, char * mtlFile) : Entity(id, objFile, mtlFile, false) {
+Quad::Quad(std::string id) : Entity(id, false) {
 
 }
 

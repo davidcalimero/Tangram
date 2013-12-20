@@ -2,20 +2,15 @@
 #include "Camera.h"
 
 
-Entity::Entity(std::string id, char * objFile, char * mtlFile, bool reflection){
+Entity::Entity(std::string id, bool reflection){
 	std::string texture;
 	
 	_id = id;
 	_height = _px = _py = _pz = 0.0;
 	_reflection = reflection;
 
-	_mesh = new Mesh(objFile, mtlFile);
+	_mesh = NULL;
 	_texture = NULL;
-
-	Utils::loadTexture(mtlFile, texture);
-
-	if(texture.size() > 0) 
-		_texture = new Texture(texture);
 }
 
 
@@ -31,7 +26,9 @@ void Entity::draw(){
 		glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
 	}
 	else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
-	_mesh->draw();
+	
+	if(_mesh != NULL)
+		_mesh->draw();
 	
 	if(_texture != NULL)
 		_texture->unbind();
@@ -85,7 +82,8 @@ glm::quat Entity::getQuat() {
 
 
 Entity::~Entity(){
-	_mesh->~Mesh();
+	if(_mesh != NULL)
+		_mesh->~Mesh();
 	if(_texture != NULL)
 		_texture->~Texture();
 }
@@ -96,8 +94,19 @@ std::string Entity::getId(){
 }
 
 
-Mesh * Entity::getMesh(){
-	return _mesh;
+void Entity::setMesh(char * filename, char * mtl){
+	_mesh = new Mesh(filename, mtl);
+}
+
+
+void Entity::setTexture(char * filename){
+	std::string texture;
+	Utils::loadTexture(filename, texture);
+
+	if(texture.size() > 0)
+		_texture = new Texture(texture);
+	else
+		std::cout << "Texture " << filename << " does not exist." << std::endl;
 }
 
 
@@ -147,10 +156,12 @@ void Entity::lerp(float x, float y, float z, float k){
 }
 
 void Entity::activateAnimation(){
-	_mesh->activateAnimation();
+	if(_texture != NULL)
+		_texture->activateAnimation();
 }
 
 
 void Entity::desactivateAnimation(){
-	_mesh->desactivateAnimation();
+	if(_texture != NULL)
+		_texture->desactivateAnimation();
 }

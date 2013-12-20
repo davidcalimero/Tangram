@@ -106,7 +106,6 @@ void Camera::update(){
 	// spheric camera
 	glm::vec2 mouse = Input::getInstance()->getMouseMotion();
 	if( GameManager::getInstance()->isMouseOver("background") || 
-		GameManager::getInstance()->isMouseOver("mesa") || 
 		GameManager::getInstance()->isMouseOver("espelho"))
 		rotate(mouse.y, mouse.x);
 

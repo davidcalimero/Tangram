@@ -8,6 +8,6 @@ class Frame : public Entity {
 	private:
 
 	public:
-		Frame(std::string id, char * vertexFile, char * mtlFile);
+		Frame(std::string id);
 		void update();
 };

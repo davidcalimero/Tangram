@@ -155,7 +155,6 @@ void main(void) {
 			// final_Color = scratchs(final_Color, ScratchValue, RandomValue);
 			final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
 			break;
-      break;
    }
 
 	out_Color = final_Color;

@@ -13,11 +13,15 @@ class Texture {
 	private:
 
 		GLuint _textureID;
-		std::string _textureName;		
+		std::string _textureName;
+		float _animationTryOut;
+		float _selected;
 
 	public:
 		Texture(std::string textureName);
 		~Texture();
 		void bind();
 		void unbind();
+		void activateAnimation();
+		void desactivateAnimation();
 };

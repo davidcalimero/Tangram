@@ -23,7 +23,7 @@ class Entity {
 	protected:
 		float _px, _py, _pz;
 		std::string _id;
-		Entity(std::string id, char * objFile, char * mtlFile, bool reflection);
+		Entity(std::string id, bool reflection);
 
 	public:
 		virtual ~Entity();
@@ -33,7 +33,8 @@ class Entity {
 		glm::vec3 getPos();
 		glm::quat getQuat();
 		std::string getId();
-		Mesh * getMesh();
+		void setMesh(char * filename, char * mtl);
+		virtual void setTexture(char * filename);
 		void setRotation(glm::quat q);
 		void setTranslation(float x, float y, float z);
 		void rotate(float x, float y, float z, float angle);

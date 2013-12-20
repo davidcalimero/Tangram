@@ -2,7 +2,10 @@
 
 
 
-GameManager::GameManager(){}
+GameManager::GameManager(){
+	_selected = NULL;
+	_postProcessing = 0;
+}
 
 
 GameManager * GameManager::getInstance(){
@@ -22,22 +25,10 @@ Entity * GameManager::getEntityById(std::string id){
 
 
 bool GameManager::isMouseOver(std::string id){
-	if(id.compare("background") == 0 && _stencilValue == 0)
-		return true;
-
-	if(id.compare("espelho") == 0 && _stencilValue == 1)
-		return true;
-
-	entityIterator e = _entities.find(id);
-	if(e == _entities.end())
-		return false;
-
-	int stencil = std::distance(_entities.begin(), e)+2;
-	if(stencil == _stencilValue)
-		return true;
+	if(_selected == NULL && id.compare("background") == 0) return true;
+	if(_selected != NULL && _selected->getId().compare(id) == 0) return true;
 	return false;
 }
-
 
 
 void GameManager::init(){
@@ -51,10 +42,11 @@ void GameManager::init(){
 	_postProgram = ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
 																	 "shaders/fragmentPostProcessing.glsl");
 
-	_quad = new Quad("plano", "mesh/quad.obj", "materials/quad.mtl");
 
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
+	_quad = new Quad("plano");
+	_quad->setMesh("mesh/quad.obj", "materials/quad.mtl");
 	_quad->init();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -62,13 +54,12 @@ void GameManager::init(){
 					   glm::vec3(0.5,0.5,0.5), 
 					   glm::vec3(0.9,0.9,0.9), 
 					   glm::vec3(0.9,0.9,0.9));
-	
-	_postProcessing = 0;
-
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);	
-	Board * board = new Board("mesa", "mesh/cube.obj", "materials/mesa.mtl");	
+	Board * board = new Board("mesa");
+	board->setMesh("mesh/plane.obj", "mesh/cube.obj", "materials/mesa.mtl");
+	board->setTexture("materials/mesa.mtl");
 	board->baseScale(2.2, 2.2, 0.0);
 	board->borderScale(0.1, 2.1, 0.1);
 	board->setTranslation(pcoords.x, pcoords.y, pcoords.z);	
@@ -76,55 +67,70 @@ void GameManager::init(){
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "espelho", &qcoords, &pcoords);
-	_mirror = new Mirror("espelho", "mesh/cube.obj", "materials/espelho.mtl");
+	_mirror = new Mirror("espelho");
+	_mirror->setMesh("mesh/cube.obj", "materials/espelho.mtl");
 	_mirror->scale(2.0, 2.0, 0.0001);
 	_mirror->setTranslation(pcoords.x, pcoords.y, pcoords.z);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloVermelho", &qcoords, &pcoords);
-	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho", "mesh/prism.obj", "materials/trianguloVermelho.mtl");
+	TangramPieces * trianguloVermelho = new TangramPieces("trianguloVermelho");
+	trianguloVermelho->setMesh("mesh/prism.obj", "materials/trianguloVermelho.mtl");
+	trianguloVermelho->setTexture("materials/trianguloVermelho.mtl");
 	trianguloVermelho->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.25);
 	trianguloVermelho->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVermelho);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloRoxo", &qcoords, &pcoords);
-	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo", "mesh/prism.obj", "materials/trianguloRoxo.mtl");
+	TangramPieces * trianguloRoxo = new TangramPieces("trianguloRoxo");
+	trianguloRoxo->setMesh("mesh/prism.obj", "materials/trianguloRoxo.mtl");
+	trianguloRoxo->setTexture("materials/trianguloRoxo.mtl");
 	trianguloRoxo->scale(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.23);
 	trianguloRoxo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRoxo);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloAzul", &qcoords, &pcoords);
-	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul", "mesh/prism.obj", "materials/trianguloAzul.mtl");
+	TangramPieces * trianguloAzul = new TangramPieces("trianguloAzul");
+	trianguloAzul->setMesh("mesh/prism.obj", "materials/trianguloAzul.mtl");
+	trianguloAzul->setTexture("materials/trianguloAzul.mtl");
 	trianguloAzul->scale(1.0/2.0, 1.0/2.0, 0.13);
 	trianguloAzul->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloAzul);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloVerde", &qcoords, &pcoords);
-	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde", "mesh/prism.obj", "materials/trianguloVerde.mtl");
+	TangramPieces * trianguloVerde = new TangramPieces("trianguloVerde");
+	trianguloVerde->setMesh("mesh/prism.obj", "materials/trianguloVerde.mtl");
+	trianguloVerde->setTexture("materials/trianguloVerde.mtl");
 	trianguloVerde->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.21);
 	trianguloVerde->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloVerde);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "trianguloRosa", &qcoords, &pcoords);
-	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa", "mesh/prism.obj", "materials/trianguloRosa.mtl");
+	TangramPieces * trianguloRosa = new TangramPieces("trianguloRosa");
+	trianguloRosa->setMesh("mesh/prism.obj", "materials/trianguloRosa.mtl");
+	trianguloRosa->setTexture("materials/trianguloRosa.mtl");
 	trianguloRosa->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.17);
 	trianguloRosa->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(trianguloRosa);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "quadradoLaranja", &qcoords, &pcoords);
-	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja", "mesh/cube.obj", "materials/quadradoLaranja.mtl");
+	TangramPieces * quadradoLaranja = new TangramPieces("quadradoLaranja");
+	quadradoLaranja->setMesh("mesh/cube.obj", "materials/quadradoLaranja.mtl");
+	quadradoLaranja->setTexture("materials/quadradoLaranja.mtl");
 	quadradoLaranja->scale(sqrt(2.0)/4.0, sqrt(2.0)/4.0, 0.19);
 	quadradoLaranja->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoLaranja);
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "quadradoAmarelo", &qcoords, &pcoords);
-	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo", "mesh/parallellogram.obj", "materials/quadradoAmarelo.mtl");
+	TangramPieces * quadradoAmarelo = new TangramPieces("quadradoAmarelo");
+	quadradoAmarelo->setMesh("mesh/parallellogram.obj", "materials/quadradoAmarelo.mtl");
+	quadradoAmarelo->setTexture("materials/quadradoAmarelo.mtl");
 	quadradoAmarelo->scale(1, 1, 0.15);
 	quadradoAmarelo->setPos(pcoords.x, pcoords.y, pcoords.z, qcoords);
 	add(quadradoAmarelo);
@@ -137,7 +143,7 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if(_postProcessing!=0){
+	if(_postProcessing != 0){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		//Color Texture
 		_quad->predraw();
@@ -165,7 +171,7 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	if(_postProcessing!=0) {
+	if(_postProcessing != 0) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -174,10 +180,11 @@ void GameManager::draw(){
 
 		int width = glutGet(GLUT_WINDOW_WIDTH);
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
+		std::cout << _postProcessing << std::endl;
 		glUniform1i(ProgramShader::getInstance()->getId("width"), width);
 		glUniform1i(ProgramShader::getInstance()->getId("height"), height);
 		glUniform1i(ProgramShader::getInstance()->getId("effect"), _postProcessing);
-		
+
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_STENCIL_TEST);
 	
@@ -200,16 +207,7 @@ void GameManager::update(){
 	Camera::getInstance()->update();
 	for (entityIterator i = _entities.begin(); i != _entities.end(); i++)
 		i->second->update();
-
-	//Check if mouse over object
-	for (entityIterator i = _entities.begin(); i != _entities.end(); i++){
-		if(isMouseOver(i->first)){
-			i->second->activateAnimation();
-		}
-		else
-			i->second->desactivateAnimation();
-	}
-
+	
 	// Scene saving
 	if(Input::getInstance()->keyWasReleased('G')) {
 		for (entityIterator i = _entities.begin(); i != _entities.end(); i++) {
@@ -228,18 +226,6 @@ void GameManager::update(){
 			}
 		}
 	}
-}
-
-void GameManager::postProcessing(){
-
-	int width = glutGet(GLUT_WINDOW_WIDTH);
-	int height = glutGet(GLUT_WINDOW_HEIGHT);
-
-	// Mouse Over
-	glm::vec2 mp = Input::getInstance()->getMousePostion();
-	if( !Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && 
-		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
-		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 
 	// Apply postprocessing
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1)) {
@@ -261,6 +247,33 @@ void GameManager::postProcessing(){
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F5)) {
 		if(_postProcessing == 5) _postProcessing = 0;
 		else _postProcessing = 5;
+	}
+}
+
+
+
+void GameManager::postProcessing(){
+
+	int width = glutGet(GLUT_WINDOW_WIDTH);
+	int height = glutGet(GLUT_WINDOW_HEIGHT);
+
+	// Mouse Over
+	glm::vec2 mp = Input::getInstance()->getMousePostion();
+	if( !Input::getInstance()->mouseWasPressed(GLUT_LEFT_BUTTON) && 
+		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON)){
+		GLuint stencilValue;
+		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &stencilValue);
+		int j = -1;
+		Entity * temp = NULL;
+		for(entityIterator i = _entities.begin(); i != _entities.end(); i++){
+			if(j <= (int)(stencilValue-2)) j++;
+			if(j == stencilValue-2) temp = i->second;
+			if(_selected != NULL && _selected->getId().compare(i->first) == 0)
+				_selected->activateAnimation();
+			else i->second->desactivateAnimation();
+		}
+		if(j > -1 && temp != NULL) _selected = temp;
+		else _selected = NULL;
 	}
 
 	// Taking screenshot

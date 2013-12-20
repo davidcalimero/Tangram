@@ -8,7 +8,7 @@ class Mirror : public Entity {
 	private:
 		
 	public:
-		Mirror(std::string id, char * vertexFile, char * mtlFile);
+		Mirror(std::string id);
 		virtual void draw();
 		void update();
 };
