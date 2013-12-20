@@ -51,14 +51,11 @@ void GameManager::init(){
 	_postProgram = ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
 																	 "shaders/fragmentPostProcessing.glsl");
 
+	_quad = new Quad("plano", "mesh/quad.obj", "materials/quad.mtl");
+
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-	glGenTextures(1, &texColorBufferPP);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glGenRenderbuffers(1, &rboStencilDepthPP);
+	_quad->init();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	_light = new Light(glm::vec3(0-2.0,-2.0,2.0), 
@@ -68,7 +65,6 @@ void GameManager::init(){
 	
 	_postProcessing = 0;
 
-	quad = new Frame("plano", "mesh/quad.obj", "materials/quad.mtl");
 
 	/**/
 	Utils::loadScene("scene/currentScene.xml", "mesa", &qcoords, &pcoords);	
@@ -144,19 +140,7 @@ void GameManager::draw(){
 	if(_postProcessing){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		//Color Texture
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
-		int width = glutGet(GLUT_WINDOW_WIDTH);
-		int height = glutGet(GLUT_WINDOW_HEIGHT);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBufferPP, 0);
-		glBindRenderbuffer(GL_RENDERBUFFER, rboStencilDepthPP);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboStencilDepthPP);
-		assert(glCheckFramebufferStatus(GL_FRAMEBUFFER));
-
-		glClearColor(0.1,0.1,0.1,1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		_quad->predraw();
 	}
 
 	_light->setShaderLightValues(false);
@@ -187,11 +171,12 @@ void GameManager::draw(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		ProgramShader::getInstance()->bind(_postProgram);
 		glUniform1i(ProgramShader::getInstance()->getId("tex"), 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texColorBufferPP);
+
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_STENCIL_TEST);
-		quad->draw();
+	
+		_quad->draw();
+	
 		glEnable(GL_STENCIL_TEST);
 		glEnable(GL_DEPTH_TEST);
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);

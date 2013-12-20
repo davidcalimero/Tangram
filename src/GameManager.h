@@ -4,7 +4,7 @@
 #include "TangramPieces.h"
 #include "Board.h"
 #include "Mirror.h"
-#include "Frame.h"
+#include "Quad.h"
 #include "Light.h"
 
 #include <iostream>
@@ -19,13 +19,11 @@ class GameManager {
 		std::map<const std::string, Entity *> _entities;
 		GameManager();
 		Light * _light;
-		Frame * quad;
+		Quad * _quad;
 		Mirror * _mirror;
 		GLuint _stencilValue;
 		GLuint frameBufferPP;
-		GLuint texColorBufferPP;
 		GLuint texColorBufferNoise;
-		GLuint rboStencilDepthPP;
 		int _postProcessing;
 		GLuint _program;
 		GLuint _postProgram;
