@@ -51,8 +51,13 @@ uniform float ringFrequency;
 uniform float ringSharpness;
 uniform float ringScale;
 
+// Reflection
+uniform int reflection;
+
 void main(void)
 {
+	float attenuation_factor = 0.2;
+
 	vec3 tst = vec3(1.0);
 
 	// MARBLE Texture
@@ -113,7 +118,17 @@ void main(void)
 		specular = MaterialSpecular * SpecularLight * pow(NdotH, MaterialShininess);
 	}
 	
-	vec4 LightIntensity = vec4(((ambient + diffuse) * tst) + specular, 1.0);
+	float attenuation;
+
+	if(reflection == 1){
+		attenuation = attenuation_factor;
+	}
+	else {
+		attenuation = 1.0;
+	}
+
+
+	vec4 LightIntensity = vec4((ambient * tst) + (diffuse * tst * attenuation) + (specular * attenuation), 1.0);
 
 	//out_Color = vec4(ex_Normal, 1.0);
 	//out_Color = texture(tex, ex_TexCoord) * out_Color;

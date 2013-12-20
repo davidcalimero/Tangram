@@ -16,6 +16,8 @@ Entity::Entity(std::string id, bool reflection){
 
 void Entity::draw(){
 
+	glUniform1i(ProgramShader::getInstance()->getId("reflection"), 0);
+
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(), glm::vec3(_px, _py, _pz)) * glm::mat4_cast(_q) * _matrix;
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*modelMatrix));
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
@@ -41,6 +43,8 @@ void Entity::draw(){
 void Entity::drawReflection(){
 
 	if(_reflection){		
+		
+		glUniform1i(ProgramShader::getInstance()->getId("reflection"), 1);
 		
 		glm::vec3 angles = glm::eulerAngles(_q);
 		glm::quat rotation = glm::rotate(glm::quat(),angles.z,glm::vec3(0,0,1)) *
