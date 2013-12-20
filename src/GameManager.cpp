@@ -137,7 +137,7 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if(_postProcessing){
+	if(_postProcessing!=0){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		//Color Texture
 		_quad->predraw();
@@ -165,13 +165,19 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	if(_postProcessing) {
+	if(_postProcessing!=0) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		ProgramShader::getInstance()->bind(_postProgram);
 		glUniform1i(ProgramShader::getInstance()->getId("tex"), 0);
 
+		int width = glutGet(GLUT_WINDOW_WIDTH);
+		int height = glutGet(GLUT_WINDOW_HEIGHT);
+		glUniform1i(ProgramShader::getInstance()->getId("width"), width);
+		glUniform1i(ProgramShader::getInstance()->getId("height"), height);
+		glUniform1i(ProgramShader::getInstance()->getId("effect"), _postProcessing);
+		
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_STENCIL_TEST);
 	
@@ -224,8 +230,6 @@ void GameManager::update(){
 	}
 }
 
-
-
 void GameManager::postProcessing(){
 
 	int width = glutGet(GLUT_WINDOW_WIDTH);
@@ -237,11 +241,26 @@ void GameManager::postProcessing(){
 		!Input::getInstance()->mouseWasPressed(GLUT_RIGHT_BUTTON))
 		glReadPixels(mp.x, height - mp.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &_stencilValue);
 
-	//std::cout << _stencilValue << std::endl;
-
 	// Apply postprocessing
-	if(Input::getInstance()->keyWasReleased('E')) {
-		_postProcessing = (_postProcessing+1)%2;
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1)) {
+		if(_postProcessing == 1) _postProcessing = 0;
+		else _postProcessing = 1;
+	}
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F2)) {
+		if(_postProcessing == 2) _postProcessing = 0;
+		else _postProcessing = 2;
+	}
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
+		if(_postProcessing == 3) _postProcessing = 0;
+		else _postProcessing = 3;
+	}
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4)) {
+		if(_postProcessing == 4) _postProcessing = 0;
+		else _postProcessing = 4;
+	}
+	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F5)) {
+		if(_postProcessing == 5) _postProcessing = 0;
+		else _postProcessing = 5;
 	}
 
 	// Taking screenshot
