@@ -6,6 +6,7 @@ in vec4 ex_Color;
 in vec3 ex_Normal;
 in vec2 ex_TexCoord;
 in vec3 mc_Position;
+in vec3 noise_pos;
 
 // Out
 out vec4 out_Color;
@@ -121,7 +122,7 @@ void main(void)
 	float attenuation;
 
 	if(reflection == 1){
-		attenuation = attenuation_factor;
+		attenuation = attenuation_factor /** texture(tex, vec2((noise_pos *0.5) + 1)).r*/;
 	}
 	else {
 		attenuation = 1.0;

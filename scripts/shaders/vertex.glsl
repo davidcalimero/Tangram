@@ -12,6 +12,7 @@ out vec4 ex_Color;
 out vec3 ex_Normal;
 out vec2 ex_TexCoord;
 out vec3 mc_Position;
+out vec3 noise_pos;
 
 // Matrix
 uniform mat4 ModelMatrix;
@@ -29,7 +30,7 @@ void main(void)
 	ex_Position = vec3(ViewMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(in_Position, 1.0);
 	ex_TexCoord = in_TexCoord;
-
+	noise_pos = vec3(ProjectionMatrix * ModelMatrix * vec4(in_Position, 1.0));
 	float noiseScale = 0.04;
 	mc_Position = in_Position * noiseScale;
 }
