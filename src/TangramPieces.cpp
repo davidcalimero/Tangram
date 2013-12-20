@@ -3,8 +3,8 @@
 
 
 TangramPieces::TangramPieces(std::string id) : Entity(id, true){
-	_noiseIntensity = 0.5;
-	_noiseScale = 0.06;
+	_noiseIntensity = 1.0;
+	_noiseScale = 0.25;
 }
 
 
