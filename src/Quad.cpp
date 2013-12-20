@@ -36,10 +36,17 @@ void Quad::predraw() {
 
 
 void Quad::draw() {
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
 	bind();
 	Entity::draw();
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_DEPTH_TEST);
 }
 
-void Quad::update() {
+void Quad::update() {}
 
+
+void Quad::updateShader(){
+	glUniform1i(ProgramShader::getInstance()->getId("material"), -1);
 }

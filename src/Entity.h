@@ -35,6 +35,7 @@ class Entity {
 		std::string getId();
 		void setMesh(char * filename, char * mtl);
 		virtual void setTexture(char * filename);
+		virtual void updateShader() = 0;
 		void setRotation(glm::quat q);
 		void setTranslation(float x, float y, float z);
 		void rotate(float x, float y, float z, float angle);

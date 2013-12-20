@@ -25,4 +25,5 @@ class Quad : public Entity {
 		void predraw();
 		void draw();
 		void update();
+		void updateShader();
 };

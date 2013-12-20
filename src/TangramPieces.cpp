@@ -46,3 +46,8 @@ void TangramPieces::update(){
 		}
 	}
 }
+
+
+void TangramPieces::updateShader(){
+	glUniform1i(ProgramShader::getInstance()->getId("material"), 1);
+}

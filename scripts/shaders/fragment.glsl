@@ -26,7 +26,10 @@ uniform float MaterialShininess;
 
 // Texture Sample
 uniform sampler2D tex; //NOISE
-uniform float withTexture;
+uniform int withTexture;
+
+uniform float animationTryOut;
+uniform int material;
 
 // Camera View Vector
 uniform vec3 EyeDirection;
@@ -39,37 +42,12 @@ layout(std140) uniform SharedMatrices
 	mat4 ProjectionMatrix;
 };
 
-uniform float animationTryOut;
-
 void main(void)
 {
 	vec3 tst = vec3(1.0);
 
-	/*   WOOD STAYLU   */
-	/** /
-	if(withTexture == 1){
-		vec3 darkWood = vec3(139.0/255.0, 69.0/255.0, 19.0/255.0);
-		vec3 lightWood = vec3(222.0/255.0, 184.0/255.0, 135.0/255.0);
-		float ringFrequency = 6.72;
-		float ringSharpness = 21.0;
-		float ringScale = 0.5;
-
-		float noiseScale = 1.0;
-		vec2 scaled_pos = ex_TexCoord * noiseScale;
-		float signed_noise = 2.0 * texture(tex, scaled_pos).r - 1.0;
-		float frp = fract(scaled_pos.x * ringFrequency + ringScale * signed_noise);
-		float invMax = pow(ringSharpness, ringSharpness / (ringSharpness - 1.0)) / (ringSharpness - 1.0);
-		float ring = invMax * (frp - pow(frp , ringSharpness));
-		float lrp = ring + signed_noise;
-
-		lrp = fract(animationTryOut + lrp);
-
-		tst = mix(darkWood, lightWood , lrp);
-	}
-	/**/
-
-	/* MARBLE STAYLU */
-	if(withTexture == 1){
+	// MARBLE Texture
+	if(withTexture == 1 && material == 1){
 
 		vec3 marbleColor = vec3(132.0/255.0, 63.0/255.0, 76.0/255.0);
 		vec3 veinColor = vec3(213.0/255.0, 181.0/255.0, 195.0/255.0);
@@ -87,6 +65,28 @@ void main(void)
 
 		tst = mix(marbleColor, veinColor, lrp);
 	}
+
+	// WOOD Texture
+	else if(withTexture == 1 && material == 0){
+		vec3 darkWood = vec3(139.0/255.0, 69.0/255.0, 19.0/255.0);
+		vec3 lightWood = vec3(222.0/255.0, 184.0/255.0, 135.0/255.0);
+		float ringFrequency = 6.72;
+		float ringSharpness = 21.0;
+		float ringScale = 0.5;
+
+		float noiseScale = 1.0;
+		vec2 scaled_pos = ex_TexCoord * noiseScale;
+		float signed_noise = 2.0 * texture(tex, scaled_pos).r - 1.0;
+		float frp = fract(scaled_pos.x * ringFrequency + ringScale * signed_noise);
+		float invMax = pow(ringSharpness, ringSharpness / (ringSharpness - 1.0)) / (ringSharpness - 1.0);
+		float ring = invMax * (frp - pow(frp , ringSharpness));
+		float lrp = ring + signed_noise;
+
+		lrp = fract(/*animationTryOut +*/ lrp);
+
+		tst = mix(darkWood, lightWood , lrp);
+	}
+	else tst = vec3(1.0);
 
 	/**/
 	// Blinn-Phong Model
@@ -117,6 +117,6 @@ void main(void)
 	//out_Color = texture(tex, ex_TexCoord) * out_Color;
 	float shineMouse = fract(animationTryOut);
 
-	out_Color = vec4(tst, 1.0) * LightIntensity * (1 + (sin(shineMouse * 2 * 3.14))/2);
+	out_Color = vec4(tst, 1.0) * LightIntensity * (1 + (sin(shineMouse * 4 * 3.14))/2);
 	//out_Color = vec4(tst, 1.0) * LightIntensity;
 }

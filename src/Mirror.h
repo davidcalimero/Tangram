@@ -11,4 +11,5 @@ class Mirror : public Entity {
 		Mirror(std::string id);
 		virtual void draw();
 		void update();
+		void updateShader();
 };

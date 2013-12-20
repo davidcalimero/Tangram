@@ -148,7 +148,6 @@ void GameManager::draw(){
 
 	if(_greyscale || _noise || _vignette){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
-		//Color Texture
 		_quad->predraw();
 	}
 
@@ -160,12 +159,8 @@ void GameManager::draw(){
 		i->second->draw();
 	}
 
-	// MIRROR
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilMask(0xFF);
-	glDepthMask(GL_FALSE);	
+	// MIRROR	
 	_mirror->draw();
-	glDepthMask(GL_TRUE);
 
 	// REFLECTIONS
 	_light->setShaderLightValues(true);
@@ -204,13 +199,7 @@ void GameManager::draw(){
 		glUniform1f(ProgramShader::getInstance()->getId("RandomValue"), (rand() % 20));
 		glUniform1f(ProgramShader::getInstance()->getId("animationTryOut"), animationTryOut);
 
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_STENCIL_TEST);
-	
 		_quad->draw();
-	
-		glEnable(GL_STENCIL_TEST);
-		glEnable(GL_DEPTH_TEST);
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 	}
 

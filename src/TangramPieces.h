@@ -17,4 +17,5 @@ class TangramPieces : public Entity {
 		void setPos(float px, float py, float pz, glm::quat q);
 		void resetPos(float x, float y, float z, glm::quat q);
 		void update();
+		void updateShader();
 };

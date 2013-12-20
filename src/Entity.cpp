@@ -20,12 +20,13 @@ void Entity::draw(){
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*modelMatrix));
 	glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 	glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &normalMatrix[0][0]);
+	updateShader();
 	
 	if(_texture != NULL) {
 		_texture->bind();	
-		glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
+		glUniform1i(ProgramShader::getInstance()->getId("withTexture"), 1);
 	}
-	else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
+	else glUniform1i(ProgramShader::getInstance()->getId("withTexture"), 0);
 	
 	if(_mesh != NULL)
 		_mesh->draw();
@@ -52,14 +53,15 @@ void Entity::drawReflection(){
 		glm::mat3 reflexNormalMatrix = glm::inverseTranspose(glm::mat3(Camera::getInstance()->getView()*reflexModelMatrix));
 		glUniformMatrix4fv(ProgramShader::getInstance()->getId("ModelMatrix"), 1, GL_FALSE, &reflexModelMatrix[0][0]);
 		glUniformMatrix3fv(ProgramShader::getInstance()->getId("NormalMatrix"), 1, GL_FALSE, &reflexNormalMatrix[0][0]);
+		updateShader();
 
 		glDisable(GL_CULL_FACE);
 
 		if(_texture != NULL) {
 			_texture->bind();	
-			glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 1.0f);
+			glUniform1i(ProgramShader::getInstance()->getId("withTexture"), 1);
 		}
-		else glUniform1f(ProgramShader::getInstance()->getId("withTexture"), 0.0f);
+		else glUniform1i(ProgramShader::getInstance()->getId("withTexture"), 0);
 		_mesh->draw();
 	
 		if(_texture != NULL)

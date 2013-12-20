@@ -10,4 +10,5 @@ class Frame : public Entity {
 	public:
 		Frame(std::string id);
 		void update();
+		void updateShader();
 };

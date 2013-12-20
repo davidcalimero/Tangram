@@ -69,3 +69,6 @@ void Board::setTexture(char * filename){
 
 
 void Board::update(){}
+
+
+void Board::updateShader(){}

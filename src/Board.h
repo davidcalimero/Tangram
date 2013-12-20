@@ -23,4 +23,5 @@ class Board : public Entity {
 		virtual void setTexture(char * filename);
 		virtual void draw();
 		void update();
+		void updateShader();
 };
