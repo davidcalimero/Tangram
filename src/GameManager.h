@@ -24,9 +24,10 @@ class GameManager {
 		Entity * _selected;
 		GLuint frameBufferPP;
 		GLuint texColorBufferNoise;
-		int _postProcessing;
 		GLuint _program;
 		GLuint _postProgram;
+
+		bool _greyscale, _sepia, _noise, _vignette;
 
 
 	public:

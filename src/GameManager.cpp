@@ -4,7 +4,6 @@
 
 GameManager::GameManager(){
 	_selected = NULL;
-	_postProcessing = 0;
 }
 
 
@@ -42,6 +41,10 @@ void GameManager::init(){
 	_postProgram = ProgramShader::getInstance()->createShaderProgram("shaders/vertexPostProcessing.glsl", 
 																	 "shaders/fragmentPostProcessing.glsl");
 
+	_greyscale = false;
+	_sepia = false;
+	_noise = false;
+	_vignette = false;
 
 	glGenFramebuffers(1, &frameBufferPP);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
@@ -143,7 +146,7 @@ void GameManager::draw(){
 	Camera::getInstance()->put();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if(_postProcessing != 0){
+	if(_greyscale || _sepia || _noise || _vignette){
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBufferPP);
 		//Color Texture
 		_quad->predraw();
@@ -171,7 +174,7 @@ void GameManager::draw(){
 		i->second->drawReflection();
 	}
 
-	if(_postProcessing != 0) {
+	if(_greyscale || _sepia || _noise || _vignette) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.1,0.1,0.1,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -180,10 +183,28 @@ void GameManager::draw(){
 
 		int width = glutGet(GLUT_WINDOW_WIDTH);
 		int height = glutGet(GLUT_WINDOW_HEIGHT);
-		std::cout << _postProcessing << std::endl;
 		glUniform1i(ProgramShader::getInstance()->getId("width"), width);
 		glUniform1i(ProgramShader::getInstance()->getId("height"), height);
-		glUniform1i(ProgramShader::getInstance()->getId("effect"), _postProcessing);
+		
+		if(_greyscale)
+			glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 1.0);
+		else
+			glUniform1i(ProgramShader::getInstance()->getId("greyscaleEffect"), 0.0);
+
+		if(_sepia)
+			glUniform1i(ProgramShader::getInstance()->getId("sepiaEffect"), 1.0);
+		else
+			glUniform1i(ProgramShader::getInstance()->getId("sepiaEffect"), 0.0);
+
+		if(_noise)
+			glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 1.0);
+		else
+			glUniform1i(ProgramShader::getInstance()->getId("noiseEffect"), 0.0);
+
+		if(_vignette)
+			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 1.0);
+		else
+			glUniform1i(ProgramShader::getInstance()->getId("vignetteEffect"), 0.0);
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_STENCIL_TEST);
@@ -229,24 +250,16 @@ void GameManager::update(){
 
 	// Apply postprocessing
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F1)) {
-		if(_postProcessing == 1) _postProcessing = 0;
-		else _postProcessing = 1;
+		_greyscale = !_greyscale;
 	}
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F2)) {
-		if(_postProcessing == 2) _postProcessing = 0;
-		else _postProcessing = 2;
+		_sepia = !_sepia;
 	}
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F3)) {
-		if(_postProcessing == 3) _postProcessing = 0;
-		else _postProcessing = 3;
+		_noise = !_noise;
 	}
 	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F4)) {
-		if(_postProcessing == 4) _postProcessing = 0;
-		else _postProcessing = 4;
-	}
-	if(Input::getInstance()->specialWasReleased(GLUT_KEY_F5)) {
-		if(_postProcessing == 5) _postProcessing = 0;
-		else _postProcessing = 5;
+		_vignette = !_vignette;
 	}
 }
 

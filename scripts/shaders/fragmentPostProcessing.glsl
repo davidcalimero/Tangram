@@ -12,7 +12,10 @@ uniform sampler2D tex;
 // Auxiliar Attributes
 uniform int width;
 uniform int height;
-uniform int effect;
+uniform int greyscaleEffect;
+uniform int sepiaEffect;
+uniform int noiseEffect;
+uniform int vignetteEffect;
 
 // Blending two colors
 vec4 blend(vec4 src, vec4 dst){
@@ -136,26 +139,18 @@ void main(void) {
 	float InnerVignetting = 0.6;
 	float OuterVignetting = 1.0;
 
-	switch(effect){
-		case 1: // Grayscale
-			final_Color = grayscale(final_Color);
-			break;
-		case 2: // Sepia 
-			final_Color = sepia(final_Color, SepiaValue);
-			break;
-		case 3: // Noise
-			final_Color = noise(final_Color, NoiseValue, RandomValue);
-			break;
-		case 4: // Vignetting
-			final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
-			break;
-		case 5: // Special 1
-			final_Color = grayscale(final_Color);
-			final_Color = noise(final_Color, NoiseValue, RandomValue);
-			// final_Color = scratchs(final_Color, ScratchValue, RandomValue);
-			final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
-			break;
-   }
+	if(greyscaleEffect == 1.0)
+		final_Color = grayscale(final_Color);
+
+	if(sepiaEffect == 1.0)
+		final_Color = sepia(final_Color, SepiaValue);
+
+	if(noiseEffect == 1.0)
+		final_Color = noise(final_Color, NoiseValue, RandomValue);
+
+	if(vignetteEffect == 1.0)
+		final_Color = vignetting(final_Color, InnerVignetting, OuterVignetting);
+
 
 	out_Color = final_Color;
 }
