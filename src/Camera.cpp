@@ -78,7 +78,7 @@ void Camera::update(){
 	// Alternate between orthographic and perspective
 	if(Input::getInstance()->keyWasReleased('P'))
 		_type = !_type;
-
+/*
 	// Progressive rotation
 	if(Input::getInstance()->specialWasPressed(GLUT_KEY_UP))
 		rotate(-0.05, 0);
@@ -88,7 +88,7 @@ void Camera::update(){
 		rotate(0, -0.05);
 	if(Input::getInstance()->specialWasPressed(GLUT_KEY_RIGHT))
 		rotate(0, 0.05);
-
+		*/
 	// Views
 	if(Input::getInstance()->keyWasReleased('1'))		// Top
 		_q = glm::angleAxis(90.0f, glm::vec3(1.0, 0.0, 0.0));

@@ -1,8 +1,8 @@
 # Blender MTL File: 'None'
 # Material Count: 1
 
-Ns 10.000000
+Ns 1.000000
 Ka 0.470000 0.300000 0.140000
 Kd 0.800000 0.520000 0.240000
-Ks 0.800000 0.520000 0.240000
+Ks 0.470000 0.300000 0.140000
 map_Kd perlin_noise.png

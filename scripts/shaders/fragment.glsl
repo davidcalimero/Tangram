@@ -42,6 +42,15 @@ layout(std140) uniform SharedMatrices
 	mat4 ProjectionMatrix;
 };
 
+// Marble
+uniform float noiseIntensity;
+uniform float noiseScale;
+
+// Wood
+uniform float ringFrequency;
+uniform float ringSharpness;
+uniform float ringScale;
+
 void main(void)
 {
 	vec3 tst = vec3(1.0);
@@ -51,9 +60,6 @@ void main(void)
 
 		vec3 marbleColor = vec3(132.0/255.0, 63.0/255.0, 76.0/255.0);
 		vec3 veinColor = vec3(213.0/255.0, 181.0/255.0, 195.0/255.0);
-
-		float noiseIntensity = 0.5;
-		float noiseScale = 0.11;
 
 		vec2 scaled_pos = ex_TexCoord * noiseScale;
 
@@ -70,11 +76,7 @@ void main(void)
 	else if(withTexture == 1 && material == 0){
 		vec3 darkWood = vec3(139.0/255.0, 69.0/255.0, 19.0/255.0);
 		vec3 lightWood = vec3(222.0/255.0, 184.0/255.0, 135.0/255.0);
-		float ringFrequency = 6.72;
-		float ringSharpness = 21.0;
-		float ringScale = 0.5;
 
-		float noiseScale = 1.0;
 		vec2 scaled_pos = ex_TexCoord * noiseScale;
 		float signed_noise = 2.0 * texture(tex, scaled_pos).r - 1.0;
 		float frp = fract(scaled_pos.x * ringFrequency + ringScale * signed_noise);

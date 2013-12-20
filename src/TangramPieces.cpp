@@ -2,7 +2,10 @@
 
 
 
-TangramPieces::TangramPieces(std::string id) : Entity(id, true){}
+TangramPieces::TangramPieces(std::string id) : Entity(id, true){
+	_noiseIntensity = 0.5;
+	_noiseScale = 0.06;
+}
 
 
 void TangramPieces::setPos(float px, float py, float pz, glm::quat q){
@@ -44,10 +47,23 @@ void TangramPieces::update(){
 			glm::normalize(vy);
 			rotate(vy.x, vy.y, vy.z, mouse.y);
 		}
+
+		if(Input::getInstance()->keyWasPressed('W'))
+			_noiseIntensity = MIN(_noiseIntensity + 0.0025, 1.5);
+		else if(Input::getInstance()->keyWasPressed('S'))
+			_noiseIntensity = MAX(0.25, _noiseIntensity - 0.0025);
+
+		
+		if(Input::getInstance()->keyWasPressed('D'))
+			_noiseScale = MIN(_noiseScale + 0.0025, 1.0);
+		else if(Input::getInstance()->keyWasPressed('A'))
+			_noiseScale = MAX(0.25, _noiseScale - 0.0025);
 	}
 }
 
 
 void TangramPieces::updateShader(){
 	glUniform1i(ProgramShader::getInstance()->getId("material"), 1);
+	glUniform1f(ProgramShader::getInstance()->getId("noiseIntensity"), _noiseIntensity);
+	glUniform1f(ProgramShader::getInstance()->getId("noiseScale"), _noiseScale);
 }

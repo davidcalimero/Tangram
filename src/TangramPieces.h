@@ -11,6 +11,8 @@
 class TangramPieces : public Entity {
 
 	private:
+		float _noiseIntensity;
+		float _noiseScale;
 
 	public:
 		TangramPieces(std::string id);
